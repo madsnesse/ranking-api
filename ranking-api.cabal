@@ -42,6 +42,9 @@ library
 executable ranking-api-exe
   main-is: Main.hs
   other-modules:
+      Controller
+      Database
+      Models
       Paths_ranking_api
   hs-source-dirs:
       app
