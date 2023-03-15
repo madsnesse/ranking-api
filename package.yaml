@@ -25,6 +25,7 @@ dependencies:
 - wai >= 3.2.3
 - warp >= 3.3.24
 - http-types
+- aeson
 
 ghc-options:
 - -Wall
