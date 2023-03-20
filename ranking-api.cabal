@@ -45,7 +45,9 @@ executable ranking-api-exe
   other-modules:
       Controller
       Database
+      Engine
       Models
+      Test
       Paths_ranking_api
   hs-source-dirs:
       app
