@@ -29,3 +29,52 @@ getPlayer id = do
                 [] -> Nothing
                 [x] -> Just x
                 _ -> error "Multiple players with same id"
+
+getLeague :: Int -> IO [League]
+getLeague id = do
+        conn <- connectDb
+        query conn "SELECT * FROM league WHERE id = ?" (Only id)
+
+getMatch :: Int -> IO [Match]
+getMatch id = do
+        conn <- connectDb
+        query conn "SELECT * FROM match WHERE id = ?" (Only id)
+
+-- getMatchesInLeague :: Int -> IO [Match]
+-- getMatchesInLeague id = do
+--         conn <- connectDb
+--         query conn "SELECT * FROM match WHERE match_id = ?" (Only id)
+
+getPlayersInLeague :: Int -> IO [Player]
+-- get players in league based on PlayerLeague table
+getPlayersInLeague leagueId = do
+        conn <- connectDb
+        query conn "SELECT Player.id, Player.name FROM Player\ 
+                        \INNER JOIN PlayerLeague ON Player.id = PlayerLeague.player_id\
+                        \INNER JOIN League ON League.id = PlayerLeague.league_id\
+                        \WHERE League.id =?" (Only leagueId);
+
+saveLeague :: League -> IO GHC.Int.Int64
+saveLeague league = do
+        conn <- connectDb
+        execute conn "INSERT INTO league values (?,?)" league
+
+saveMatch :: Match -> IO GHC.Int.Int64
+saveMatch match = do
+        conn <- connectDb
+        execute conn "INSERT INTO match values (?,?,?,?,?)" match
+
+saveMatchLeague :: League -> Match -> IO GHC.Int.Int64
+saveMatchLeague league match = do
+        conn <- connectDb
+        execute conn "INSERT INTO matchleague values (?,?)" (leagueId league, matchId match)
+
+savePlayerLeague :: League -> Player -> IO GHC.Int.Int64
+savePlayerLeague league player = do
+        conn <- connectDb
+        execute conn "INSERT INTO playerleague values (?,?)" (leagueId league, playerId player)
+
+savePlayer :: Player -> IO GHC.Int.Int64
+savePlayer player = do
+        conn <- connectDb
+        execute conn "INSERT INTO player values (?,?)" player
