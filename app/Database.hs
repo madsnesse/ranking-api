@@ -1,10 +1,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Database where
-import GHC.Int
+import GHC.Int ( Int64 )
 import Database.PostgreSQL.Simple
+    ( Only(Only),
+      Connection,
+      connect,
+      defaultConnectInfo,
+      execute_,
+      ConnectInfo(connectPassword),
+      execute,
+      query )
 import Data.String (IsString(fromString))
 import Models
+import Prelude hiding (id)
 
 connectInfo :: ConnectInfo
 connectInfo = defaultConnectInfo
@@ -38,10 +47,10 @@ getMatch id = do
         conn <- connectDb
         query conn "SELECT * FROM match WHERE id = ?" (Only id)
 
--- getMatchesInLeague :: Int -> IO [Match]
--- getMatchesInLeague id = do
---         conn <- connectDb
---         query conn "SELECT * FROM match WHERE match_id = ?" (Only id)
+getMatchesInLeague :: Int -> IO [Match]
+getMatchesInLeague id = do
+        conn <- connectDb
+        query conn "SELECT * FROM match WHERE league_id = ?" (Only id)
 
 getPlayersInLeague :: Int -> IO [Player]
 -- get players in league based on PlayerLeague table
@@ -57,7 +66,7 @@ saveLeague league = do
 saveMatch :: Match -> IO GHC.Int.Int64
 saveMatch match = do
         conn <- connectDb
-        execute conn "INSERT INTO match values (?,?,?,?,?)" match
+        execute conn "INSERT INTO match values (?,?,?,?,?,?)" match
 
 saveMatchLeague :: League -> Match -> IO GHC.Int.Int64
 saveMatchLeague league match = do
@@ -69,7 +78,7 @@ savePlayerLeague league player = do
         conn <- connectDb
         execute conn "INSERT INTO playerleague values (?,?,?)" (playerId player, leagueId league, 0::Int)
 
-savePlayer :: Player -> IO GHC.Int.Int64
-savePlayer player = do
+savePlayer :: String -> IO [Player]
+savePlayer playerName = do
         conn <- connectDb
-        execute conn "INSERT INTO player values (?,?)" player
+        query conn "INSERT INTO player values (?) RETURNING *" (playerName)

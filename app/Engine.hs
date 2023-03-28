@@ -5,8 +5,15 @@ import Database
 import GHC.Int
 
 
-createMatch :: Int -> Int -> Int -> Int -> Int -> Match
-createMatch id p1 p2 s1 s2 = Match id p1 p2 s1 s2
+createPlayer :: String -> IO Player
+createPlayer name = do
+    result <- savePlayer name
+    case result of
+        [x] -> return x
+        _ -> error "Error creating player"
+
+createMatch :: Int -> Int -> Int -> Int -> Int -> Int -> Match
+createMatch mid lid p1 p2 s1 s2 = Match mid lid p1 p2 s1 s2
 
 createLeague :: Int -> String -> Int -> League
 createLeague id name ownerId = League id name ownerId

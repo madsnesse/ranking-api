@@ -6,23 +6,19 @@ module Models where
 import GHC.Generics (Generic)
 import Data.Aeson (ToJSON, FromJSON)
 
-import Database.PostgreSQL.Simple.ToRow
-import Database.PostgreSQL.Simple.ToField
-import Database.PostgreSQL.Simple.FromRow
+import Database.PostgreSQL.Simple.ToRow ( ToRow(..) )
+import Database.PostgreSQL.Simple.ToField ( ToField(toField) )
+import Database.PostgreSQL.Simple.FromRow ( field, FromRow(..) )
 
 
 data Player = Player { playerId:: Int, name :: String }
   deriving (Generic, Show, ToJSON, FromJSON)
 
-
--- data Player = Player { playerId:: Int, name :: String }
---   deriving (Generic, Show)
-
-data Match = Match { matchId:: Int, player_one :: Int, player_two :: Int, score_one :: Int, score_two :: Int }
-  deriving (Generic, FromRow, Show)
+data Match = Match { matchId:: Int, leagueId'''::Int, player_one :: Int, player_two :: Int, score_one :: Int, score_two :: Int }
+  deriving (Generic, FromRow, Show, ToJSON, FromJSON)
 
 data League = League { leagueId:: Int,  leagueName :: String, ownerId :: Int }
-  deriving (Generic, FromRow, Show)
+  deriving (Generic, FromRow, Show, ToJSON, FromJSON)
 
 data LeagueMatch = LeagueMatch { leagueId' :: Int, matchId' :: Int }
   deriving (Generic)
@@ -39,8 +35,15 @@ instance FromRow Player where
     playerId <- field
     Player playerId <$> field
 
+instance FromRow Int where
+  fromRow = do
+    field
+
 instance ToRow Player where
   toRow p = [toField (playerId p), toField (name p)]
 
 instance ToRow Match where
-  toRow m = [toField (matchId m), toField (player_one m), toField (player_two m), toField (score_one m), toField (score_two m)]
+  toRow m = [toField (matchId m), toField (leagueId''' m), toField (player_one m), toField (player_two m), toField (score_one m), toField (score_two m)]
+
+instance ToField Char where
+  toField = toField . show
