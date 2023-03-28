@@ -34,8 +34,10 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , bytestring
     , http-types
     , postgresql-simple >=0.6.4
+    , text
     , wai >=3.2.3
     , warp >=3.3.24
   default-language: Haskell2010
@@ -55,9 +57,11 @@ executable ranking-api-exe
   build-depends:
       aeson
     , base >=4.7 && <5
+    , bytestring
     , http-types
     , postgresql-simple >=0.6.4
     , ranking-api
+    , text
     , wai >=3.2.3
     , warp >=3.3.24
   default-language: Haskell2010
@@ -73,9 +77,11 @@ test-suite ranking-api-test
   build-depends:
       aeson
     , base >=4.7 && <5
+    , bytestring
     , http-types
     , postgresql-simple >=0.6.4
     , ranking-api
+    , text
     , wai >=3.2.3
     , warp >=3.3.24
   default-language: Haskell2010

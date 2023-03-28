@@ -26,7 +26,8 @@ dependencies:
 - warp >= 3.3.24
 - http-types
 - aeson
-
+- bytestring
+- text
 ghc-options:
 - -Wall
 - -Wcompat

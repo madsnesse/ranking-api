@@ -2,9 +2,7 @@
 
 module Database where
 import GHC.Int
-import qualified Data.Int as GHC.Int
 import Database.PostgreSQL.Simple
-import Database.PostgreSQL.Simple ( FromRow, ToRow )
 import Data.String (IsString(fromString))
 import Models
 
@@ -24,7 +22,7 @@ createDatabaseTables = do
 getPlayer:: Int -> IO (Maybe Player)
 getPlayer id = do
         conn <- connectDb 
-        result <- query conn "SELECT * FROM player WHERE id = ?" (Only id) :: IO [Player]
+        result <- query conn "SELECT * FROM player WHERE player_id = ?" (Only id) :: IO [Player]
         return $ case result of
                 [] -> Nothing
                 [x] -> Just x
@@ -49,15 +47,12 @@ getPlayersInLeague :: Int -> IO [Player]
 -- get players in league based on PlayerLeague table
 getPlayersInLeague leagueId = do
         conn <- connectDb
-        query conn "SELECT Player.id, Player.name FROM Player\ 
-                        \INNER JOIN PlayerLeague ON Player.id = PlayerLeague.player_id\
-                        \INNER JOIN League ON League.id = PlayerLeague.league_id\
-                        \WHERE League.id =?" (Only leagueId);
+        query conn "SELECT player.id, player.username FROM player INNER JOIN playerleague ON player.id = playerleague.player_id INNER JOIN league ON league.id = playerleague.league_id WHERE league.id = ?" (Only leagueId);
 
 saveLeague :: League -> IO GHC.Int.Int64
 saveLeague league = do
         conn <- connectDb
-        execute conn "INSERT INTO league values (?,?)" league
+        execute conn "INSERT INTO league values (?,?,?)" league
 
 saveMatch :: Match -> IO GHC.Int.Int64
 saveMatch match = do
@@ -72,7 +67,7 @@ saveMatchLeague league match = do
 savePlayerLeague :: League -> Player -> IO GHC.Int.Int64
 savePlayerLeague league player = do
         conn <- connectDb
-        execute conn "INSERT INTO playerleague values (?,?)" (leagueId league, playerId player)
+        execute conn "INSERT INTO playerleague values (?,?,?)" (playerId player, leagueId league, 0::Int)
 
 savePlayer :: Player -> IO GHC.Int.Int64
 savePlayer player = do

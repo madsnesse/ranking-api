@@ -21,6 +21,5 @@ CREATE TABLE IF NOT EXISTS Match (
     score_one INTEGER, 
     score_two INTEGER,
     PRIMARY KEY (match_id),
-    FOREIGN KEY (player_id_one) REFERENCES Player(id),
-    FOREIGN KEY (player_id_two) REFERENCES Player(id)
+    FOREIGN KEY (league_id) REFERENCES League(id)
 );
