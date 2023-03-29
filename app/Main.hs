@@ -7,7 +7,7 @@ import Network.Wai.Handler.Warp (run)
 
 main :: IO ()
 main = do
-    _ <- createDatabaseTables
+    -- _ <- createDatabaseTables
     run 8080 app
     
 
