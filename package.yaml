@@ -28,7 +28,6 @@ dependencies:
 - aeson
 - bytestring
 - text
-- hlint
 ghc-options:
 - -Wall
 - -Wcompat
