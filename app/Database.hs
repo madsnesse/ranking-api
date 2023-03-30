@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Database (connectDb, getPlayerByEmail, savePlayer, saveLeague, saveMatch, getMatchById) where
+module Database (connectDb, createDbTables, getPlayerByEmail, savePlayer, saveLeague, saveMatch, getMatchById) where
 
 import GHC.Int ( Int64 )
 import Database.PostgreSQL.Simple
@@ -23,8 +23,8 @@ connectInfo = defaultConnectInfo
 connectDb :: IO Connection
 connectDb = connect connectInfo
 
-createDatabaseTables :: IO GHC.Int.Int64
-createDatabaseTables = do
+createDbTables :: IO GHC.Int.Int64
+createDbTables = do
         conn <- connectDb
         initFile <- readFile "db_init.sql"
         execute_ conn (fromString initFile)
