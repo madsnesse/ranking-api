@@ -25,7 +25,8 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Models
+      Responses
   other-modules:
       Paths_ranking_api
   hs-source-dirs:
@@ -35,10 +36,10 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
+    , hlint
     , http-types
     , postgresql-simple >=0.6.4
     , text
-    , uuid
     , wai >=3.2.3
     , warp >=3.3.24
   default-language: Haskell2010
@@ -49,8 +50,6 @@ executable ranking-api-exe
       Controller
       Database
       Engine
-      Models
-      Test
       Paths_ranking_api
   hs-source-dirs:
       app
@@ -59,11 +58,11 @@ executable ranking-api-exe
       aeson
     , base >=4.7 && <5
     , bytestring
+    , hlint
     , http-types
     , postgresql-simple >=0.6.4
     , ranking-api
     , text
-    , uuid
     , wai >=3.2.3
     , warp >=3.3.24
   default-language: Haskell2010
@@ -80,11 +79,11 @@ test-suite ranking-api-test
       aeson
     , base >=4.7 && <5
     , bytestring
+    , hlint
     , http-types
     , postgresql-simple >=0.6.4
     , ranking-api
     , text
-    , uuid
     , wai >=3.2.3
     , warp >=3.3.24
   default-language: Haskell2010

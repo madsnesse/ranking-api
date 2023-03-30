@@ -28,7 +28,7 @@ dependencies:
 - aeson
 - bytestring
 - text
-- uuid
+- hlint
 ghc-options:
 - -Wall
 - -Wcompat
