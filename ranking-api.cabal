@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       Models
+      Requests
       Responses
   other-modules:
       Paths_ranking_api
@@ -36,7 +37,6 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
-    , hlint
     , http-types
     , postgresql-simple >=0.6.4
     , text
@@ -58,7 +58,6 @@ executable ranking-api-exe
       aeson
     , base >=4.7 && <5
     , bytestring
-    , hlint
     , http-types
     , postgresql-simple >=0.6.4
     , ranking-api
@@ -79,7 +78,6 @@ test-suite ranking-api-test
       aeson
     , base >=4.7 && <5
     , bytestring
-    , hlint
     , http-types
     , postgresql-simple >=0.6.4
     , ranking-api

@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Database (connectDb, createDbTables, getPlayerByEmail, savePlayer, saveLeague, saveMatch, getMatchById) where
+module Database (connectDb, createDbTables, getPlayerByEmail, savePlayer, saveLeague, saveMatch, getMatchById, getLeagueById, getMatchesInLeague, getPlayersInLeague) where
 
 import GHC.Int ( Int64 )
 import Database.PostgreSQL.Simple
@@ -9,7 +9,6 @@ import Database.PostgreSQL.Simple
       defaultConnectInfo,
       execute_,
       ConnectInfo(connectPassword),
-      execute,
       query )
 import Data.String (IsString(fromString))
 import Models
@@ -34,31 +33,27 @@ getPlayerByEmail conn email = do
         query conn "SELECT * FROM player WHERE email = ?" 
                 (Only email)
 
-getLeague :: Int -> IO [League]
-getLeague id = do
-        conn <- connectDb
-        query conn "SELECT * FROM league WHERE id = ?" (Only id)
+getLeagueById :: Connection -> Int -> IO [League]
+getLeagueById conn lid = do
+        query conn "SELECT * FROM league WHERE id = ?" (Only lid)
 
 getMatchById :: Connection -> Int -> IO [Match]
-getMatchById conn id = do
+getMatchById conn mid = do
         query conn "SELECT * FROM match WHERE id = ?"
-                (Only id)
+                (Only mid)
 
-getMatchesInLeague :: Int -> IO [Match]
-getMatchesInLeague id = do
-        conn <- connectDb
+getMatchesInLeague :: Connection -> Int -> IO [Match]
+getMatchesInLeague conn lid = do
         query conn "SELECT * FROM match WHERE league_id = ?"
-                (Only id)
+                (Only lid)
 
-getPlayersInLeague :: Int -> IO [Player]
-getPlayersInLeague leagueId = do
-        conn <- connectDb
+getPlayersInLeague :: Connection -> Int -> IO [Player]
+getPlayersInLeague conn leagueId = do
         query conn "SELECT * FROM player INNER JOIN playerleague ON player.id = playerleague.player_id INNER JOIN league ON league.id = playerleague.league_id WHERE league.id = ?"
                 (Only leagueId);
 
-saveLeague :: String -> Int -> IO [League]
-saveLeague name ownerId = do
-        conn <- connectDb
+saveLeague :: Connection -> String -> Int -> IO [League]
+saveLeague conn name ownerId = do
         query conn "INSERT INTO league (league_name, owner_id) values (?,?) RETURNING *"
                 (name, ownerId)
 

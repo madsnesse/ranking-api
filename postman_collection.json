@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "1ca984a6-28af-4e1b-8c9f-647e024d80c6",
+		"name": "Ranking api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create new player",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.globals.set(\"playerId\", jsonData.playerId);",
+							"",
+							"pm.globals.set(\"email\", jsonData.email);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomFirstName}}\",\n    \"email\":\"{{$randomEmail}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/player",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get player",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/player/{{email}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"{{email}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get match",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/match/{{matchId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"match",
+						"{{matchId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create match",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"leagueId\" : 1,\n    \"player_one\" : 1,\n    \"player_two\" : 2,\n    \"score_one\" : 10,\n    \"score_two\" : 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/match",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"match"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create league",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"leagueName\":\"test league\",\n    \"ownerId\":  {{playerId}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/league",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"league"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

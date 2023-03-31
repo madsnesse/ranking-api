@@ -1,25 +1,24 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric  #-}
-{-# LANGUAGE DeriveAnyClass #-}
+
 module Controller (app) where
 import Network.Wai( Application, 
                     Request(pathInfo, requestMethod), 
                     strictRequestBody, 
                     Response )
 import Data.Aeson ( decode, 
-                    encode, 
-                    FromJSON )
+                    encode )
 
 import Data.Text as T ( Text, unpack )
-import Engine ( createPlayer, getPlayer, createMatch, getMatch )
-import GHC.Generics ( Generic )
+import Engine ( createPlayer, getPlayer, createMatch, getMatch, createLeague, getPlayersInLeague, getMatchesInLeague, getLeague )
 import Database.PostgreSQL.Simple ( Connection )
 import Responses
     ( notFoundResponse,
       invalidRequestBodyResponse,
       methodNotAllowedResponse,
-      successResponse )
-
+      successResponse, 
+      FullLeagueResponse(..) )
+import Requests ( CreatePlayerRequest(..), CreateMatchRequest(..), CreateLeagueRequest(..) )
+import Models ( Player(..), Match(..), League(..) )
 app :: Connection -> Application
 app conn req respond = case pathInfo req of
   ("player":path) -> do
@@ -54,20 +53,23 @@ app conn req respond = case pathInfo req of
               respond resp
             _ -> respond methodNotAllowedResponse
         _ -> respond methodNotAllowedResponse
+  ("league":path) -> do
+    case requestMethod req of
+        "POST" -> do -- create league
+            case path of
+              [] -> do 
+                resp <- createLeagueResponse conn req  
+                respond resp
+              _ -> respond methodNotAllowedResponse
+        
+        "GET" -> do -- get league
+          case path of
+            [leagueId] -> do
+              resp <- getLeagueResponse conn leagueId
+              respond resp
+            _ -> respond methodNotAllowedResponse
+        _ -> respond methodNotAllowedResponse
   _ -> respond notFoundResponse
-
-data CreatePlayerRequest = CreatePlayerRequest {
-    name :: String,
-    email :: String
-} deriving (Generic, FromJSON)
-
-data CreateMatchRequest = CreateMatchRequest {
-    leagueId :: Int,
-    player_one :: Int,
-    player_two :: Int,
-    score_one :: Int,
-    score_two :: Int
-} deriving (Generic, FromJSON)
 
 createPlayerResponse :: Connection -> Request -> IO Response
 createPlayerResponse conn request = do
@@ -76,7 +78,7 @@ createPlayerResponse conn request = do
     case t of
       Nothing -> return invalidRequestBodyResponse
       Just jsonBody -> do
-        player <- createPlayer conn (name jsonBody) (email jsonBody)
+        player <- createPlayer conn (name' jsonBody) (e_mail jsonBody)
         case player of
           Nothing -> return notFoundResponse
           Just p -> return (successResponse (encode p)) 
@@ -97,11 +99,11 @@ createMatchResponse conn request = do
     case t of
       Nothing -> return invalidRequestBodyResponse
       Just jsonBody -> do
-        match <- createMatch conn (leagueId jsonBody) 
-                                  (player_one jsonBody) 
-                                  (player_two jsonBody) 
-                                  (score_one jsonBody) 
-                                  (score_two jsonBody) 
+        match <- createMatch conn (league_id' jsonBody) 
+                                  (player_one' jsonBody) 
+                                  (player_two' jsonBody) 
+                                  (score_one' jsonBody) 
+                                  (score_two' jsonBody) 
         case match of
           Nothing -> return notFoundResponse
           Just m -> return (successResponse (encode m))
@@ -110,3 +112,28 @@ getMatchResponse :: Connection -> Text -> IO Response
 getMatchResponse conn matchId = do
     -- match <- getMatch conn (unpack matchId::Int)
     return notFoundResponse
+
+createLeagueResponse :: Connection -> Request -> IO Response
+createLeagueResponse conn request = do
+    body <- strictRequestBody request
+    let t =  decode body :: Maybe CreateLeagueRequest
+    case t of
+      Nothing -> return invalidRequestBodyResponse
+      Just jsonBody -> do
+        league <- createLeague conn (leagueName' jsonBody) (ownerId' jsonBody)
+        case league of
+          Nothing -> return notFoundResponse
+          Just l -> return (successResponse (encode l))
+
+getLeagueResponse :: Connection -> Text -> IO Response
+getLeagueResponse conn leagueId = do
+    let lid = read (unpack leagueId)::Int 
+    league <- getLeague conn lid
+    case league of
+      Nothing -> return notFoundResponse
+      Just l -> do
+        players <- getPlayersInLeague conn (read (unpack leagueId)::Int)
+        matches <- getMatchesInLeague conn (read (unpack leagueId)::Int)
+        let leagueResponse = FullLeagueResponse lid (leagueName l) (ownerId l) (map playerId players) (map matchId matches)
+        return (successResponse (encode leagueResponse))
+    

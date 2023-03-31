@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric  #-}
 {-# LANGUAGE DeriveAnyClass #-}
 
-module Models (Player, Match, League) where
+module Models (Player(..), Match(..), League(..)) where
 
 import GHC.Generics (Generic)
 import Data.Aeson (ToJSON, FromJSON)

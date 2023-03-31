@@ -1,5 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Responses (notFoundResponse, invalidRequestBodyResponse, methodNotAllowedResponse, successResponse) where
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+module Responses (notFoundResponse, invalidRequestBodyResponse, methodNotAllowedResponse, successResponse, FullLeagueResponse(..)) where
 
 import Network.Wai (Response, responseLBS)
 import Network.HTTP.Types
@@ -9,6 +11,8 @@ import Network.HTTP.Types
     status405, 
     status200 )
 import Data.ByteString.Lazy (ByteString)
+import Data.Aeson (ToJSON)
+import GHC.Generics (Generic)
 
 
 headers :: ResponseHeaders
@@ -25,3 +29,11 @@ methodNotAllowedResponse = responseLBS status405 headers "{ \n\t\"error\":\"Meth
 
 successResponse :: ByteString -> Response
 successResponse = responseLBS status200 headers
+
+data FullLeagueResponse = FullLeagueResponse {
+    league_id'' :: Int,
+    league_name :: String,
+    owner_id :: Int,
+    players :: [Int],
+    matches :: [Int]
+} deriving (Generic, Show, ToJSON)
