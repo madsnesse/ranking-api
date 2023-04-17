@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric  #-}
 {-# LANGUAGE DeriveAnyClass #-}
 
-module Requests (CreatePlayerRequest(..), CreateMatchRequest(..), CreateLeagueRequest(..)) where
+module Requests (CreatePlayerRequest(..), CreateMatchRequest(..), CreateLeagueRequest(..), UpdateLeagueRequest(..)) where
 
 import GHC.Generics (Generic)
 import Data.Aeson (FromJSON)
@@ -22,4 +22,8 @@ data CreateMatchRequest = CreateMatchRequest {
 data CreateLeagueRequest = CreateLeagueRequest {
     leagueName' :: String,
     ownerId' :: Int
+} deriving (Generic, FromJSON)
+
+data UpdateLeagueRequest = UpdateLeagueRequest {
+    players':: [Int]
 } deriving (Generic, FromJSON)

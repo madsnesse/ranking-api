@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric  #-}
 {-# LANGUAGE DeriveAnyClass #-}
 
-module Models (Player(..), Match(..), League(..)) where
+module Models (Player(..), Match(..), League(..), PlayerLeague(..)) where
 
 import GHC.Generics (Generic)
 import Data.Aeson (ToJSON, FromJSON)
@@ -19,6 +19,9 @@ data Match = Match { matchId:: Int, league_id::Int, player_one :: Int, player_tw
 
 data League = League { leagueId:: Int,  leagueName :: String, ownerId :: Int }
   deriving (Generic, FromRow, Show, ToJSON, FromJSON)
+
+data PlayerLeague = PlayerLeague { player_id :: Int, league_id' :: Int, rating :: Int }
+  deriving (Generic, Show, ToJSON, FromJSON, FromRow)
 
 instance ToRow League where
   toRow l = [toField (leagueId l), toField (leagueName l), toField (ownerId l)]

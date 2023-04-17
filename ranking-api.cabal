@@ -38,6 +38,7 @@ library
     , base >=4.7 && <5
     , bytestring
     , http-types
+    , mtl >=2.2.2
     , postgresql-simple >=0.6.4
     , text
     , wai >=3.2.3
@@ -48,6 +49,7 @@ executable ranking-api-exe
   main-is: Main.hs
   other-modules:
       Controller
+      Controller2
       Database
       Engine
       Paths_ranking_api
@@ -59,6 +61,7 @@ executable ranking-api-exe
     , base >=4.7 && <5
     , bytestring
     , http-types
+    , mtl >=2.2.2
     , postgresql-simple >=0.6.4
     , ranking-api
     , text
@@ -79,6 +82,7 @@ test-suite ranking-api-test
     , base >=4.7 && <5
     , bytestring
     , http-types
+    , mtl >=2.2.2
     , postgresql-simple >=0.6.4
     , ranking-api
     , text

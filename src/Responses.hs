@@ -13,6 +13,7 @@ import Network.HTTP.Types
 import Data.ByteString.Lazy (ByteString)
 import Data.Aeson (ToJSON)
 import GHC.Generics (Generic)
+import Models (Player, Match, PlayerLeague)
 
 
 headers :: ResponseHeaders
@@ -34,6 +35,6 @@ data FullLeagueResponse = FullLeagueResponse {
     league_id'' :: Int,
     league_name :: String,
     owner_id :: Int,
-    players :: [Int],
-    matches :: [Int]
+    players :: [(Int,Int)],
+    matches :: [Match]
 } deriving (Generic, Show, ToJSON)

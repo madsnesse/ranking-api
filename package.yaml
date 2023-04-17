@@ -28,6 +28,7 @@ dependencies:
 - aeson
 - bytestring
 - text
+- mtl >= 2.2.2
 ghc-options:
 - -Wall
 - -Wcompat
