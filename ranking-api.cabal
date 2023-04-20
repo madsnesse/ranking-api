@@ -50,6 +50,7 @@ executable ranking-api-exe
   other-modules:
       Controller
       Controller2
+      Controller3
       Database
       Engine
       Paths_ranking_api

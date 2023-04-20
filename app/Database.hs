@@ -51,7 +51,7 @@ getPlayerByEmail conn email = do
 
 getPlayerById :: Connection -> Int -> IO [Player]
 getPlayerById conn i = do
-        query conn "SELECT# * FROM player WHERE id = ?"
+        query conn "SELECT * FROM player WHERE id = ?"
                 (Only i)
 getLeagueById :: Connection -> Int -> IO [League]
 getLeagueById conn lid = do
