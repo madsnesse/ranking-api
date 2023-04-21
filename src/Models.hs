@@ -1,5 +1,7 @@
 {-# LANGUAGE DeriveGeneric  #-}
 {-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE OverloadedRecordDot #-}
+{-# LANGUAGE DuplicateRecordFields #-}
 
 module Models (Player(..), Match(..), League(..), PlayerLeague(..)) where
 
