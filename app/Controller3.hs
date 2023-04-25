@@ -1,5 +1,8 @@
 
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE OverloadedRecordDot #-}
+
 module Controller3 where 
 
 
@@ -24,7 +27,7 @@ import Data.Text as T ( Text, unpack)
 import Data.ByteString.Lazy (pack)
 import Data.Aeson ( decode,
                     encode, ToJSON, FromJSON )
-import Models (Player, playerId)
+import Models
 import Requests
 import Database
 import Data.UUID.V4 (nextRandom)
@@ -34,6 +37,10 @@ import Data.UUID (UUID)
 newtype RequestState = RequestState (UUID, String)
 instance Show RequestState where
   show (RequestState (uuid, state)) = "[" ++ show uuid ++ "," ++ state ++ "]"
+
+requestState :: String -> RequestState -> RequestState
+requestState s (RequestState (uuid, _)) = RequestState (uuid, s)
+
 
 type DeezNuts = RWST Connection [String] RequestState IO
 -- Do keep track of request id in state and log it in the writer monad, yesh
@@ -54,6 +61,8 @@ handleRequest req = case (requestMethod req, pathInfo req) of
     getPlayer (read (unpack playerId))
   ("POST", "player":[]) -> do
     createPlayer req
+  ("GET", ["league", leagueId]) -> do
+    getLeague (read (unpack leagueId))
   ("POST", "league":[]) -> do
     createLeague req
   ("POST", "match":[]) -> do
@@ -66,7 +75,7 @@ getPlayer playerId = do
   p <- liftIO $ getPlayerById conn playerId
   let r = res $ re p
 
-  modify (\(RequestState (uuid, _)) -> RequestState (uuid, "getPlayer"))
+  modify (requestState "getPlayer")
   _ <- logItem ("Retrieved player with id: " ++ (show playerId))
   
   return r
@@ -86,14 +95,21 @@ createPlayer req = do
   case reBody of
     Nothing -> return invalidRequestBodyResponse
     Just body -> do
-      p <- liftIO $ savePlayer conn (name' body) (e_mail body)
+      p <- liftIO $ savePlayer conn (body.name) (body.email)
       let r = res $ re p
 
       modify (\(RequestState (uuid, _)) -> RequestState (uuid, "createPlayer"))
-      _ <- logItem ("Created player with id: " ++ (show $ playerId (head p)))
+      _ <- logItem ("Created player with id: " ++ (show $ (head p).playerId))
 
       return r
-  
+
+getLeague :: Int -> DeezNuts Response
+getLeague leagueId = do
+  conn <- ask
+  p <- liftIO $ getLeagueById conn leagueId
+  let r = res $ re p
+  return r  
+
 createLeague :: Request -> DeezNuts Response
 createLeague req = do
   conn <- ask
@@ -103,8 +119,12 @@ createLeague req = do
   case reBody of
     Nothing -> return invalidRequestBodyResponse
     Just body -> do
-      p <- liftIO $ saveLeague conn (leagueName' body) (ownerId' body)
+      p <- liftIO $ saveLeague conn (body.leagueName) (body.ownerId)
       let r = res $ re p
+
+      modify (\(RequestState (uuid, _)) -> RequestState (uuid, "createLeague"))
+      _ <- logItem ("Created league with id: " ++ (show $ (head p).leagueId))
+
       return r
 
 createMatch :: Request -> DeezNuts Response
@@ -117,7 +137,7 @@ createMatch req = do
   case reBody of
     Nothing -> return invalidRequestBodyResponse
     Just body -> do
-      p <- liftIO $ saveMatch conn (league_id' body) (player_one' body) (player_two' body) (score_one' body) (score_two' body)
+      p <- liftIO $ saveMatch conn (body.leagueId) (body.playerOne) (body.playerTwo) (body.scoreOne) (body.scoreTwo)
       let r = res $ re p
       return r
   -- case res of

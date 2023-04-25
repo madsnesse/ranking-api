@@ -32,9 +32,9 @@ successResponse :: ByteString -> Response
 successResponse = responseLBS status200 headers
 
 data FullLeagueResponse = FullLeagueResponse {
-    league_id'' :: Int,
-    league_name :: String,
-    owner_id :: Int,
+    leagueId :: Int,
+    leagueName :: String,
+    ownerId :: Int,
     players :: [(Int,Int)],
     matches :: [Match]
 } deriving (Generic, Show, ToJSON)

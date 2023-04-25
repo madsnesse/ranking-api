@@ -49,10 +49,10 @@ createMatch conn lid p1 p2 s1 s2 = do
 
 updateRankings :: Connection ->  Match -> IO()
 updateRankings conn m = do
-    -- p1 <- getPlayerById conn (player_one m)
-    -- p2 <- getPlayerById conn (player_two m)
-    r1 <- getRankingOfPlayer conn (player_one m) (league_id m)
-    r2 <- getRankingOfPlayer conn (player_two m) (league_id m)
+    -- p1 <- getPlayerById conn (m.playerOne)
+    -- p2 <- getPlayerById conn (m.playerTwo)
+    r1 <- getRankingOfPlayer conn (m.playerOne) (m.leagueId)
+    r2 <- getRankingOfPlayer conn (m.playerTwo) (m.leagueId)
     let probability1 = calculateProbability r2 r1
     putStrLn ("The probability that p1 wins is: " ++ (show probability1))
     let probability2 = calculateProbability r1 r2
@@ -63,16 +63,16 @@ updateRankings conn m = do
     if s1 > s2 then do
         let newRating1 = calculateEloRating r1 (s1,s2) (1 - probability1)
         let newRating2 = calculateEloRating r2 (s2,s1) (- probability2) 
-        _ <- updateRanking conn (player_one m) (league_id m) newRating1
-        _ <- updateRanking conn (player_two m) (league_id m) newRating2
+        _ <- updateRanking conn (m.playerOne) (m.leagueId) newRating1
+        _ <- updateRanking conn (m.playerTwo) (m.leagueId) newRating2
         putStrLn ("player one wins " ++ show newRating1 ++" "++ show newRating2)
     else if s2 == s1 
         then putStrLn "tie" 
     else do
         let newRating1 = calculateEloRating r1 (s1,s2) (- probability1)
         let newRating2 = calculateEloRating r2 (s2,s1) (1 - probability2) 
-        _ <- updateRanking conn (player_one m) (league_id m) newRating1
-        _ <- updateRanking conn (player_two m) (league_id m) newRating2
+        _ <- updateRanking conn (m.playerOne) (m.leagueId) newRating1
+        _ <- updateRanking conn (m.playerTwo) (m.leagueId) newRating2
         putStrLn ("player two wins " ++ show newRating1 ++" "++ show newRating2)
 
  

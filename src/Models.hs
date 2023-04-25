@@ -16,17 +16,17 @@ import Database.PostgreSQL.Simple.FromRow ( field, FromRow(..) )
 data Player = Player { playerId:: Int, name :: String, email :: String}
   deriving (Generic, Show, ToJSON, FromJSON)
 
-data Match = Match { matchId:: Int, league_id::Int, player_one :: Int, player_two :: Int, score_one :: Int, score_two :: Int }
+data Match = Match { matchId:: Int, leagueId::Int, playerOne :: Int, playerTwo :: Int, scoreOne :: Int, scoreTwo :: Int }
   deriving (Generic, FromRow, Show, ToJSON, FromJSON)
 
 data League = League { leagueId:: Int,  leagueName :: String, ownerId :: Int }
   deriving (Generic, FromRow, Show, ToJSON, FromJSON)
 
-data PlayerLeague = PlayerLeague { player_id :: Int, league_id' :: Int, rating :: Int }
+data PlayerLeague = PlayerLeague { playerId :: Int, leagueId :: Int, rating :: Int }
   deriving (Generic, Show, ToJSON, FromJSON, FromRow)
 
 instance ToRow League where
-  toRow l = [toField (leagueId l), toField (leagueName l), toField (ownerId l)]
+  toRow l = [toField (l.leagueId), toField (l.leagueName), toField (l.ownerId)]
 
 instance FromRow Player where
   fromRow = do
@@ -35,7 +35,7 @@ instance FromRow Player where
     Player playerId name <$> field
 
 instance ToRow Player where
-  toRow p = [toField (playerId p), toField (name p)]
+  toRow p = [toField (p.playerId), toField (p.name)]
 
 instance ToRow Match where
-  toRow m = [toField (matchId m), toField (league_id m), toField (player_one m), toField (player_two m), toField (score_one m), toField (score_two m)]
+  toRow m = [toField (m.matchId), toField (m.leagueId), toField (m.playerOne), toField (m.playerTwo), toField (m.scoreOne), toField (m.scoreTwo)]
