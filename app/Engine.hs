@@ -1,5 +1,4 @@
-module Engine (createPlayer, getPlayer, createMatch, createLeague, getMatch, getPlayersInLeague, getMatchesInLeague, getPlayers, getMatches, getLeague, addPlayersToLeague) where
-
+module Engine where
 import Models
 import Database
     ( getPlayerByEmail,

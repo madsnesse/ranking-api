@@ -9,6 +9,9 @@ import Network.Wai( Application,
                     Response, responseLBS )
 import Network.Wai.Handler.Warp
 import Control.Monad.Reader
+import Control.Monad.Writer
+import Control.Monad.RWS
+
 import Database.PostgreSQL.Simple
 import qualified Data.ByteString.Lazy as LBS
 import Network.HTTP.Types
@@ -21,19 +24,33 @@ import Data.Text as T ( Text, unpack)
 import Data.ByteString.Lazy (pack)
 import Data.Aeson ( decode,
                     encode, ToJSON, FromJSON )
-import Models (Player)
+import Models (Player, playerId)
 import Requests
 import Database
-type ConnectionHolder = ReaderT Connection IO
+import Data.UUID.V4 (nextRandom)
+import Data.UUID (UUID)
+-- type ConnectionHolder = ReaderT Connection IO
+
+newtype RequestState = RequestState (UUID, String)
+instance Show RequestState where
+  show (RequestState (uuid, state)) = "[" ++ show uuid ++ "," ++ state ++ "]"
+
+type DeezNuts = RWST Connection [String] RequestState IO
+-- Do keep track of request id in state and log it in the writer monad, yesh
+
+-- type AppRWST = RWST ConnectionHolder Logger () IO
 
 app :: Connection -> Application
 app conn req respond = do
-  result <- runReaderT (handleRequest req) conn
+  uuid <- nextRandom
+  (result, conf, logs) <- runRWST (handleRequest req) conn (RequestState (uuid, "initial"))
+  -- result <- runReaderT (handleRequest req) conn
+  putStrLn $ "Logs: " ++ (show logs)
   respond result
 
-handleRequest :: Request -> ConnectionHolder Response
+handleRequest :: Request -> DeezNuts Response
 handleRequest req = case (requestMethod req, pathInfo req) of
-  ("GET", ["player", playerId]) ->
+  ("GET", ["player", playerId]) -> do
     getPlayer (read (unpack playerId))
   ("POST", "player":[]) -> do
     createPlayer req
@@ -43,14 +60,24 @@ handleRequest req = case (requestMethod req, pathInfo req) of
     createMatch req
   _ -> return illegalMethodResponse
 
-getPlayer :: Int -> ConnectionHolder Response
+getPlayer :: Int -> DeezNuts Response
 getPlayer playerId = do
   conn <- ask
   p <- liftIO $ getPlayerById conn playerId
   let r = res $ re p
+
+  modify (\(RequestState (uuid, _)) -> RequestState (uuid, "getPlayer"))
+  _ <- logItem ("Retrieved player with id: " ++ (show playerId))
+  
   return r
 
-createPlayer :: Request -> ConnectionHolder Response
+logItem :: String -> DeezNuts ()
+logItem s = do
+  rs <- get
+  liftIO $ putStrLn $ (show rs) ++ s
+  tell [s]
+
+createPlayer :: Request -> DeezNuts Response
 createPlayer req = do
   conn <- ask
   rb <- liftIO $ strictRequestBody req
@@ -61,9 +88,13 @@ createPlayer req = do
     Just body -> do
       p <- liftIO $ savePlayer conn (name' body) (e_mail body)
       let r = res $ re p
+
+      modify (\(RequestState (uuid, _)) -> RequestState (uuid, "createPlayer"))
+      _ <- logItem ("Created player with id: " ++ (show $ playerId (head p)))
+
       return r
   
-createLeague :: Request -> ConnectionHolder Response
+createLeague :: Request -> DeezNuts Response
 createLeague req = do
   conn <- ask
   srb <- liftIO $ strictRequestBody req
@@ -76,7 +107,7 @@ createLeague req = do
       let r = res $ re p
       return r
 
-createMatch :: Request -> ConnectionHolder Response
+createMatch :: Request -> DeezNuts Response
 createMatch req = do
   conn <- ask
   srb <- liftIO $ strictRequestBody req
@@ -98,7 +129,7 @@ createMatch req = do
 -- mapResponse (Just row) = 
 
 getRequestBody :: (FromJSON j) => LBS.ByteString -> Maybe j
-getRequestBody req = decode req
+getRequestBody = decode
   
 re :: [r] -> Maybe r
 re [x] = Just x
