@@ -43,7 +43,12 @@ app conn req respond = do
   respond result
 
 handleRequest :: Request -> DeezNuts Response
-handleRequest req = case (requestMethod req, pathInfo req) of
+handleRequest req = do
+  -- TODO can I pass srb instead of entire Request??
+  -- maybe have something like createPlayer validBody $ getRequestBody $ strictRequestBody req :: CreatePlayerRequest
+  -- might have to fix log here
+  _ <- logItem "Incoming request: " ++ $ strictRequestBody req
+  case (requestMethod req, pathInfo req) of
   ("GET", ["player", pid]) -> do
     getPlayer (read (unpack pid))
   ("POST", "player":[]) -> do
@@ -52,6 +57,8 @@ handleRequest req = case (requestMethod req, pathInfo req) of
     getLeague (read (unpack lid))
   ("POST", "league":[]) -> do
     createLeague req
+  ("PUT", "league": [lid, pid]) -> do
+    addPlayerToLeague lid pid
   ("POST", "match":[]) -> do
     createMatch req
   _ -> return illegalMethodResponse
@@ -78,9 +85,9 @@ logItem s = do
 
 createPlayer :: Request -> DeezNuts Response
 createPlayer req = do
+  _ <- logItem ("Creating player...")
   conn <- ask
   rb <- liftIO $ strictRequestBody req
-  liftIO $ print rb
   let reBody = getRequestBody rb :: Maybe CreatePlayerRequest
   case reBody of
     Nothing -> return invalidRequestBodyResponse
@@ -131,6 +138,11 @@ createLeague req = do
 --       let r = singleResult p
 --       return $ res r
 
+addPlayerToLeague :: Int -> Int -> DeezNuts Response
+addPlayerToLeague lid pid = do
+  conn <- ask
+  league <- singleResult $ liftIO $ getLeagueById conn lid
+
 
 createMatch :: Request -> DeezNuts Response
 createMatch req = do
@@ -139,9 +151,14 @@ createMatch req = do
   liftIO $ print srb
   let reBody = getRequestBody srb :: Maybe CreateMatchRequest
   -- Check if players are in correct league
+  -- Update ratings
   case reBody of
-    Nothing -> return invalidRequestBodyResponse
+    Nothing -> invalidRequestBodyResponse
     Just body -> do
+      --seperate getPlayer so that 
+      p1 <- singleResult $ liftIO $ getPlayerById conn body.playerOne
+      p2 <- singleResult $ liftIO $ getPlayerById conn body.playerTwo
+
       p <- liftIO $ saveMatch conn (body.leagueId) (body.playerOne) (body.playerTwo) (body.scoreOne) (body.scoreTwo)
       let r = singleResult p
       return $ res r
@@ -165,13 +182,13 @@ res :: (ToJSON r) => Maybe r -> Response
 res Nothing = notFoundResponse
 res (Just row) = jsonResponse row
 
-notFoundResponse :: Response
+notFoundResponse :: DeezNuts Response
 notFoundResponse = responseLBS status404 [("Content-type", "application/json")] "Not found"
 
-invalidRequestBodyResponse :: Response
+invalidRequestBodyResponse :: DeezNuts Response
 invalidRequestBodyResponse = responseLBS status400 [("Content-type", "application/json")] "Invalid request body"
 
-illegalMethodResponse :: Response
+illegalMethodResponse :: DeezNuts Response
 illegalMethodResponse = responseLBS status405 [("Content-type", "application/json")] "Illegal method"
 
 jsonResponse :: ToJSON a => a -> Response
