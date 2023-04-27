@@ -2,6 +2,7 @@
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE OverloadedLabels #-}
 
 module Requests (CreatePlayerRequest(..), CreateMatchRequest(..), CreateLeagueRequest(..), UpdateLeagueRequest(..)) where
 
@@ -16,9 +17,9 @@ data CreatePlayerRequest = CreatePlayerRequest {
 data CreateMatchRequest = CreateMatchRequest {
     leagueId :: Int,
     playerOne :: Int,
-    playerTwo' :: Int,
-    scoreOne' :: Int,
-    scoreTwo' :: Int
+    playerTwo :: Int,
+    scoreOne :: Int,
+    scoreTwo :: Int
 } deriving (Generic, FromJSON)
 
 data CreateLeagueRequest = CreateLeagueRequest {

@@ -2,41 +2,26 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE OverloadedRecordDot #-}
+{-# LANGUAGE OverloadedLabels #-}
 
-module Controller3 where 
+module App (app) where 
 
-
-import Network.Wai( Application,
-                    Request(pathInfo, requestMethod),
-                    strictRequestBody,
-                    Response, responseLBS )
-import Network.Wai.Handler.Warp
-import Control.Monad.Reader
-import Control.Monad.Writer
 import Control.Monad.RWS
-
-import Database.PostgreSQL.Simple
-import qualified Data.ByteString.Lazy as LBS
-import Network.HTTP.Types
-    ( ResponseHeaders,
-    status400,
-    status404,
-    status405, 
-    status200 )
-import Data.Text as T ( Text, unpack)
-import Data.ByteString.Lazy (pack)
-import Data.Aeson ( decode,
-                    encode, ToJSON, FromJSON )
-import Models
-import Requests
-import Database
-import Data.UUID.V4 (nextRandom)
+import Data.Aeson (FromJSON, ToJSON, decode, encode)
+import Data.Text (unpack)
 import Data.UUID (UUID)
--- type ConnectionHolder = ReaderT Connection IO
+import Data.UUID.V4 (nextRandom)
+import Database
+import Database.PostgreSQL.Simple
+import Models
+import Network.HTTP.Types (status200, status400, status404, status405)
+import Network.Wai (Application, Request(pathInfo, requestMethod), Response, strictRequestBody, responseLBS)
+import Requests
+import qualified Data.ByteString.Lazy as LBS
 
 newtype RequestState = RequestState (UUID, String)
 instance Show RequestState where
-  show (RequestState (uuid, state)) = "[" ++ show uuid ++ "," ++ state ++ "]"
+  show (RequestState (uuid, s)) = "[" ++ show uuid ++ "," ++ s ++ "]"
 
 requestState :: String -> RequestState -> RequestState
 requestState s (RequestState (uuid, _)) = RequestState (uuid, s)
@@ -50,19 +35,21 @@ type DeezNuts = RWST Connection [String] RequestState IO
 app :: Connection -> Application
 app conn req respond = do
   uuid <- nextRandom
-  (result, conf, logs) <- runRWST (handleRequest req) conn (RequestState (uuid, "initial"))
-  -- result <- runReaderT (handleRequest req) conn
+  (result, _, logs) <- runRWST (handleRequest req) conn (RequestState (uuid, "initial"))
+  
   putStrLn $ "Logs: " ++ (show logs)
+  _ <- writeFile "logs/app.logs" (unlines logs)
+
   respond result
 
 handleRequest :: Request -> DeezNuts Response
 handleRequest req = case (requestMethod req, pathInfo req) of
-  ("GET", ["player", playerId]) -> do
-    getPlayer (read (unpack playerId))
+  ("GET", ["player", pid]) -> do
+    getPlayer (read (unpack pid))
   ("POST", "player":[]) -> do
     createPlayer req
-  ("GET", ["league", leagueId]) -> do
-    getLeague (read (unpack leagueId))
+  ("GET", ["league", lid]) -> do
+    getLeague (read (unpack lid))
   ("POST", "league":[]) -> do
     createLeague req
   ("POST", "match":[]) -> do
@@ -70,15 +57,18 @@ handleRequest req = case (requestMethod req, pathInfo req) of
   _ -> return illegalMethodResponse
 
 getPlayer :: Int -> DeezNuts Response
-getPlayer playerId = do
+getPlayer pid = do
   conn <- ask
-  p <- liftIO $ getPlayerById conn playerId
-  let r = res $ re p
+  p <- liftIO $ getPlayerById conn pid
+  let r = singleResult p
 
-  modify (requestState "getPlayer")
-  _ <- logItem ("Retrieved player with id: " ++ (show playerId))
-  
-  return r
+  case r of
+    Nothing -> return notFoundResponse
+    Just player -> do
+      modify (requestState "getPlayer")
+      _ <- logItem ("Retrieved player with id: " ++ (show player.playerId))
+      return $ jsonResponse player
+
 
 logItem :: String -> DeezNuts ()
 logItem s = do
@@ -91,55 +81,70 @@ createPlayer req = do
   conn <- ask
   rb <- liftIO $ strictRequestBody req
   liftIO $ print rb
-  let reBody = getRequestBody rb
+  let reBody = getRequestBody rb :: Maybe CreatePlayerRequest
   case reBody of
     Nothing -> return invalidRequestBodyResponse
     Just body -> do
       p <- liftIO $ savePlayer conn (body.name) (body.email)
-      let r = res $ re p
+      let r = singleResult p
 
       modify (\(RequestState (uuid, _)) -> RequestState (uuid, "createPlayer"))
       _ <- logItem ("Created player with id: " ++ (show $ (head p).playerId))
 
-      return r
+      return $ res r
 
 getLeague :: Int -> DeezNuts Response
-getLeague leagueId = do
+getLeague lid = do
   conn <- ask
-  p <- liftIO $ getLeagueById conn leagueId
-  let r = res $ re p
-  return r  
+  p <- liftIO $ getLeagueById conn lid
+  let r = singleResult p
+  return $ res r  
 
 createLeague :: Request -> DeezNuts Response
 createLeague req = do
   conn <- ask
   srb <- liftIO $ strictRequestBody req
   liftIO $ print srb
-  let reBody = getRequestBody srb
+  let reBody = getRequestBody srb :: Maybe CreateLeagueRequest
   case reBody of
     Nothing -> return invalidRequestBodyResponse
-    Just body -> do
-      p <- liftIO $ saveLeague conn (body.leagueName) (body.ownerId)
-      let r = res $ re p
+    Just b -> do
+      p <- liftIO $ saveLeague conn (b.leagueName) (b.ownerId)
+      let r = singleResult p
+      case r of
+        Nothing -> return notFoundResponse
+        Just l -> do
+          modify (\(RequestState (uuid, _)) -> RequestState (uuid, "createLeague"))
+          _ <- logItem ("Created league with id: " ++ (show l.leagueId))
+          return $ jsonResponse l
+-- --generic version of create 
+-- create :: (ToJSON r, FromJSON r) => Request -> (Connection -> r -> IO [r]) -> DeezNuts Response
+-- create req save = do
+--   conn <- ask
+--   srb <- liftIO $ strictRequestBody req
+--   liftIO $ print srb
+--   let reBody = getRequestBody srb :: Maybe r
+--   case reBody of
+--     Nothing -> return invalidRequestBodyResponse
+--     Just b -> do
+--       p <- liftIO $ save conn b
+--       let r = singleResult p
+--       return $ res r
 
-      modify (\(RequestState (uuid, _)) -> RequestState (uuid, "createLeague"))
-      _ <- logItem ("Created league with id: " ++ (show $ (head p).leagueId))
-
-      return r
 
 createMatch :: Request -> DeezNuts Response
 createMatch req = do
   conn <- ask
   srb <- liftIO $ strictRequestBody req
   liftIO $ print srb
-  let reBody = getRequestBody srb
+  let reBody = getRequestBody srb :: Maybe CreateMatchRequest
   -- Check if players are in correct league
   case reBody of
     Nothing -> return invalidRequestBodyResponse
     Just body -> do
       p <- liftIO $ saveMatch conn (body.leagueId) (body.playerOne) (body.playerTwo) (body.scoreOne) (body.scoreTwo)
-      let r = res $ re p
-      return r
+      let r = singleResult p
+      return $ res r
   -- case res of
   --   [p] -> return (Just p)
   --   _ -> return Nothing
@@ -151,10 +156,10 @@ createMatch req = do
 getRequestBody :: (FromJSON j) => LBS.ByteString -> Maybe j
 getRequestBody = decode
   
-re :: [r] -> Maybe r
-re [x] = Just x
-re [] = Nothing
-re _ = error "More than one row returned"
+singleResult :: [r] -> Maybe r
+singleResult [x] = Just x
+singleResult [] = Nothing
+singleResult _ = error "More than one row returned"
 
 res :: (ToJSON r) => Maybe r -> Response
 res Nothing = notFoundResponse

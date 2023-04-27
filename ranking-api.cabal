@@ -49,9 +49,7 @@ library
 executable ranking-api-exe
   main-is: Main.hs
   other-modules:
-      Controller
-      Controller2
-      Controller3
+      App
       Database
       Engine
       T

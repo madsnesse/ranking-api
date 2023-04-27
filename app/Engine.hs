@@ -1,3 +1,7 @@
+{-# LANGUAGE OverloadedRecordDot #-}
+{-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE OverloadedLabels #-}
+
 module Engine where
 import Models
 import Database
@@ -58,8 +62,8 @@ updateRankings conn m = do
     let probability2 = calculateProbability r1 r2
     putStrLn ("The probability that p2 wins is: " ++ (show probability2))
     
-    let s1 = score_one m
-    let s2 = score_two m
+    let s1 = m.scoreOne
+    let s2 = m.scoreTwo
     if s1 > s2 then do
         let newRating1 = calculateEloRating r1 (s1,s2) (1 - probability1)
         let newRating2 = calculateEloRating r2 (s2,s1) (- probability2) 
@@ -116,10 +120,10 @@ getLeague conn lid = do
 
 getPlayers :: Connection -> Int -> IO [(Int,Int)]
 getPlayers conn lid = do
-    playersInLeague <- getPlayersInLeague conn lid
+    playersInLeague <- getPlayersInLeague conn lid ::IO [PlayerLeague]
     -- playersInLeague :: [PlayerLeague]
-    let playerIds = map player_id playersInLeague
-    let ratings = map rating playersInLeague
+    let playerIds = map (\pl -> pl.playerId) playersInLeague
+    let ratings = map  (\pl -> pl.rating) playersInLeague
     return (zip playerIds ratings) 
 
 getMatches :: Connection -> Int -> IO [Match]
