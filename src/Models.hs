@@ -9,8 +9,9 @@ import GHC.Generics (Generic)
 import Data.Aeson (ToJSON, FromJSON)
 
 import Database.PostgreSQL.Simple.ToRow ( ToRow(..) )
-import Database.PostgreSQL.Simple.ToField ( ToField(toField) )
+import Database.PostgreSQL.Simple.ToField ( ToField(toField), Action )
 import Database.PostgreSQL.Simple.FromRow ( field, FromRow(..) )
+import qualified Database.PostgreSQL.Simple.FromRow as Database.PostgreSQL.Simple.Internal
 
 
 data Player = Player { playerId:: Int, name :: String, email :: String}
@@ -30,9 +31,7 @@ instance ToRow League where
 
 instance FromRow Player where
   fromRow = do
-    playerId <- field
-    name <- field
-    Player playerId name <$> field
+    Player <$> field <*> field <*> field
 
 instance ToRow Player where
   toRow p = [toField (p.playerId), toField (p.name)]
