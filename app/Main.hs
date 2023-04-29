@@ -9,3 +9,4 @@ main = do
     _ <- createDb
     con <- connectDb
     run 8080 $ app con
+    

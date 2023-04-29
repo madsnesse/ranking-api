@@ -1,107 +1,52 @@
-Creating player...Incoming request: "{\n    \"name'\":\"Fredy\",\n    \"e_mail\":\"Jeffry_Legros91@gmail.com\"\n}"Creating player...Incoming request: "{\n    \"name'\":\"Colten\",\n    \"e_mail\":\"Emery84@hotmail.com\"\n}"
-Creating player...
-Incoming request: "{\n    \"name'\":\"Wilton\",\n    \"e_mail\":\"Jeremy_Borer66@yahoo.com\"\n}"
-Creating player...
-Incoming request: "{\n    \"name'\":\"Raymundo\",\n    \"e_mail\":\"Robb.Simonis62@hotmail.com\"\n}"
-Creating player...
-Incoming request: "{\n    \"name'\":\"Sanford\",\n    \"e_mail\":\"Dudley_Labadie@yahoo.com\"\n}"
-Creating player...
-Incoming request: "{\n    \"name'\":\"Alena\",\n    \"e_mail\":\"Graham_Hegmann94@hotmail.com\"\n}"
-Creating player...
-Invalid request bodyRequest {requestMethod = "POST", httpVersion = HTTP/1.1, rawPathInfo = "/player", rawQueryString = "", requestHeaders = [("Content-Type","application/json"),("User-Agent","PostmanRuntime/7.31.3"),("Accept","*/*"),("Postman-Token","e637c50e-cf0a-4226-9c0c-ca118d3ca446"),("Host","localhost:8080"),("Accept-Encoding","gzip, deflate, br"),("Connection","keep-alive"),("Content-Length","68")], isSecure = False, remoteHost = 127.0.0.1:50187, pathInfo = ["player"], queryString = [], requestBody = <IO ByteString>, vault = <Vault>, requestBodyLength = KnownLength 68, requestHeaderHost = Just "localhost:8080", requestHeaderRange = Nothing}
-Incoming request: "{\n    \"name'\":\"Fay\",\n    \"e_mail\":\"Destany.Pouros92@yahoo.com\"\n}"
-Creating player...
-Invalid request body""
-Incoming request: "{\n    \"name\":\"Mariano\",\n    \"email\":\"Ethyl.Hegmann79@hotmail.com\"\n}"
-Creating player...
-Invalid request body""
-Incoming request: "{\n    \"name\":\"Kayden\",\n    \"email\":\"Stephania.Howe89@hotmail.com\"\n}"
-Creating player...
-Invalid request body""
-Incoming request: "{\n    \"name\": \"Beaulah\",\n    \"email\": \"Tia.Doyle@hotmail.com\"\n}"
-Creating player...
-Invalid request body""
-Incoming request: "{\n    \"name\": \"Betty\",\n    \"email\": \"Cyrus.Collins@yahoo.com\"\n}"
-Creating player...
-Invalid request body""
-Incoming request: "{\n    \"name\": \"Jany\",\n    \"email\": \"Eliza_Lowe@yahoo.com\"\n}"
-Creating player...
-Invalid request body""
-Incoming request: "{\n    \"name\": \"Ward\",\n    \"email\": \"Hallie_Crona@gmail.com\"\n}"
-Creating player...
-Created player with id: 3
-Incoming request: "{\n    \"nasme\": \"Trey\",\n    \"email\": \"Chandler8@yahoo.com\"\n}"
-Creating player...
-Invalid request body"{\n    \"nasme\": \"Trey\",\n    \"email\": \"Chandler8@yahoo.com\"\n}"
-Incoming request: "{\n    \"name\": \"Norris\",\n    \"email\": \"Trent.Crona70@hotmail.com\"\n}"
-Creating player...
-Created player with id: 4
-Incoming request: "{\n    \"namse\": \"Georgiana\",\n    \"email\": \"Ines6@yahoo.com\"\n}"
-Creating player...
-Invalid request body"{\n    \"namse\": \"Georgiana\",\n    \"email\": \"Ines6@yahoo.com\"\n}"
-Incoming request: "{\n    \"name\": \"Don\",\n    \"email\": \"Demario.Hintz@gmail.com\"\n}"
-Illegal method "DELETE" for path ["player"]
-Incoming request: "{\n    \"name\": \"Kathryn\",\n    \"email\": \"Elinore.Beahan@hotmail.com\"\n}"
-Illegal method "DELETE" for path ["player"]
-Incoming request: "{\n    \"name1\": \"Rosamond\",\n    \"email\": \"Erich_Little92@yahoo.com\"\n}"
-Creating player...
-Invalid request body"{\n    \"name1\": \"Rosamond\",\n    \"email\": \"Erich_Little92@yahoo.com\"\n}"
-Incoming request: "{\n    \"name\": \"Michel\",\n    \"email\": \"Esteban_Boehm58@gmail.com\"\n}"
-Creating player...
-Created player with id: 5
-Incoming request: "{\n    \"name\": \"Katrina\",\n    \"email\": \"Marshall62@gmail.com\"\n}"
-Illegal method "POST" for path ["players"]
-Incoming request: "{\n    \"name\": \"Shane\",\n    \"email\": \"Holden92@hotmail.com\"\n}"
-Creating player...
-Created player with id: 6
-Incoming request: "{\n    \"namse\": \"Riley\",\n    \"email\": \"Glennie.Cormier72@hotmail.com\"\n}"
-Creating player...
-Invalid request "{\n    \"namse\": \"Riley\",\n    \"email\": \"Glennie.Cormier72@hotmail.com\"\n}"
-Incoming request: "{\n    \"name\": \"Wilfred\",\n    \"email\": \"Geovanni_Nienow@gmail.com\"\n}"
-Creating player...
-Created player with id: 7
-Incoming request: "{\n    \"league_id'\" : 1,\n    \"player_one'\" : 1,\n    \"player_two'\" : 2,\n    \"score_one'\" : 352,\n    \"score_two'\" : 0\n}"
-Invalid request "{\n    \"league_id'\" : 1,\n    \"player_one'\" : 1,\n    \"player_two'\" : 2,\n    \"score_one'\" : 352,\n    \"score_two'\" : 0\n}"
-Incoming request: "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 189,\n    \"scoreTwo\" : 0\n}"
-Incoming request: ""
-Incoming request: %s %s %s"GET" ["player","1"] ""
-Incoming request: "GET" ["player","1"] ""
-Incoming request: "POST" ["player"] "{\r\n    \"name'\": \"Edna Hackett\",\r\n    \"e_mail\": \"Ferne.Hilll@hotmail.com\"\r\n}"
-Creating player...
-Invalid request "{\r\n    \"name'\": \"Edna Hackett\",\r\n    \"e_mail\": \"Ferne.Hilll@hotmail.com\"\r\n}"
-Incoming request: "POST" ["player"] "{\r\n    \"name\": \"Roman Kunze\",\r\n    \"email\": \"Else.Volkman@yahoo.com\"\r\n}"
-Creating player...
-Created player with id: 5
-Got unambigous result from adtabase returnning...
-Incoming request: "GET" ["player","1"] ""
-Retrieving player with id: "1"
-Retrieved from database: Just (Player {playerId = 1, name = "Beulah Rath", email = "Cayla.Hilpert@gmail.com"})
-Got unambigous result from database returnning...
-Incoming request: "GET" ["player","1"] ""
-Retrieving player with id: "1"
-Retrieved from database: Just (Player {playerId = 1, name = "Beulah Rath", email = "Cayla.Hilpert@gmail.com"})
-Returning json response: Player {playerId = 1, name = "Beulah Rath", email = "Cayla.Hilpert@gmail.com"}
-Incoming request: "GET" ["player","69"] ""
-Retrieving player with id: "69"
-Retrieved from database: Nothing
-Returning error response: ErrorResponse {id = "10be73c6-9520-4d33-94cf-7c6ee34b59b3", step = "initial", message = "Not found \"\""}
-Incoming request: "GET" ["player","69"] ""
-Retrieving player with id: "69"
-Retrieved from database: Nothing
-Returning error response: ErrorResponse {id = "f901bec0-e30d-4ee3-be9e-7ff43762ec59", step = "initial", message = "Not found \"GET\" [\"player\",\"69\"] \"\""}
-Incoming request: "GET" ["player","69"] ""
-Retrieving player with id: "69"
-Retrieved from database: Nothing
-Returning error response: ErrorResponse {id = "b6f627fa-2d10-49a3-a492-eabd92f0a1a2", step = "initial", message = "Not found [\"player\",\"69\"]"}
-Incoming request: "DELETE" ["player","69"] ""
-Returning error response: ErrorResponse {id = "fc906a7e-6b2a-488b-966a-4511a2a768e7", step = "initial", message = "Illegal method \"DELETE\" [\"player\",\"69\"] \"\""}
-Incoming request: "GET" ["player","69"] ""
-Retrieving player with id: "69"
-Retrieved from database: Nothing
-Returning error response: ErrorResponse {id = "8ef90704-1977-40d2-a033-b2295b0cef95", step = "initial", message = "Not found [\"player\",\"69\"]"}
-Incoming request: "GET" ["player","69"] ""
-Retrieving player with id: "69"
-Retrieved from database: Nothing
-Returning error response: ErrorResponse {id = "788a30ff-f658-48e1-9581-d7e63d6b8323", step = "initial", message = "Not found [\"player\",\"69\"]"}
-Incoming request: "GET" ["player","69"] ""
-Retrieving player with id: "69"
+[8449a6f0-dd44-43c4-8429-87c3ab2f6469, initial]: "GET" ["player","1"] ""Incoming request: "GET" ["player","1"] ""
+[8449a6f0-dd44-43c4-8429-87c3ab2f6469, initial]: "GET" ["player","1"] ""Retrieving player with id: "1"
+[8449a6f0-dd44-43c4-8429-87c3ab2f6469, initial]: "GET" ["player","1"] ""Returning json response: Player {playerId = 1, name = "Pearline", email = "Johnny.Brakus0@hotmail.com"}
+[856d2b14-b2d0-405e-948b-d02437c57b01, initial]: "GET" ["player","69"] ""Incoming request: "GET" ["player","69"] ""
+[856d2b14-b2d0-405e-948b-d02437c57b01, initial]: "GET" ["player","69"] ""Retrieving player with id: "69"
+[9ac19021-f365-4c18-be47-aabc45c5f733, initial]: "GET" ["player","69"] ""Incoming request: "GET" ["player","69"] ""
+[9ac19021-f365-4c18-be47-aabc45c5f733, initial]: "GET" ["player","69"] ""Retrieving player with id: "69"
+[4e2d80b6-ac47-4c0d-beab-67fdb0b113bc, initial]: "GET" ["player","69"] ""Incoming request: "GET" ["player","69"] ""
+[4e2d80b6-ac47-4c0d-beab-67fdb0b113bc, initial]: "GET" ["player","69"] ""Retrieving player with id: "69"
+[fb06ca23-2928-44d7-8f5d-781d8d5b754e, initial]: "GET" ["player","69"] ""Incoming request: "GET" ["player","69"] ""
+[fb06ca23-2928-44d7-8f5d-781d8d5b754e, initial]: "GET" ["player","69"] ""Retrieving player with id: "69"
+[0ed90c33-af48-4b31-b1c3-1b80e31347c5, initial]: "GET" ["player","69"] ""Incoming request: "GET" ["player","69"] ""
+[0ed90c33-af48-4b31-b1c3-1b80e31347c5, initial]: "GET" ["player","69"] ""Retrieving player with id: "69"
+[d1961e84-72bf-4c66-bc01-82c45a491cb6, initial]: "GET" ["player","69"] ""Incoming request: "GET" ["player","69"] ""
+[d1961e84-72bf-4c66-bc01-82c45a491cb6, initial]: "GET" ["player","69"] ""Retrieving player with id: "69"
+[ee7e1951-8dff-412a-9367-6f60c85e878f, initial]: "GET" ["player","69"] ""Incoming request: "GET" ["player","69"] ""
+[ee7e1951-8dff-412a-9367-6f60c85e878f, initial]: "GET" ["player","69"] ""Retrieving player with id: "69"
+[667d0c92-6fd6-41ef-a5ad-0f32e6d90042, initial]: "GET" ["player","69"] ""Incoming request: "GET" ["player","69"] ""
+[667d0c92-6fd6-41ef-a5ad-0f32e6d90042, initial]: "GET" ["player","69"] ""Retrieving player with id: "69"
+[97329b29-30b4-47ea-8c8c-066f3dcec104, initial]: "GET" ["player","69"] ""Incoming request
+[97329b29-30b4-47ea-8c8c-066f3dcec104, initial]: "GET" ["player","69"] ""Retrieving player with email: "69"
+[01f2ca7c-b3b2-4d76-b097-ecb3289a8d8e, initial]: "GET" ["player","test@test.com"] ""Incoming request
+[01f2ca7c-b3b2-4d76-b097-ecb3289a8d8e, initial]: "GET" ["player","test@test.com"] ""Retrieving player with email: "test@test.com"
+[782bcefd-51de-44cb-b5fc-03ef0ad3c8c4, initial]: "POST" ["player"] "{\n    \"name\": \"Xzavier\",\n    \"email\": \"Lucile95@gmail.com\"\n}"Incoming request
+[782bcefd-51de-44cb-b5fc-03ef0ad3c8c4, initial]: "POST" ["player"] "{\n    \"name\": \"Xzavier\",\n    \"email\": \"Lucile95@gmail.com\"\n}"Creating player...
+[782bcefd-51de-44cb-b5fc-03ef0ad3c8c4, createPlayer]: "POST" ["player"] "{\n    \"name\": \"Xzavier\",\n    \"email\": \"Lucile95@gmail.com\"\n}"Created player with id: 8
+[782bcefd-51de-44cb-b5fc-03ef0ad3c8c4, createPlayer]: "POST" ["player"] "{\n    \"name\": \"Xzavier\",\n    \"email\": \"Lucile95@gmail.com\"\n}"Returning json response: Player {playerId = 8, name = "Xzavier", email = "Lucile95@gmail.com"}
+[6bae668c-aaff-4c03-bad0-406e9477b24a, initial]: "GET" ["player","\"Lucile95@gmail.com\""] ""Incoming request
+[6bae668c-aaff-4c03-bad0-406e9477b24a, initial]: "GET" ["player","\"Lucile95@gmail.com\""] ""Retrieving player with email: "\"Lucile95@gmail.com\""
+[bd9c9f51-8df2-4b7e-a013-3a4d24256ba0, initial]: "GET" ["player","Lucile95@gmail.com"] ""Incoming request
+[bd9c9f51-8df2-4b7e-a013-3a4d24256ba0, initial]: "GET" ["player","Lucile95@gmail.com"] ""Retrieving player with email: "Lucile95@gmail.com"
+[9cfce07f-07f8-4d58-a8ca-350ca9499b05, initial]: "GET" ["player","Lucile95@gmail.com"] ""Incoming request
+[9cfce07f-07f8-4d58-a8ca-350ca9499b05, initial]: "GET" ["player","Lucile95@gmail.com"] ""Retrieving player with email: "Lucile95@gmail.com"
+[9cfce07f-07f8-4d58-a8ca-350ca9499b05, getPlayer]: "GET" ["player","Lucile95@gmail.com"] ""Returning json response: Player {playerId = 8, name = "Xzavier", email = "Lucile95@gmail.com"}
+[ca896a4e-60a4-4544-8ae4-19fdcb78c64d, initial]: "POST" ["player"] "{\n    \"name\": \"Lukas\",\n    \"email\": \"Ali12@hotmail.com\"\n}"Incoming request
+[ca896a4e-60a4-4544-8ae4-19fdcb78c64d, initial]: "POST" ["player"] "{\n    \"name\": \"Lukas\",\n    \"email\": \"Ali12@hotmail.com\"\n}"Creating player...
+[ca896a4e-60a4-4544-8ae4-19fdcb78c64d, createPlayer]: "POST" ["player"] "{\n    \"name\": \"Lukas\",\n    \"email\": \"Ali12@hotmail.com\"\n}"Created player with id: 9
+[ca896a4e-60a4-4544-8ae4-19fdcb78c64d, createPlayer]: "POST" ["player"] "{\n    \"name\": \"Lukas\",\n    \"email\": \"Ali12@hotmail.com\"\n}"Returning json response: Player {playerId = 9, name = "Lukas", email = "Ali12@hotmail.com"}
+[be66d70a-cc9b-4352-84a8-ae0288db9c7c, initial]: "GET" ["player","Ali12@hotmail.com"] ""Incoming request
+[be66d70a-cc9b-4352-84a8-ae0288db9c7c, initial]: "GET" ["player","Ali12@hotmail.com"] ""Retrieving player with email: "Ali12@hotmail.com"
+[be66d70a-cc9b-4352-84a8-ae0288db9c7c, getPlayer]: "GET" ["player","Ali12@hotmail.com"] ""Returning json response: Player {playerId = 9, name = "Lukas", email = "Ali12@hotmail.com"}
+[523cd5fd-72ba-420a-86c3-7fbfb8397841, initial]: "GET" ["player","Ali12@hotmail.com"] ""Incoming request
+[523cd5fd-72ba-420a-86c3-7fbfb8397841, initial]: "GET" ["player","Ali12@hotmail.com"] ""Retrieving player with email: "Ali12@hotmail.com"
+[523cd5fd-72ba-420a-86c3-7fbfb8397841, getPlayer]: "GET" ["player","Ali12@hotmail.com"] ""Returning json response: Player {playerId = 9, name = "Lukas", email = "Ali12@hotmail.com"}
+[eefea220-a40b-4229-9d0b-41db88cd6a10, initial]: "GET" ["player","Ali12@hotmail.comasd"] ""Incoming request
+[eefea220-a40b-4229-9d0b-41db88cd6a10, initial]: "GET" ["player","Ali12@hotmail.comasd"] ""Retrieving player with email: "Ali12@hotmail.comasd"
+[42af57d2-2339-43d7-aeeb-908980522a1f, initial]: "GET" ["player","Ali12@hotmail.com"] ""Incoming request
+[42af57d2-2339-43d7-aeeb-908980522a1f, initial]: "GET" ["player","Ali12@hotmail.com"] ""Retrieving player with email: "Ali12@hotmail.com"
+[42af57d2-2339-43d7-aeeb-908980522a1f, getPlayer]: "GET" ["player","Ali12@hotmail.com"] ""Returning json response: Player {playerId = 9, name = "Lukas", email = "Ali12@hotmail.com"}
+[4c20c0ae-e0ee-46b0-9fcc-ea6f20a0efa2, initial]: "GET" ["player","Ali12@hotmail.comasd"] ""Incoming request
+[4c20c0ae-e0ee-46b0-9fcc-ea6f20a0efa2, initial]: "GET" ["player","Ali12@hotmail.comasd"] ""Retrieving player with email: "Ali12@hotmail.comasd"
+[4c20c0ae-e0ee-46b0-9fcc-ea6f20a0efa2, getPlayer]: "GET" ["player","Ali12@hotmail.comasd"] ""Returning error response: 

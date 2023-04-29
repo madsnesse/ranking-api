@@ -4,7 +4,7 @@
 {-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE OverloadedLabels #-}
 
-module App (app) where 
+module App (app) where
 
 import Control.Monad.RWS
 import Data.Aeson (FromJSON, ToJSON, decode, encode)
@@ -34,7 +34,7 @@ app conn req respond = do
   let path = pathInfo req
   rb <- strictRequestBody req
   (result, _, logs) <- runRWST handleRequest conn (RequestState (uuid, "initial", rb, method, path))
-  
+
   putStrLn $ "Logs: " ++ (show logs)
 
   respond result
@@ -45,25 +45,31 @@ handleRequest = do
   -- maybe have something like createPlayer validBody $ getRequestBody $ strictRequestBody req :: CreatePlayerRequest
   -- might have to fix log here
   RequestState (_,_,req, method, path) <- get
-  _ <- logItem ("Incoming request: " ++ (requestString req method path))
+  _ <- logItem "Incoming request"
   case (method, path) of
-    ("GET", ["player", pid]) -> do
-      _ <- logItem ("Retrieving player with id: " ++ (show pid))
-      d <- getFromDatabase $ getPlayerById' (read (unpack pid)) 
-      case d of 
-        Right r -> do
-          jsonResponse r
-        Left e -> do
-          errorResponse' e
-    ("POST", "player":[]) -> do
+    -- ("GET", ["player", pid]) -> do
+    --   _ <- logItem ("Retrieving player with id: " ++ show pid)
+    --   modify (setStep "getPlayer")
+    --   -- RequestState (requestId, param(s), body, method, path)
+    --   d <- getFromDatabase $ getPlayerById' (read (unpack pid))
+    --   case d of
+    --     Right r -> do
+    --       jsonResponse r
+    --     Left e -> do
+    --       errorResponse' e
+    ("GET", ["player", email]) -> do
+      _ <- logItem ("Retrieving player with email: " ++ show email)
+      modify (setStep "getPlayer")
+      getResponse $ getFromDatabase $ getPlayerByEmail' $ unpack email
+    ("POST", ["player"]) -> do
       createPlayer req
     ("GET", ["league", lid]) -> do
       getLeague (read (unpack lid))
-    ("POST", "league":[]) -> do
+    ("POST", ["league"]) -> do
       createLeague req
     ("PUT", "league": [lid, pid]) -> do
       illegalMethodResponse
-    ("POST", "match":[]) -> do
+    ("POST", ["match"]) -> do
       createMatch req
     _ -> illegalMethodResponse
 
@@ -76,13 +82,14 @@ getPlayer pid = do
   case r of
     Nothing -> notFoundResponse
     Just player -> do
-      modify (requestState "getPlayer")
+      modify (setStep "getPlayer")
       _ <- logItem ("Retrieved player with id: " ++ (show player.playerId))
       jsonResponse player
 
 getPlayer' :: Int -> DeezNuts (Maybe Player)
 getPlayer' pid = do
   conn <- ask
+  modify (setStep "getPlayer")
   p <- liftIO $ getPlayerById conn pid
   let r = singleResult p
   return r
@@ -93,7 +100,16 @@ getPlayer' pid = do
   --     _ <- logItem ("Retrieved player with id: " ++ (show player.playerId))
   --     return player
 
-getFromDatabase :: (Show a, FromJSON a, ToJSON a) => (DeezNuts [a]) -> DeezNuts (Either Error a)
+getResponse :: (Show a, ToJSON a) => DeezNuts (Either Error a) -> DeezNuts Response
+getResponse f = do
+  d <- f
+  case d of
+    Right r -> do
+      jsonResponse r
+    Left e -> do
+      errorResponse' e
+
+getFromDatabase :: (Show a, FromJSON a, ToJSON a) => DeezNuts [a] -> DeezNuts (Either Error a)
 getFromDatabase f = do
   p <- f
   (RequestState (i,step,_,_,_)) <- get
@@ -115,8 +131,9 @@ getFromDatabase f = do
 logItem :: String -> DeezNuts ()
 logItem s = do
   rs <- get
-  liftIO $ putStrLn $ (show rs) ++ s
-  liftIO $ appendFile "logs/app.log" $ s ++ "\n"
+  let str = show rs ++ s
+  liftIO $ putStrLn str
+  liftIO $ appendFile "logs/app.log" $ str ++ "\n"
   tell [s]
 
 createPlayer :: LBS.ByteString -> DeezNuts Response
@@ -140,7 +157,7 @@ getLeague lid = do
   conn <- ask
   p <- liftIO $ getLeagueById conn lid
   let r = singleResult p
-  res r  
+  res r
 
 createLeague :: LBS.ByteString -> DeezNuts Response
 createLeague req = do
@@ -191,7 +208,7 @@ createMatch req = do
       --seperate getPlayer so that 
       p1 <- liftIO $ getPlayerById conn body.playerOne
       p2 <- liftIO $ getPlayerById conn body.playerTwo
-      
+
       p <- liftIO $ saveMatch conn (body.leagueId) (body.playerOne) (body.playerTwo) (body.scoreOne) (body.scoreTwo)
       let r = singleResult p
       res r
@@ -205,7 +222,7 @@ createMatch req = do
 
 getRequestBody :: (FromJSON j) => LBS.ByteString -> Maybe j
 getRequestBody = decode
-  
+
 singleResult :: [r] -> Maybe r
 singleResult [x] = Just x
 singleResult [] = Nothing
@@ -214,7 +231,7 @@ singleResult _ = error "More than one row returned"
 res :: (Show r, ToJSON r) => Maybe r -> DeezNuts Response
 res Nothing = notFoundResponse
 res (Just row) = jsonResponse row
-  
+
 
 notFoundResponse :: DeezNuts Response
 notFoundResponse = do
@@ -238,7 +255,7 @@ illegalMethodResponse = do
   return (responseLBS status405 [("Content-type", "application/json")] $ encode er)
 
 jsonResponse :: (Show a, ToJSON a) => a -> DeezNuts Response
-jsonResponse x = do 
+jsonResponse x = do
   RequestState (i,step,req, m, p) <- get
   _ <- logItem ("Returning json response: " ++ (show x))
   return (responseLBS status200 [("Content-type", "application/json")] (encode x))
@@ -249,7 +266,9 @@ errorResponse message =  do
   return $ ErrorResponse (show i) step message
 
 errorResponse' :: Error -> DeezNuts Response
-errorResponse' e = return $ responseLBS (e.status) [("Content-type", "application/json")] (encode e.body)
+errorResponse' e = do
+  _ <- logItem "Returning error response: "
+  return $ responseLBS (e.status) [("Content-type", "application/json")] (encode e.body)
 
 data Error = Error {
     status :: Status,

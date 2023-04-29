@@ -9,9 +9,8 @@ import GHC.Generics (Generic)
 import Data.Aeson (ToJSON, FromJSON)
 
 import Database.PostgreSQL.Simple.ToRow ( ToRow(..) )
-import Database.PostgreSQL.Simple.ToField ( ToField(toField), Action )
+import Database.PostgreSQL.Simple.ToField ( ToField(toField) )
 import Database.PostgreSQL.Simple.FromRow ( field, FromRow(..) )
-import qualified Database.PostgreSQL.Simple.FromRow as Database.PostgreSQL.Simple.Internal
 import Control.Monad.RWS
 import Network.HTTP.Types.Method (Method)
 import Data.Text (Text, unpack)
@@ -46,12 +45,12 @@ instance ToRow Match where
   toRow m = [toField (m.matchId), toField (m.leagueId), toField (m.playerOne), toField (m.playerTwo), toField (m.scoreOne), toField (m.scoreTwo)]
 
 
-newtype RequestState = RequestState (UUID, String, LBS.ByteString, Method, [Text]) deriving (Show)
--- instance Show RequestState where
---   show (RequestState (uuid, s)) = "[" ++ show uuid ++ "," ++ s ++ "]"
+newtype RequestState = RequestState (UUID, String, LBS.ByteString, Method, [Text])
+instance Show RequestState where
+  show (RequestState (uuid, s, body, m, p)) = "[" ++ show uuid ++ ", "++ s ++ "]: " ++ show m ++ " " ++ show p ++ " " ++ show (LBS.toStrict body)
 
-requestState :: String -> RequestState -> RequestState
-requestState s (RequestState (uuid, _, r, m, p)) = RequestState (uuid, s, r, m, p)
+setStep :: String -> RequestState -> RequestState
+setStep s (RequestState (uuid, _, r, m, p)) = RequestState (uuid, s, r, m, p)
 
 
 type DeezNuts = RWST Connection [String] RequestState IO

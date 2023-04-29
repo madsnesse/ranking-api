@@ -58,6 +58,11 @@ getPlayerById' i = do
         conn <- ask
         liftIO $ query conn "SELECT * FROM player WHERE id = ?"
                 (Only i)
+getPlayerByEmail' :: String -> DeezNuts [Player]
+getPlayerByEmail' email = do
+        conn <- ask
+        liftIO $ query conn "SELECT * FROM player WHERE email = ?"
+                (Only email)
 
 getPlayerById :: Connection -> Int -> IO [Player]
 getPlayerById conn i = do
