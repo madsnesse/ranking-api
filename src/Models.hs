@@ -3,7 +3,7 @@
 {-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 
-module Models (Player(..), Match(..), League(..), PlayerLeague(..)) where
+module Models where
 
 import GHC.Generics (Generic)
 import Data.Aeson (ToJSON, FromJSON)
@@ -12,6 +12,12 @@ import Database.PostgreSQL.Simple.ToRow ( ToRow(..) )
 import Database.PostgreSQL.Simple.ToField ( ToField(toField), Action )
 import Database.PostgreSQL.Simple.FromRow ( field, FromRow(..) )
 import qualified Database.PostgreSQL.Simple.FromRow as Database.PostgreSQL.Simple.Internal
+import Control.Monad.RWS
+import Network.HTTP.Types.Method (Method)
+import Data.Text (Text, unpack)
+import qualified Data.ByteString.Lazy as LBS
+import Data.UUID (UUID)
+import Database.PostgreSQL.Simple (Connection)
 
 
 data Player = Player { playerId:: Int, name :: String, email :: String}
@@ -38,3 +44,14 @@ instance ToRow Player where
 
 instance ToRow Match where
   toRow m = [toField (m.matchId), toField (m.leagueId), toField (m.playerOne), toField (m.playerTwo), toField (m.scoreOne), toField (m.scoreTwo)]
+
+
+newtype RequestState = RequestState (UUID, String, LBS.ByteString, Method, [Text]) deriving (Show)
+-- instance Show RequestState where
+--   show (RequestState (uuid, s)) = "[" ++ show uuid ++ "," ++ s ++ "]"
+
+requestState :: String -> RequestState -> RequestState
+requestState s (RequestState (uuid, _, r, m, p)) = RequestState (uuid, s, r, m, p)
+
+
+type DeezNuts = RWST Connection [String] RequestState IO

@@ -14,6 +14,11 @@ import Data.String (IsString(fromString))
 import Models
 import Prelude hiding (id)
 import Control.Monad.Reader (MonadReader (ask), ReaderT, MonadIO)
+import Control.Monad.RWS
+
+
+
+-- newtype RequestState = RequestState (UUID, String, LBS.ByteString, Method, [Text]) deriving (Show)
 
 
 -- getConnection :: ReaderT (IO Connection)
@@ -48,11 +53,17 @@ getPlayerByEmail conn email = do
         query conn "SELECT * FROM player WHERE email = ?" 
                 (Only email)
 
+getPlayerById' :: Int -> DeezNuts [Player]
+getPlayerById' i = do
+        conn <- ask
+        liftIO $ query conn "SELECT * FROM player WHERE id = ?"
+                (Only i)
 
 getPlayerById :: Connection -> Int -> IO [Player]
 getPlayerById conn i = do
         query conn "SELECT * FROM player WHERE id = ?"
                 (Only i)
+
 getLeagueById :: Connection -> Int -> IO [League]
 getLeagueById conn lid = do
         query conn "SELECT * FROM league WHERE id = ?" (Only lid)

@@ -63,3 +63,45 @@ Created player with id: 7
 Incoming request: "{\n    \"league_id'\" : 1,\n    \"player_one'\" : 1,\n    \"player_two'\" : 2,\n    \"score_one'\" : 352,\n    \"score_two'\" : 0\n}"
 Invalid request "{\n    \"league_id'\" : 1,\n    \"player_one'\" : 1,\n    \"player_two'\" : 2,\n    \"score_one'\" : 352,\n    \"score_two'\" : 0\n}"
 Incoming request: "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 189,\n    \"scoreTwo\" : 0\n}"
+Incoming request: ""
+Incoming request: %s %s %s"GET" ["player","1"] ""
+Incoming request: "GET" ["player","1"] ""
+Incoming request: "POST" ["player"] "{\r\n    \"name'\": \"Edna Hackett\",\r\n    \"e_mail\": \"Ferne.Hilll@hotmail.com\"\r\n}"
+Creating player...
+Invalid request "{\r\n    \"name'\": \"Edna Hackett\",\r\n    \"e_mail\": \"Ferne.Hilll@hotmail.com\"\r\n}"
+Incoming request: "POST" ["player"] "{\r\n    \"name\": \"Roman Kunze\",\r\n    \"email\": \"Else.Volkman@yahoo.com\"\r\n}"
+Creating player...
+Created player with id: 5
+Got unambigous result from adtabase returnning...
+Incoming request: "GET" ["player","1"] ""
+Retrieving player with id: "1"
+Retrieved from database: Just (Player {playerId = 1, name = "Beulah Rath", email = "Cayla.Hilpert@gmail.com"})
+Got unambigous result from database returnning...
+Incoming request: "GET" ["player","1"] ""
+Retrieving player with id: "1"
+Retrieved from database: Just (Player {playerId = 1, name = "Beulah Rath", email = "Cayla.Hilpert@gmail.com"})
+Returning json response: Player {playerId = 1, name = "Beulah Rath", email = "Cayla.Hilpert@gmail.com"}
+Incoming request: "GET" ["player","69"] ""
+Retrieving player with id: "69"
+Retrieved from database: Nothing
+Returning error response: ErrorResponse {id = "10be73c6-9520-4d33-94cf-7c6ee34b59b3", step = "initial", message = "Not found \"\""}
+Incoming request: "GET" ["player","69"] ""
+Retrieving player with id: "69"
+Retrieved from database: Nothing
+Returning error response: ErrorResponse {id = "f901bec0-e30d-4ee3-be9e-7ff43762ec59", step = "initial", message = "Not found \"GET\" [\"player\",\"69\"] \"\""}
+Incoming request: "GET" ["player","69"] ""
+Retrieving player with id: "69"
+Retrieved from database: Nothing
+Returning error response: ErrorResponse {id = "b6f627fa-2d10-49a3-a492-eabd92f0a1a2", step = "initial", message = "Not found [\"player\",\"69\"]"}
+Incoming request: "DELETE" ["player","69"] ""
+Returning error response: ErrorResponse {id = "fc906a7e-6b2a-488b-966a-4511a2a768e7", step = "initial", message = "Illegal method \"DELETE\" [\"player\",\"69\"] \"\""}
+Incoming request: "GET" ["player","69"] ""
+Retrieving player with id: "69"
+Retrieved from database: Nothing
+Returning error response: ErrorResponse {id = "8ef90704-1977-40d2-a033-b2295b0cef95", step = "initial", message = "Not found [\"player\",\"69\"]"}
+Incoming request: "GET" ["player","69"] ""
+Retrieving player with id: "69"
+Retrieved from database: Nothing
+Returning error response: ErrorResponse {id = "788a30ff-f658-48e1-9581-d7e63d6b8323", step = "initial", message = "Not found [\"player\",\"69\"]"}
+Incoming request: "GET" ["player","69"] ""
+Retrieving player with id: "69"

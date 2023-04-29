@@ -14,26 +14,19 @@ import Data.UUID.V4 (nextRandom)
 import Database
 import Database.PostgreSQL.Simple
 import Models
-import Network.HTTP.Types (status200, status400, status404, status405)
+import Network.HTTP.Types (Status, status200, status400, status404, status405)
 import Network.Wai (Application, Request(pathInfo, requestMethod), Response, strictRequestBody, responseLBS)
 import Network.HTTP.Types.Method (Method)
 import Requests
 import Responses
 import qualified Data.ByteString.Lazy as LBS
 
-newtype RequestState = RequestState (UUID, String, LBS.ByteString, Method, [Text]) deriving (Show)
--- instance Show RequestState where
---   show (RequestState (uuid, s)) = "[" ++ show uuid ++ "," ++ s ++ "]"
 
-requestState :: String -> RequestState -> RequestState
-requestState s (RequestState (uuid, _, r, m, p)) = RequestState (uuid, s, r, m, p)
-
-
-type DeezNuts = RWST Connection [String] RequestState IO
 -- Do keep track of request id in state and log it in the writer monad, yesh
+requestString :: LBS.ByteString -> Method -> [Text] -> String
+requestString req method path = show method ++ " " ++ show path ++ " " ++ (show $ LBS.toStrict req)
 
 -- type AppRWST = RWST ConnectionHolder Logger () IO
-
 app :: Connection -> Application
 app conn req respond = do
   uuid <- nextRandom
@@ -52,10 +45,16 @@ handleRequest = do
   -- maybe have something like createPlayer validBody $ getRequestBody $ strictRequestBody req :: CreatePlayerRequest
   -- might have to fix log here
   RequestState (_,_,req, method, path) <- get
-  _ <- logItem ("Incoming request: " ++ (show (LBS.toStrict req)) )
+  _ <- logItem ("Incoming request: " ++ (requestString req method path))
   case (method, path) of
     ("GET", ["player", pid]) -> do
-      getPlayer (read (unpack pid))
+      _ <- logItem ("Retrieving player with id: " ++ (show pid))
+      d <- getFromDatabase $ getPlayerById' (read (unpack pid)) 
+      case d of 
+        Right r -> do
+          jsonResponse r
+        Left e -> do
+          errorResponse' e
     ("POST", "player":[]) -> do
       createPlayer req
     ("GET", ["league", lid]) -> do
@@ -80,6 +79,37 @@ getPlayer pid = do
       modify (requestState "getPlayer")
       _ <- logItem ("Retrieved player with id: " ++ (show player.playerId))
       jsonResponse player
+
+getPlayer' :: Int -> DeezNuts (Maybe Player)
+getPlayer' pid = do
+  conn <- ask
+  p <- liftIO $ getPlayerById conn pid
+  let r = singleResult p
+  return r
+  -- case r of
+  --   Nothing -> notFoundResponse
+  --   Just player -> do
+  --     modify (requestState "getPlayer")
+  --     _ <- logItem ("Retrieved player with id: " ++ (show player.playerId))
+  --     return player
+
+getFromDatabase :: (Show a, FromJSON a, ToJSON a) => (DeezNuts [a]) -> DeezNuts (Either Error a)
+getFromDatabase f = do
+  p <- f
+  (RequestState (i,step,_,_,_)) <- get
+  case p of
+    [x] -> return (Right x)
+    _ -> return (Left (Error status404 (ErrorResponse (show i) step "Not found")))
+  -- let r = singleResult p
+  -- _ <- logItem ("Retrieved from database: " ++ (show r))
+  -- return Right r
+  -- case r of
+  --   Nothing -> notFoundResponse
+  --   Just player -> do
+  --     modify (requestState "getPlayer")
+  --     _ <- logItem ("Retrieved player with id: " ++ (show player.playerId))
+  --     return player
+
 
 
 logItem :: String -> DeezNuts ()
@@ -181,32 +211,47 @@ singleResult [x] = Just x
 singleResult [] = Nothing
 singleResult _ = error "More than one row returned"
 
-res :: (ToJSON r) => Maybe r -> DeezNuts Response
+res :: (Show r, ToJSON r) => Maybe r -> DeezNuts Response
 res Nothing = notFoundResponse
 res (Just row) = jsonResponse row
+  
 
 notFoundResponse :: DeezNuts Response
 notFoundResponse = do
-  return (responseLBS status404 [("Content-type", "application/json")] "Not found")
+  RequestState (i,step,req, m, p) <- get
+  er <- errorResponse ("Not found " ++ (show p))
+  _ <- logItem ("Returning error response: " ++ (show er))
+  return (responseLBS status404 [("Content-type", "application/json")] $ encode er)
 
 invalidRequestBodyResponse :: DeezNuts Response
 invalidRequestBodyResponse = do
   RequestState (i,step,req, m, p) <- get
-  responsebody <- errorResponse ("Invalid request " ++ (show (LBS.toStrict req)))
-  return (responseLBS status400 [("Content-type", "application/json")] $ encode responsebody)
+  er <- errorResponse ("Invalid request " ++ (show (LBS.toStrict req)))
+  _ <- logItem ("Returning error response: " ++ (show er))
+  return (responseLBS status400 [("Content-type", "application/json")] $ encode er)
 
 illegalMethodResponse :: DeezNuts Response
 illegalMethodResponse = do
   RequestState (i,step,req, m, p) <- get
-  er <- errorResponse ("Illegal method " ++ (show m ++ " for path " ++ show p))
+  er <- errorResponse ("Illegal method " ++ (requestString req m p))
+  _ <- logItem ("Returning error response: " ++ (show er))
   return (responseLBS status405 [("Content-type", "application/json")] $ encode er)
 
-jsonResponse :: ToJSON a => a -> DeezNuts Response
+jsonResponse :: (Show a, ToJSON a) => a -> DeezNuts Response
 jsonResponse x = do 
+  RequestState (i,step,req, m, p) <- get
+  _ <- logItem ("Returning json response: " ++ (show x))
   return (responseLBS status200 [("Content-type", "application/json")] (encode x))
 
 errorResponse :: String -> DeezNuts ErrorResponse
 errorResponse message =  do
-  _ <- logItem message  
   (RequestState (i, step, _ ,_,_)) <- get
   return $ ErrorResponse (show i) step message
+
+errorResponse' :: Error -> DeezNuts Response
+errorResponse' e = return $ responseLBS (e.status) [("Content-type", "application/json")] (encode e.body)
+
+data Error = Error {
+    status :: Status,
+    body :: ErrorResponse
+}
