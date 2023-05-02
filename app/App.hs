@@ -14,13 +14,16 @@ import Data.UUID.V4 (nextRandom)
 import Database
 import Database.PostgreSQL.Simple
 import Models
-import Network.HTTP.Types (Status, status200, status400, status404, status405)
+
+import GHC.Int ( Int64 )
+import Network.HTTP.Types (Status, status200, status202, status400, status404, status405, status500)
 import Network.Wai (Application, Request(pathInfo, requestMethod), Response, strictRequestBody, responseLBS)
 import Network.HTTP.Types.Method (Method)
 import Requests
 import Responses
 import qualified Data.ByteString.Lazy as LBS
-
+import GHC.Generics (Generic)
+import Engine(updateRankings)
 
 -- Do keep track of request id in state and log it in the writer monad, yesh
 requestString :: LBS.ByteString -> Method -> [Text] -> String
@@ -47,58 +50,101 @@ handleRequest = do
   RequestState (_,_,req, method, path) <- get
   _ <- logItem "Incoming request"
   case (method, path) of
-    -- ("GET", ["player", pid]) -> do
-    --   _ <- logItem ("Retrieving player with id: " ++ show pid)
-    --   modify (setStep "getPlayer")
-    --   -- RequestState (requestId, param(s), body, method, path)
-    --   d <- getFromDatabase $ getPlayerById' (read (unpack pid))
-    --   case d of
-    --     Right r -> do
-    --       jsonResponse r
-    --     Left e -> do
-    --       errorResponse' e
     ("GET", ["player", email]) -> do
       _ <- logItem ("Retrieving player with email: " ++ show email)
       modify (setStep "getPlayer")
       getResponse $ getFromDatabase $ getPlayerByEmail' $ unpack email
     ("POST", ["player"]) -> do
-      createPlayer req
+      _ <- logItem "Creating player"
+      modify (setStep "createPlayer")
+      let r = decode req
+      case r of
+        Nothing -> do
+          e <- createError status400 "Invalid request body"
+          errorResponse' $ e
+        Just re -> do
+          getResponse $ saveToDatabase $ createPlayer' re
     ("GET", ["league", lid]) -> do
-      getLeague (read (unpack lid))
+      _ <- logItem ("Retrieving league with id: " ++ show lid)
+      modify (setStep "getLeague")
+      lid' <- readsOrError $ unpack lid
+      case lid' of
+        Left e -> do
+          errorResponse' e
+        Right lid'' -> do
+          getResponse $ getFromDatabase $ getLeagueById' lid''
     ("POST", ["league"]) -> do
-      createLeague req
-    ("PUT", "league": [lid, pid]) -> do
-      illegalMethodResponse
+      _ <- logItem "Creating league"
+      modify (setStep "createLeague")
+      let r = decode req
+      case r of
+        Nothing -> do
+          e <- createError status400 "Invalid request body"
+          errorResponse' $ e
+        Just re -> do
+          getResponse $ saveToDatabase $ createLeague' re
+
+    ("PUT", ["league", lid]) -> do -- TODO refactor
+      _ <- logItem ("Updating league with id: " ++ show lid)
+      modify (setStep "updateLeague")
+      lid' <- readsOrError $ unpack lid
+      case lid' of
+        Left e -> do
+          errorResponse' e
+        Right lid'' -> do
+          let r = decode req :: Maybe UpdateLeagueRequest
+          case r of
+            Nothing -> do
+              e <- createError status400 "Invalid request body"
+              errorResponse' $ e
+            Just re -> do
+              -- add all players from re to league
+              -- check if player exists and not in league
+              let playersLeague = zip3 re.players (repeat lid'') (repeat 1000) ::[(Int,Int,Int)]
+              executeDatabase $ addPLayersInLeague' playersLeague
     ("POST", ["match"]) -> do
-      createMatch req
+      _ <- logItem "Creating match"
+      modify (setStep "createMatch")
+      let r = decode req :: Maybe CreateMatchRequest -- Extract this to a function that can be reused 
+      case r of
+        Nothing -> do
+          e <- createError status400 "Invalid request body"
+          errorResponse' $ e
+        Just re -> do
+
+          playerExistsP1 <- existsInDatabase $ getPlayerById' re.playerOne
+          playerExistsP2 <- existsInDatabase $ getPlayerById' re.playerTwo
+
+          
+
+          if not playerExistsP1 || not playerExistsP2 then do
+            e <- createError status400 "Invalid request body, player(s) does not exist"
+            errorResponse' $ e
+          else do
+            ei <- saveToDatabase $ createMatch' re
+            case ei of
+              Left e -> do
+                errorResponse' e
+              Right m -> do
+                _ <- updateRankings m
+                jsonResponse m
     _ -> illegalMethodResponse
 
-getPlayer :: Int -> DeezNuts Response
-getPlayer pid = do
-  conn <- ask
-  p <- liftIO $ getPlayerById conn pid
-  let r = singleResult p
 
+createError :: Status -> String -> DeezNuts Error
+createError status message = do
+  (RequestState (i,step,_,_,_)) <- get
+  return (Error status (ErrorResponse (show i) step message))
+
+readsOrError :: Read a => String -> DeezNuts (Either Error a)
+readsOrError s = do
+  let r = reads s
   case r of
-    Nothing -> notFoundResponse
-    Just player -> do
-      modify (setStep "getPlayer")
-      _ <- logItem ("Retrieved player with id: " ++ (show player.playerId))
-      jsonResponse player
-
-getPlayer' :: Int -> DeezNuts (Maybe Player)
-getPlayer' pid = do
-  conn <- ask
-  modify (setStep "getPlayer")
-  p <- liftIO $ getPlayerById conn pid
-  let r = singleResult p
-  return r
-  -- case r of
-  --   Nothing -> notFoundResponse
-  --   Just player -> do
-  --     modify (requestState "getPlayer")
-  --     _ <- logItem ("Retrieved player with id: " ++ (show player.playerId))
-  --     return player
+    [(a, _)] -> do
+      return $ Right a
+    _ -> do
+      e <- createError status400 "Invalid request"
+      return $ Left e
 
 getResponse :: (Show a, ToJSON a) => DeezNuts (Either Error a) -> DeezNuts Response
 getResponse f = do
@@ -109,24 +155,37 @@ getResponse f = do
     Left e -> do
       errorResponse' e
 
+existsInDatabase :: (Show a, FromJSON a, ToJSON a) => DeezNuts [a] -> DeezNuts Bool
+existsInDatabase f = do
+  p <- f
+  case p of
+    [x] -> return True
+    _ -> return False
+
 getFromDatabase :: (Show a, FromJSON a, ToJSON a) => DeezNuts [a] -> DeezNuts (Either Error a)
 getFromDatabase f = do
   p <- f
   (RequestState (i,step,_,_,_)) <- get
   case p of
     [x] -> return (Right x)
-    _ -> return (Left (Error status404 (ErrorResponse (show i) step "Not found")))
-  -- let r = singleResult p
-  -- _ <- logItem ("Retrieved from database: " ++ (show r))
-  -- return Right r
-  -- case r of
-  --   Nothing -> notFoundResponse
-  --   Just player -> do
-  --     modify (requestState "getPlayer")
-  --     _ <- logItem ("Retrieved player with id: " ++ (show player.playerId))
-  --     return player
+    [] -> return (Left (Error status404 (ErrorResponse (show i) step "Not found")))
+    _ -> return (Left (Error status500 (ErrorResponse (show i) step "Somnething went wrong"))) -- Maybe log some more internaly here
 
+saveToDatabase :: (Show a, FromJSON a, ToJSON a) => DeezNuts [a] -> DeezNuts (Either Error a)
+saveToDatabase f = do
+  p <- f
+  (RequestState (i,step,_,_,_)) <- get
+  case p of
+    [x] -> return (Right x)
+    _ -> return (Left (Error status500 (ErrorResponse (show i) step "Something went wrong")))
 
+executeDatabase :: DeezNuts Int64 -> DeezNuts Response
+executeDatabase f = do
+  p <- f
+  (RequestState (i,step,_,_,_)) <- get
+  case p of
+    0 -> errorResponse' (Error status500 (ErrorResponse (show i) step "Something went wrong, no rows affected"))
+    _ -> acceptedResponse
 
 logItem :: String -> DeezNuts ()
 logItem s = do
@@ -135,64 +194,6 @@ logItem s = do
   liftIO $ putStrLn str
   liftIO $ appendFile "logs/app.log" $ str ++ "\n"
   tell [s]
-
-createPlayer :: LBS.ByteString -> DeezNuts Response
-createPlayer req = do
-  _ <- logItem ("Creating player...")
-  conn <- ask
-  let reBody = getRequestBody req :: Maybe CreatePlayerRequest
-  case reBody of
-    Nothing -> invalidRequestBodyResponse
-    Just body -> do
-      p <- liftIO $ savePlayer conn (body.name) (body.email)
-      let r = singleResult p
-
-      modify (\(RequestState (uuid, _, req, m, p)) -> RequestState (uuid, "createPlayer", req, m, p))
-      _ <- logItem ("Created player with id: " ++ (show $ (head p).playerId))
-
-      res r
-
-getLeague :: Int -> DeezNuts Response
-getLeague lid = do
-  conn <- ask
-  p <- liftIO $ getLeagueById conn lid
-  let r = singleResult p
-  res r
-
-createLeague :: LBS.ByteString -> DeezNuts Response
-createLeague req = do
-  conn <- ask
-  liftIO $ print req
-  let reBody = getRequestBody req :: Maybe CreateLeagueRequest
-  case reBody of
-    Nothing -> invalidRequestBodyResponse
-    Just b -> do
-      p <- liftIO $ saveLeague conn (b.leagueName) (b.ownerId)
-      let r = singleResult p
-      case r of
-        Nothing -> notFoundResponse
-        Just l -> do
-          modify (\(RequestState (uuid, _, req, m, p)) -> RequestState (uuid, "createLeague", req, m, p))
-          _ <- logItem ("Created league with id: " ++ (show l.leagueId))
-          jsonResponse l
--- --generic version of create 
--- create :: (ToJSON r, FromJSON r) => Request -> (Connection -> r -> IO [r]) -> DeezNuts Response
--- create req save = do
---   conn <- ask
---   srb <- liftIO $ strictRequestBody req
---   liftIO $ print srb
---   let reBody = getRequestBody srb :: Maybe r
---   case reBody of
---     Nothing -> return invalidRequestBodyResponse
---     Just b -> do
---       p <- liftIO $ save conn b
---       let r = singleResult p
---       return $ res r
-
--- addPlayerToLeague :: Int -> Int -> DeezNuts Response
--- addPlayerToLeague lid pid = do
---   conn <- ask
---   league <- singleResult $ liftIO $ getLeagueById conn lid
 
 
 createMatch :: LBS.ByteString -> DeezNuts Response
@@ -212,13 +213,6 @@ createMatch req = do
       p <- liftIO $ saveMatch conn (body.leagueId) (body.playerOne) (body.playerTwo) (body.scoreOne) (body.scoreTwo)
       let r = singleResult p
       res r
-  -- case res of
-  --   [p] -> return (Just p)
-  --   _ -> return Nothing
-
--- mapResponse :: (ToJSON r) => Maybe r -> Response
--- mapResponse Nothing = 
--- mapResponse (Just row) = 
 
 getRequestBody :: (FromJSON j) => LBS.ByteString -> Maybe j
 getRequestBody = decode
@@ -253,6 +247,12 @@ illegalMethodResponse = do
   er <- errorResponse ("Illegal method " ++ requestString req m p)
   _ <- logItem ("Returning error response: " ++ show er)
   return (responseLBS status405 [("Content-type", "application/json")] $ encode er)
+
+acceptedResponse :: DeezNuts Response
+acceptedResponse = do
+  RequestState (i,step,req, m, p) <- get
+  _ <- logItem ("Successfully completed " ++ step)
+  return (responseLBS status202 [("Content-type", "application/json")] "")
 
 jsonResponse :: (Show a, ToJSON a) => a -> DeezNuts Response
 jsonResponse x = do

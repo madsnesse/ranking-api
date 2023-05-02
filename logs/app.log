@@ -50,3 +50,112 @@
 [4c20c0ae-e0ee-46b0-9fcc-ea6f20a0efa2, initial]: "GET" ["player","Ali12@hotmail.comasd"] ""Incoming request
 [4c20c0ae-e0ee-46b0-9fcc-ea6f20a0efa2, initial]: "GET" ["player","Ali12@hotmail.comasd"] ""Retrieving player with email: "Ali12@hotmail.comasd"
 [4c20c0ae-e0ee-46b0-9fcc-ea6f20a0efa2, getPlayer]: "GET" ["player","Ali12@hotmail.comasd"] ""Returning error response: 
+[2e36d8f4-9586-452a-b027-0a382a2b0656, initial]: "POST" ["player"] "{\r\n    \"name\": \"Dr. Carlton Homenick\",\r\n    \"email\": \"Naomi.Wolf94@gmail.com\"\r\n}"Incoming request
+[2e36d8f4-9586-452a-b027-0a382a2b0656, initial]: "POST" ["player"] "{\r\n    \"name\": \"Dr. Carlton Homenick\",\r\n    \"email\": \"Naomi.Wolf94@gmail.com\"\r\n}"Creating player
+[2e36d8f4-9586-452a-b027-0a382a2b0656, createPlayer]: "POST" ["player"] "{\r\n    \"name\": \"Dr. Carlton Homenick\",\r\n    \"email\": \"Naomi.Wolf94@gmail.com\"\r\n}"Returning json response: Player {playerId = 6, name = "Dr. Carlton Homenick", email = "Naomi.Wolf94@gmail.com"}
+[7371996b-e3be-41ae-ab82-685aa69ac448, initial]: "POST" ["player"] "{\r\n    \"namea\": \"Jon Grant\",\r\n    \"email\": \"Idell_Hartmann82@gmail.com\"\r\n}"Incoming request
+[7371996b-e3be-41ae-ab82-685aa69ac448, initial]: "POST" ["player"] "{\r\n    \"namea\": \"Jon Grant\",\r\n    \"email\": \"Idell_Hartmann82@gmail.com\"\r\n}"Creating player
+[7371996b-e3be-41ae-ab82-685aa69ac448, createPlayer]: "POST" ["player"] "{\r\n    \"namea\": \"Jon Grant\",\r\n    \"email\": \"Idell_Hartmann82@gmail.com\"\r\n}"Returning error response: 
+[f5a11a1b-ebb8-40ad-a97a-cb824be0ee73, initial]: "POST" ["player"] "{\r\n    \"namea\": \"Janice Block\",\r\n    \"email\": \"Pablo_Ferry10@gmail.com\"\r\n}"Incoming request
+[f5a11a1b-ebb8-40ad-a97a-cb824be0ee73, initial]: "POST" ["player"] "{\r\n    \"namea\": \"Janice Block\",\r\n    \"email\": \"Pablo_Ferry10@gmail.com\"\r\n}"Creating player
+[f5a11a1b-ebb8-40ad-a97a-cb824be0ee73, createPlayer]: "POST" ["player"] "{\r\n    \"namea\": \"Janice Block\",\r\n    \"email\": \"Pablo_Ferry10@gmail.com\"\r\n}"Returning error response: 
+[2c6ccafe-b8a6-46b4-84fe-ce7eb1712626, initial]: "GET" ["league","1"] "{\r\n    \"leagueName'\": \"Freda Donnelly\",\r\n    \"ownerId'\": 1\r\n}"Incoming request
+[2c6ccafe-b8a6-46b4-84fe-ce7eb1712626, initial]: "GET" ["league","1"] "{\r\n    \"leagueName'\": \"Freda Donnelly\",\r\n    \"ownerId'\": 1\r\n}"Retrieving league with id: "1"
+[2c6ccafe-b8a6-46b4-84fe-ce7eb1712626, getLeague]: "GET" ["league","1"] "{\r\n    \"leagueName'\": \"Freda Donnelly\",\r\n    \"ownerId'\": 1\r\n}"Returning json response: League {leagueId = 1, leagueName = "Elisa Abernathy", ownerId = 1}
+[d3bec493-1641-4d36-9740-38aa4bf5ea30, initial]: "GET" ["league","t"] "{\r\n    \"leagueName'\": \"Lorraine Gleason\",\r\n    \"ownerId'\": 1\r\n}"Incoming request
+[d3bec493-1641-4d36-9740-38aa4bf5ea30, initial]: "GET" ["league","t"] "{\r\n    \"leagueName'\": \"Lorraine Gleason\",\r\n    \"ownerId'\": 1\r\n}"Retrieving league with id: "t"
+[d3bec493-1641-4d36-9740-38aa4bf5ea30, getLeague]: "GET" ["league","t"] "{\r\n    \"leagueName'\": \"Lorraine Gleason\",\r\n    \"ownerId'\": 1\r\n}"Returning error response: 
+[97a37a83-6204-48aa-9a54-aab3c0350d43, initial]: "GET" ["league","1"] "{\r\n    \"leagueName'\": \"Laverne Schuster\",\r\n    \"ownerId'\": 1\r\n}"Incoming request
+[97a37a83-6204-48aa-9a54-aab3c0350d43, initial]: "GET" ["league","1"] "{\r\n    \"leagueName'\": \"Laverne Schuster\",\r\n    \"ownerId'\": 1\r\n}"Retrieving league with id: "1"
+[97a37a83-6204-48aa-9a54-aab3c0350d43, getLeague]: "GET" ["league","1"] "{\r\n    \"leagueName'\": \"Laverne Schuster\",\r\n    \"ownerId'\": 1\r\n}"Returning json response: League {leagueId = 1, leagueName = "Elisa Abernathy", ownerId = 1}
+[6531fb77-2a92-437b-925f-28e6f5f36c89, initial]: "POST" ["league"] "{\r\n    \"leagueName'\": \"Wallace Dickinson\",\r\n    \"ownerId'\": 1\r\n}"Incoming request
+[6531fb77-2a92-437b-925f-28e6f5f36c89, initial]: "POST" ["league"] "{\r\n    \"leagueName'\": \"Wallace Dickinson\",\r\n    \"ownerId'\": 1\r\n}"Creating league
+[6531fb77-2a92-437b-925f-28e6f5f36c89, createLeague]: "POST" ["league"] "{\r\n    \"leagueName'\": \"Wallace Dickinson\",\r\n    \"ownerId'\": 1\r\n}"Returning error response: 
+[169a78cf-600f-406f-a479-761bf732d518, initial]: "POST" ["league"] "{\r\n    \"leagueName\": \"Alexis Bailey\",\r\n    \"ownerId\": 1\r\n}"Incoming request
+[169a78cf-600f-406f-a479-761bf732d518, initial]: "POST" ["league"] "{\r\n    \"leagueName\": \"Alexis Bailey\",\r\n    \"ownerId\": 1\r\n}"Creating league
+[169a78cf-600f-406f-a479-761bf732d518, createLeague]: "POST" ["league"] "{\r\n    \"leagueName\": \"Alexis Bailey\",\r\n    \"ownerId\": 1\r\n}"Returning json response: League {leagueId = 2, leagueName = "Alexis Bailey", ownerId = 1}
+[94794671-711f-4972-afbc-12fc656e3abf, initial]: "PUT" ["league"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Incoming request
+[94794671-711f-4972-afbc-12fc656e3abf, initial]: "PUT" ["league"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Returning error response: ErrorResponse {id = "94794671-711f-4972-afbc-12fc656e3abf", step = "initial", message = "Illegal method \"PUT\" [\"league\"] \"{\\r\\n    \\\"players\\\": [1,2,3,4,5]\\r\\n}\""}
+[fd254c76-7e84-4435-ba11-7a6d0c4cd5f8, initial]: "PUT" ["league"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Incoming request
+[fd254c76-7e84-4435-ba11-7a6d0c4cd5f8, initial]: "PUT" ["league"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Returning error response: ErrorResponse {id = "fd254c76-7e84-4435-ba11-7a6d0c4cd5f8", step = "initial", message = "Illegal method \"PUT\" [\"league\"] \"{\\r\\n    \\\"players\\\": [1,2,3,4,5]\\r\\n}\""}
+[82abbeea-a466-457b-a603-84eceb18c8eb, initial]: "PUT" ["league"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Incoming request
+[82abbeea-a466-457b-a603-84eceb18c8eb, initial]: "PUT" ["league"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Returning error response: ErrorResponse {id = "82abbeea-a466-457b-a603-84eceb18c8eb", step = "initial", message = "Illegal method \"PUT\" [\"league\"] \"{\\r\\n    \\\"players\\\": [1,2,3,4,5]\\r\\n}\""}
+[7cc8a16c-d102-4b97-9a18-64c8dc4762f0, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Incoming request
+[7cc8a16c-d102-4b97-9a18-64c8dc4762f0, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Updating league with id: "1"
+[97c944c6-6402-4095-b4ec-850ee629bbae, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Incoming request
+[97c944c6-6402-4095-b4ec-850ee629bbae, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Updating league with id: "1"
+[52d91649-7171-4152-896b-47d466aab4ab, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Incoming request
+[52d91649-7171-4152-896b-47d466aab4ab, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Updating league with id: "1"
+[c244a4f8-1aee-4567-ba6c-ea21b9639e68, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Incoming request
+[c244a4f8-1aee-4567-ba6c-ea21b9639e68, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2,3,4,5]\r\n}"Updating league with id: "1"
+[b4d4ba3e-e2aa-4f93-ba62-d8b25bef65e5, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [5,6,7,8,9]\r\n}"Incoming request
+[b4d4ba3e-e2aa-4f93-ba62-d8b25bef65e5, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [5,6,7,8,9]\r\n}"Updating league with id: "1"
+[f6705837-ec99-4fcb-a68a-c9b061dcc83b, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [10,11]\r\n}"Incoming request
+[f6705837-ec99-4fcb-a68a-c9b061dcc83b, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [10,11]\r\n}"Updating league with id: "1"
+[6c06e08a-f658-47a2-aec6-b223077e1ab3, initial]: "POST" ["player"] "{\r\n    \"namea\": \"Edna Hessel\",\r\n    \"email\": \"Patrick.Labadie47@hotmail.com\"\r\n}"Incoming request
+[6c06e08a-f658-47a2-aec6-b223077e1ab3, initial]: "POST" ["player"] "{\r\n    \"namea\": \"Edna Hessel\",\r\n    \"email\": \"Patrick.Labadie47@hotmail.com\"\r\n}"Creating player
+[6c06e08a-f658-47a2-aec6-b223077e1ab3, createPlayer]: "POST" ["player"] "{\r\n    \"namea\": \"Edna Hessel\",\r\n    \"email\": \"Patrick.Labadie47@hotmail.com\"\r\n}"Returning error response: 
+[0285ee6c-c01d-4202-b6a9-41144be4c45f, initial]: "POST" ["player"] "{\r\n    \"name\": \"Courtney Brakus\",\r\n    \"email\": \"Noemie75@yahoo.com\"\r\n}"Incoming request
+[0285ee6c-c01d-4202-b6a9-41144be4c45f, initial]: "POST" ["player"] "{\r\n    \"name\": \"Courtney Brakus\",\r\n    \"email\": \"Noemie75@yahoo.com\"\r\n}"Creating player
+[0285ee6c-c01d-4202-b6a9-41144be4c45f, createPlayer]: "POST" ["player"] "{\r\n    \"name\": \"Courtney Brakus\",\r\n    \"email\": \"Noemie75@yahoo.com\"\r\n}"Returning json response: Player {playerId = 1, name = "Courtney Brakus", email = "Noemie75@yahoo.com"}
+[d3b43471-6878-4294-a762-106c3b40ea44, initial]: "POST" ["league"] "{\r\n    \"leagueName\": \"Sophia Harris\",\r\n    \"ownerId\": 1\r\n}"Incoming request
+[d3b43471-6878-4294-a762-106c3b40ea44, initial]: "POST" ["league"] "{\r\n    \"leagueName\": \"Sophia Harris\",\r\n    \"ownerId\": 1\r\n}"Creating league
+[d3b43471-6878-4294-a762-106c3b40ea44, createLeague]: "POST" ["league"] "{\r\n    \"leagueName\": \"Sophia Harris\",\r\n    \"ownerId\": 1\r\n}"Returning json response: League {leagueId = 1, leagueName = "Sophia Harris", ownerId = 1}
+[39e682cc-85bd-4f47-8eb1-82968ff36f2f, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2]\r\n}"Incoming request
+[39e682cc-85bd-4f47-8eb1-82968ff36f2f, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2]\r\n}"Updating league with id: "1"
+[a558c10b-186b-4383-b252-c5c5a8c1c2f1, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1]\r\n}"Incoming request
+[a558c10b-186b-4383-b252-c5c5a8c1c2f1, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1]\r\n}"Updating league with id: "1"
+[a558c10b-186b-4383-b252-c5c5a8c1c2f1, updateLeague]: "PUT" ["league","1"] "{\r\n    \"players\": [1]\r\n}"Successfully completed updateLeague
+[452e9556-5880-45a2-af3d-91ca604775ba, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1]\r\n}"Incoming request
+[452e9556-5880-45a2-af3d-91ca604775ba, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1]\r\n}"Updating league with id: "1"
+[ac9296c1-daef-4233-97a5-e3b592895366, initial]: "POST" ["match"] "{\r\n    \"leagueName\": \"Anna Prohaska\",\r\n    \"ownerId\": 1\r\n}"Incoming request
+[ac9296c1-daef-4233-97a5-e3b592895366, initial]: "POST" ["match"] "{\r\n    \"leagueName\": \"Anna Prohaska\",\r\n    \"ownerId\": 1\r\n}"Creating match
+[ac9296c1-daef-4233-97a5-e3b592895366, createMatch]: "POST" ["match"] "{\r\n    \"leagueName\": \"Anna Prohaska\",\r\n    \"ownerId\": 1\r\n}"Returning error response: 
+[6c7a4f42-15dd-40c9-a1f5-f67b02e8ce4e, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[6c7a4f42-15dd-40c9-a1f5-f67b02e8ce4e, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[3d6c2125-c9d5-48b9-b5ea-ff7eafc8163e, initial]: "GET" ["player","1"] ""Incoming request
+[3d6c2125-c9d5-48b9-b5ea-ff7eafc8163e, initial]: "GET" ["player","1"] ""Retrieving player with email: "1"
+[3d6c2125-c9d5-48b9-b5ea-ff7eafc8163e, getPlayer]: "GET" ["player","1"] ""Returning error response: 
+[93488d40-81ac-41da-8ea4-40a163158f31, initial]: "POST" ["player"] "{\r\n    \"name\": \"Luz Balistreri\",\r\n    \"email\": \"Taya35@hotmail.com\"\r\n}"Incoming request
+[93488d40-81ac-41da-8ea4-40a163158f31, initial]: "POST" ["player"] "{\r\n    \"name\": \"Luz Balistreri\",\r\n    \"email\": \"Taya35@hotmail.com\"\r\n}"Creating player
+[93488d40-81ac-41da-8ea4-40a163158f31, createPlayer]: "POST" ["player"] "{\r\n    \"name\": \"Luz Balistreri\",\r\n    \"email\": \"Taya35@hotmail.com\"\r\n}"Returning json response: Player {playerId = 2, name = "Luz Balistreri", email = "Taya35@hotmail.com"}
+[31dd8ae0-4665-4637-80d7-b18ff1031f17, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[31dd8ae0-4665-4637-80d7-b18ff1031f17, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[270b62dd-c71e-4883-a46a-4064c50523cd, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[270b62dd-c71e-4883-a46a-4064c50523cd, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[f6e46c07-bb87-455f-990d-3bf446d4d6dd, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[f6e46c07-bb87-455f-990d-3bf446d4d6dd, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[d587a0f9-9982-433e-bf69-25e4c7a46a63, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[d587a0f9-9982-433e-bf69-25e4c7a46a63, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[ce61688f-edfd-4b42-b862-b3d357d53c7c, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2]\r\n}"Incoming request
+[ce61688f-edfd-4b42-b862-b3d357d53c7c, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [1,2]\r\n}"Updating league with id: "1"
+[ae48849c-b2aa-4f78-85a6-6c72287852f1, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [2]\r\n}"Incoming request
+[ae48849c-b2aa-4f78-85a6-6c72287852f1, initial]: "PUT" ["league","1"] "{\r\n    \"players\": [2]\r\n}"Updating league with id: "1"
+[ae48849c-b2aa-4f78-85a6-6c72287852f1, updateLeague]: "PUT" ["league","1"] "{\r\n    \"players\": [2]\r\n}"Successfully completed updateLeague
+[73f6b9f7-4c98-4a46-9d2f-f7cd456ff40c, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[73f6b9f7-4c98-4a46-9d2f-f7cd456ff40c, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[73f6b9f7-4c98-4a46-9d2f-f7cd456ff40c, createMatch]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Returning json response: Match {matchId = 4, leagueId = 1, playerOne = 1, playerTwo = 2, scoreOne = 1, scoreTwo = 2}
+[124db0f7-859c-4c9b-9bc4-dd7dc6f19c6b, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[124db0f7-859c-4c9b-9bc4-dd7dc6f19c6b, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[124db0f7-859c-4c9b-9bc4-dd7dc6f19c6b, createMatch]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Returning json response: Match {matchId = 5, leagueId = 1, playerOne = 1, playerTwo = 2, scoreOne = 1, scoreTwo = 2}
+[433a88a9-9bf7-4e16-93f8-8853b8307649, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[433a88a9-9bf7-4e16-93f8-8853b8307649, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[433a88a9-9bf7-4e16-93f8-8853b8307649, createMatch]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Returning json response: Match {matchId = 6, leagueId = 1, playerOne = 1, playerTwo = 2, scoreOne = 1, scoreTwo = 2}
+[7581143e-fc39-4ab1-94ae-68ae16fdf30d, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[7581143e-fc39-4ab1-94ae-68ae16fdf30d, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[7581143e-fc39-4ab1-94ae-68ae16fdf30d, createMatch]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Returning json response: Match {matchId = 7, leagueId = 1, playerOne = 1, playerTwo = 2, scoreOne = 1, scoreTwo = 2}
+[73dbbe8d-a840-4a72-8d2f-b5489399b560, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[73dbbe8d-a840-4a72-8d2f-b5489399b560, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[73dbbe8d-a840-4a72-8d2f-b5489399b560, createMatch]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Returning json response: Match {matchId = 8, leagueId = 1, playerOne = 1, playerTwo = 2, scoreOne = 1, scoreTwo = 2}
+[59ef3e9f-2df3-441b-b959-fe4c0ed5e833, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[59ef3e9f-2df3-441b-b959-fe4c0ed5e833, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[59ef3e9f-2df3-441b-b959-fe4c0ed5e833, createMatch]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Returning json response: Match {matchId = 9, leagueId = 1, playerOne = 1, playerTwo = 2, scoreOne = 1, scoreTwo = 2}
+[e3725bae-00ee-47c8-abe1-11d24fa37708, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[e3725bae-00ee-47c8-abe1-11d24fa37708, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[e3725bae-00ee-47c8-abe1-11d24fa37708, createMatch]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 1,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Returning json response: Match {matchId = 10, leagueId = 1, playerOne = 1, playerTwo = 2, scoreOne = 1, scoreTwo = 2}
+[65d4e7a6-65d9-4277-9a2a-be360be50325, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 10,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[65d4e7a6-65d9-4277-9a2a-be360be50325, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 10,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[65d4e7a6-65d9-4277-9a2a-be360be50325, createMatch]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 10,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Returning error response: 
+[1396a466-ed4a-4ba0-b082-60584a4013e4, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 10,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
+[1396a466-ed4a-4ba0-b082-60584a4013e4, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 10,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
+[1396a466-ed4a-4ba0-b082-60584a4013e4, createMatch]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 10,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Returning error response: 
