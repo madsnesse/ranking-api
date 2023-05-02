@@ -250,14 +250,13 @@ invalidRequestBodyResponse = do
 illegalMethodResponse :: DeezNuts Response
 illegalMethodResponse = do
   RequestState (i,step,req, m, p) <- get
-  er <- errorResponse ("Illegal method " ++ (requestString req m p))
-  _ <- logItem ("Returning error response: " ++ (show er))
+  er <- errorResponse ("Illegal method " ++ requestString req m p)
+  _ <- logItem ("Returning error response: " ++ show er)
   return (responseLBS status405 [("Content-type", "application/json")] $ encode er)
 
 jsonResponse :: (Show a, ToJSON a) => a -> DeezNuts Response
 jsonResponse x = do
-  RequestState (i,step,req, m, p) <- get
-  _ <- logItem ("Returning json response: " ++ (show x))
+  _ <- logItem ("Returning json response: " ++ show x)
   return (responseLBS status200 [("Content-type", "application/json")] (encode x))
 
 errorResponse :: String -> DeezNuts ErrorResponse
