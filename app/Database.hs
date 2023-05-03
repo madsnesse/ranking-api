@@ -14,7 +14,6 @@ import Database.PostgreSQL.Simple
 import Data.String (IsString(fromString))
 import Models
 import Prelude hiding (id)
-import Control.Monad.Reader (MonadReader (ask), ReaderT, MonadIO)
 import Control.Monad.RWS
 import Requests
 
@@ -24,7 +23,7 @@ import Requests
 
 -- getConnection :: ReaderT (IO Connection)
 -- getConnection = return connectDb
-
+-- TODO clean up
 createDb :: IO GHC.Int.Int64
 createDb = do
         conn <- connectDb 
@@ -49,14 +48,10 @@ createTables conn = do
         initFile <- readFile "db_init.sql"
         execute_ conn (fromString initFile)
 
-getPlayerByEmail :: Connection -> String  -> IO [Player]
-getPlayerByEmail conn email = do
-        query conn "SELECT * FROM player WHERE email = ?" 
-                (Only email)
-
 getPlayerById' :: Int -> DeezNuts [Player]
 getPlayerById' i = do
         conn <- ask
+        _ <- logItem $ "Getting player by id: " ++ show i ++ "from db"
         liftIO $ query conn "SELECT * FROM player WHERE id = ?"
                 (Only i)
 
@@ -101,6 +96,7 @@ createMatch' (CreateMatchRequest l p1 p2 s1 s2) = do
 getPlayerByEmail' :: String -> DeezNuts [Player]
 getPlayerByEmail' email = do
         conn <- ask
+        _ <- logItem $ "Getting player by email: " ++ email ++ "from db"
         liftIO $ query conn "SELECT * FROM player WHERE email = ?"
                 (Only email)
 
@@ -148,22 +144,7 @@ saveLeague conn name ownerId = do
         query conn "INSERT INTO league (league_name, owner_id) values (?,?) RETURNING *"
                 (name, ownerId)
 
-saveMatch :: Connection -> Int -> Int -> Int -> Int -> Int -> IO [Match]
-saveMatch conn lid p1 p2 s1 s2 = do
-        query conn "INSERT INTO match (league_id, player_id_one, player_id_two, score_one, score_two) values (?,?,?,?,?) RETURNING *"
-                (lid, p1, p2, s1, s2)
-
--- saveMatchLeague :: League -> Match -> IO GHC.Int.Int64
--- saveMatchLeague league match = do
---         conn <- connectDb
---         execute conn "INSERT INTO matchleague values (?,?)"
---                 (leagueId league, matchId match)
-
-savePlayerLeague :: Connection -> Int -> Int -> Int -> IO [PlayerLeague]
-savePlayerLeague conn league player rating = do
-        query conn "INSERT INTO playerleague values (?,?,?) returning *" (player,league, rating)
-
-savePlayer :: Connection -> String -> String -> IO [Player]
-savePlayer conn playerName email = do
-        query conn "INSERT INTO player (username, email) values (?,?) RETURNING *"
-                (Just playerName, Just email)
+saveMatch' ::(Int,Int,Int,Int,Int) -> DeezNuts [Match]
+saveMatch' m = do
+        conn <- ask
+        liftIO $ query conn "INSERT INTO match (league_id, player_id_one, player_id_two, score_one, score_two) values (?,?,?,?,?) RETURNING *" m

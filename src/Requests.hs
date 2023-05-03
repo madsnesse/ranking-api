@@ -27,6 +27,14 @@ data CreateLeagueRequest = CreateLeagueRequest {
     ownerId :: Int
 } deriving (Generic, FromJSON)
 
+-- linter suggests newtype, but keping it as data in case I want to add more fields
 data UpdateLeagueRequest = UpdateLeagueRequest {
     players:: [Int]
 } deriving (Generic, FromJSON)
+
+data RequestInput = IntInput Int | 
+                    StringInput String | 
+                    CreatePlayerInput CreatePlayerRequest | 
+                    CreateMatchInput CreateMatchRequest | 
+                    CreateLeagueInput CreateLeagueRequest | 
+                    UpdateLeagueInput UpdateLeagueRequest

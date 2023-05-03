@@ -159,3 +159,22 @@
 [1396a466-ed4a-4ba0-b082-60584a4013e4, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 10,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Incoming request
 [1396a466-ed4a-4ba0-b082-60584a4013e4, initial]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 10,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Creating match
 [1396a466-ed4a-4ba0-b082-60584a4013e4, createMatch]: "POST" ["match"] "{\r\n    \"leagueId\": 1,\r\n    \"playerOne\": 10,\r\n    \"playerTwo\": 2,\r\n    \"scoreOne\": 1,\r\n    \"scoreTwo\": 2\r\n}"Returning error response: 
+[4636b82f-15e0-4c1d-a29c-6180d800d5ed, initial]: "GET" ["league","1"] ""Incoming request
+[4636b82f-15e0-4c1d-a29c-6180d800d5ed, initial]: "GET" ["league","1"] ""Retrieving league with id: "1"
+[4636b82f-15e0-4c1d-a29c-6180d800d5ed, getLeague]: "GET" ["league","1"] ""Returning json response: League {leagueId = 1, leagueName = "test league", ownerId = 2}
+[69ac865e-7084-4262-905d-f55aab4b7dc5, initial]: "GET" ["league","1sadd"] ""Incoming request
+[69ac865e-7084-4262-905d-f55aab4b7dc5, initial]: "GET" ["league","1sadd"] ""Retrieving league with id: "1sadd"
+[69ac865e-7084-4262-905d-f55aab4b7dc5, getLeague]: "GET" ["league","1sadd"] ""Returning json response: League {leagueId = 1, leagueName = "test league", ownerId = 2}
+[81207908-9c89-4e25-aaf4-fe6ec2bf5942, initial]: "GET" ["league",""] ""Incoming request
+[81207908-9c89-4e25-aaf4-fe6ec2bf5942, initial]: "GET" ["league",""] ""Retrieving league with id: ""
+[81207908-9c89-4e25-aaf4-fe6ec2bf5942, getLeague]: "GET" ["league",""] ""Returning error response: 
+[679172e4-59fb-47f0-84a5-c2dcc1c19964, initial]: "GET" ["league","t"] ""Incoming request
+[679172e4-59fb-47f0-84a5-c2dcc1c19964, initial]: "GET" ["league","t"] ""Retrieving league with id: "t"
+[679172e4-59fb-47f0-84a5-c2dcc1c19964, getLeague]: "GET" ["league","t"] ""Returning error response: 
+[e4543480-69ad-4441-89e0-a91ff5d70e60, initial]: "GET" ["league","t"] ""Incoming request
+[e4543480-69ad-4441-89e0-a91ff5d70e60, initial]: "GET" ["league","t"] ""Retrieving league with id: "t"
+[e4543480-69ad-4441-89e0-a91ff5d70e60, getLeague]: "GET" ["league","t"] ""Error on input
+[e4543480-69ad-4441-89e0-a91ff5d70e60, getLeague]: "GET" ["league","t"] ""Returning error response: 
+[34ef1dd7-937d-4761-89be-e74d86565362, initial]: "GET" ["league","t"] ""Incoming request
+[34ef1dd7-937d-4761-89be-e74d86565362, initial]: "GET" ["league","t"] ""Retrieving league with id: "t"
+[34ef1dd7-937d-4761-89be-e74d86565362, getLeague]: "GET" ["league","t"] ""Returning error response: 
