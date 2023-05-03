@@ -18,7 +18,6 @@ import qualified Data.ByteString.Lazy as LBS
 import Data.UUID (UUID)
 import Database.PostgreSQL.Simple (Connection)
 
-
 data Player = Player { playerId:: Int, name :: String, email :: String}
   deriving (Generic, Show, ToJSON, FromJSON)
 

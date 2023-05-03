@@ -12,7 +12,7 @@ import Data.Text (Text, unpack)
 import Data.UUID.V4 (nextRandom)
 import Database
 import Database.PostgreSQL.Simple
-import Models ( DeezNuts, setStep, RequestState(RequestState), logItem, Player )
+import Models ( DeezNuts, setStep, RequestState(RequestState), logItem )
 
 import GHC.Int ( Int64 )
 import Network.HTTP.Types (Status, status200, status202, status400, status404, status405, status500)
@@ -42,26 +42,26 @@ app conn req respond = do
 
 handleRequest :: DeezNuts Response
 handleRequest = do
-  -- TODO can I pass srb instead of entire Request??
-  -- maybe have something like createPlayer validBody $ getRequestBody $ strictRequestBody req :: CreatePlayerRequest
-  -- might have to fix log here
   RequestState (_,_,req, method, path) <- get
   _ <- logItem "Incoming request"
   case (method, path) of
-    ("GET", ["player", email]) -> do
-      _ <- logItem ("Retrieving player with email: " ++ show email)
+    ("GET", ["player", eml]) -> do
+      _ <- logItem ("Retrieving player with email: " ++ show eml)
       modify (setStep "getPlayer")
-      getResponse $ getFromDatabase $ getPlayerByEmail' $ unpack email
+      getResponse $ getFromDatabase $ getPlayerByEmail' $ unpack eml
+
     ("POST", ["player"]) -> do
       _ <- logItem "Creating player"
       modify (setStep "createPlayer")
       r <- getRequest req
       checkValidRequestBody r (getResponse . saveToDatabase . createPlayer')
+
     ("GET", ["league", lid]) -> do
       _ <- logItem ("Retrieving league with id: " ++ show lid)
       modify (setStep "getLeague")
       lid' <- readsOrError $ unpack lid -- TODO chain in below line
       checkValidParameter lid' (getResponse . getFromDatabase . getLeagueById')
+
     ("POST", ["league"]) -> do
       _ <- logItem "Creating league"
       modify (setStep "createLeague")
@@ -78,32 +78,8 @@ handleRequest = do
     ("POST", ["match"]) -> do
       _ <- logItem "Creating match"
       modify (setStep "createMatch")
-      let r = decode req :: Maybe CreateMatchRequest -- Extract this to a function that can be reused 
-      re <- checkValidRequestBody r 
-      case r of
-        Nothing -> do
-          e <- createError status400 "Invalid request body"
-          errorResponse' e
-        Just re -> do
-          leagueExists <- existsInDatabase $ getLeagueById' re.leagueId
-          if not leagueExists then do
-            e <- createError status400 "Invalid request body, league does not exist"
-            errorResponse' e
-          else do
-            playerExistsP1 <- existsInDatabase $ getPlayerById' re.playerOne
-            playerExistsP2 <- existsInDatabase $ getPlayerById' re.playerTwo
-
-            if not playerExistsP1 || not playerExistsP2 then do
-              e <- createError status400 "Invalid request body, player(s) does not exist"
-              errorResponse' e
-            else do
-              ei <- saveToDatabase $ createMatch' re
-              case ei of
-                Left e -> do
-                  errorResponse' e
-                Right m -> do
-                  _ <- updateRankings m
-                  jsonResponse m
+      r <- getRequest req
+      checkValidRequestBody r newMatch'
     _ -> illegalMethodResponse
 
 
@@ -113,13 +89,23 @@ updateLeague' lid r = do
   let ei = executeDatabase $ addPLayersInLeague' playersLeague
   ei
 
+newMatch' :: CreateMatchRequest -> DeezNuts Response
+newMatch' r = do
+  ei <- saveToDatabase $ createMatch' r
+  case ei of
+    Left e -> do
+      errorResponse' e
+    Right m -> do
+      _ <- updateRankings m
+      jsonResponse m
+
 -- getRequest :: LBS.ByteString -> DeezNuts (Either Error RequestBody)
 --errorOnInputOrContinue :: Either Error Int -> () -> DeezNuts (Either Error Player)
 checkValidRequestBody :: Either Error a -> (a -> DeezNuts Response) -> DeezNuts Response
 checkValidRequestBody e comp = do
   case e of
     Left e' -> do
-      errorResponse' e'
+      invalidRequestBodyResponse
     Right r -> do
       comp r
 
@@ -131,6 +117,7 @@ checkValidParameter e comp = do
     Right r -> do
       comp r
 
+--TODO rename
 checkValidBodyAndParam :: Either Error a -> Either Error b -> (a -> b -> DeezNuts Response) -> DeezNuts Response
 checkValidBodyAndParam e1 e2 comp = do
   case (e1, e2) of
@@ -192,7 +179,7 @@ getFromDatabase f = do
   case p of
     [x] -> return (Right x)
     [] -> return (Left (Error status404 (ErrorResponse (show i) step "Not found")))
-    _ -> return (Left (Error status500 (ErrorResponse (show i) step "Somnething went wrong"))) -- Maybe log some more internaly here
+    _ -> return (Left (Error status500 (ErrorResponse (show i) step "Something went wrong"))) -- Maybe log some more internaly here
 
 saveToDatabase :: DeezNuts [a] -> DeezNuts (Either Error a)
 saveToDatabase f = do
@@ -210,34 +197,31 @@ executeDatabase f = do
     0 -> errorResponse' (Error status500 (ErrorResponse (show i) step "Something went wrong, no rows affected"))
     _ -> acceptedResponse
 
---REMOVE?
-
-
 notFoundResponse :: DeezNuts Response --TODO what wsa not found? add parameter
 notFoundResponse = do
-  RequestState (i,step,req, m, p) <- get
+  RequestState (_,_,_, _, p) <- get
   er <- errorResponse ("Not found " ++ (show p))
   _ <- logItem ("Returning error response: " ++ (show er))
   return (responseLBS status404 [("Content-type", "application/json")] $ encode er)
 
 invalidRequestBodyResponse :: DeezNuts Response
 invalidRequestBodyResponse = do
-  RequestState (i,step,req, m, p) <- get
+  RequestState (_,_,req,_, _) <- get
   er <- errorResponse ("Invalid request " ++ (show (LBS.toStrict req)))
   _ <- logItem ("Returning error response: " ++ (show er))
   return (responseLBS status400 [("Content-type", "application/json")] $ encode er)
 
 illegalMethodResponse :: DeezNuts Response
 illegalMethodResponse = do
-  RequestState (i,step,req, m, p) <- get
+  RequestState (_,_,req, m, p) <- get
   er <- errorResponse ("Illegal method " ++ requestString req m p)
   _ <- logItem ("Returning error response: " ++ show er)
   return (responseLBS status405 [("Content-type", "application/json")] $ encode er)
 
 acceptedResponse :: DeezNuts Response
 acceptedResponse = do
-  RequestState (i,step,req, m, p) <- get
-  _ <- logItem ("Successfully completed " ++ step)
+  RequestState (_,stp,_,_, _) <- get
+  _ <- logItem ("Successfully completed " ++ stp)
   return (responseLBS status202 [("Content-type", "application/json")] "")
 
 jsonResponse :: (Show a, ToJSON a) => a -> DeezNuts Response
@@ -246,9 +230,9 @@ jsonResponse x = do
   return (responseLBS status200 [("Content-type", "application/json")] (encode x))
 
 errorResponse :: String -> DeezNuts ErrorResponse
-errorResponse message =  do
-  (RequestState (i, step, _ ,_,_)) <- get
-  return $ ErrorResponse (show i) step message
+errorResponse msg =  do
+  (RequestState (i, stp, _ ,_,_)) <- get
+  return $ ErrorResponse (show i) stp msg
 
 errorResponse' :: Error -> DeezNuts Response
 errorResponse' e = do
@@ -256,6 +240,6 @@ errorResponse' e = do
   return $ responseLBS (e.status) [("Content-type", "application/json")] (encode e.body)
 
 data Error = Error {
-    status :: Status,
-    body :: ErrorResponse
+  status :: Status,
+  body :: ErrorResponse
 }

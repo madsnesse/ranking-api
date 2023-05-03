@@ -52,7 +52,6 @@ executable ranking-api-exe
       App
       Database
       Engine
-      T
       Paths_ranking_api
   hs-source-dirs:
       app
