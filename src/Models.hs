@@ -51,9 +51,9 @@ instance Show RequestState where
 setStep :: String -> RequestState -> RequestState
 setStep s (RequestState (uuid, _, r, m, p)) = RequestState (uuid, s, r, m, p)
 
-type DeezNuts = RWST Connection [String] RequestState IO
+type Environment = RWST Connection [String] RequestState IO
 
-logItem :: String -> DeezNuts ()
+logItem :: String -> Environment ()
 logItem s = do
   rs <- get
   let str = show rs ++ s

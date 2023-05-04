@@ -12,7 +12,7 @@ import Data.Text (Text, unpack)
 import Data.UUID.V4 (nextRandom)
 import Database
 import Database.PostgreSQL.Simple
-import Models ( DeezNuts, setStep, RequestState(RequestState), logItem )
+import Models ( Environment, setStep, RequestState(RequestState), logItem, Match(..), League(..), PlayerLeague(..) )
 
 import GHC.Int ( Int64 )
 import Network.HTTP.Types (Status, status200, status202, status400, status404, status405, status500)
@@ -40,7 +40,7 @@ app conn req respond = do
 
   respond result
 
-handleRequest :: DeezNuts Response
+handleRequest :: Environment Response
 handleRequest = do
   RequestState (_,_,req, method, path) <- get
   _ <- logItem "Incoming request"
@@ -60,7 +60,7 @@ handleRequest = do
       _ <- logItem ("Retrieving league with id: " ++ show lid)
       modify (setStep "getLeague")
       lid' <- readsOrError $ unpack lid -- TODO chain in below line
-      checkValidParameter lid' (getResponse . getFromDatabase . getLeagueById')
+      checkValidParameter lid' (getResponse . getLeague)
 
     ("POST", ["league"]) -> do
       _ <- logItem "Creating league"
@@ -79,29 +79,51 @@ handleRequest = do
       _ <- logItem "Creating match"
       modify (setStep "createMatch")
       r <- getRequest req
-      checkValidRequestBody r newMatch'
+      checkValidRequestBody r (getResponse . newMatch')
     _ -> illegalMethodResponse
 
 
-updateLeague' :: Int -> UpdateLeagueRequest -> DeezNuts Response
+-- Check if players in league already
+updateLeague' :: Int -> UpdateLeagueRequest -> Environment Response
 updateLeague' lid r = do
   let playersLeague = zip3 r.players (repeat lid) (repeat 1000) ::[(Int,Int,Int)]
   let ei = executeDatabase $ addPLayersInLeague' playersLeague
   ei
 
-newMatch' :: CreateMatchRequest -> DeezNuts Response
+newMatch' :: CreateMatchRequest -> Environment (Either Error Match)
 newMatch' r = do
-  ei <- saveToDatabase $ createMatch' r
-  case ei of
+  m <- saveToDatabase $ createMatch' r
+  case m of 
     Left e -> do
-      errorResponse' e
-    Right m -> do
-      _ <- updateRankings m
-      jsonResponse m
+      return $ Left e
+    Right m' -> do
+      _ <- updateRankings m'
+      return $ Right m'
 
--- getRequest :: LBS.ByteString -> DeezNuts (Either Error RequestBody)
---errorOnInputOrContinue :: Either Error Int -> () -> DeezNuts (Either Error Player)
-checkValidRequestBody :: Either Error a -> (a -> DeezNuts Response) -> DeezNuts Response
+  -- case ei of
+  --   Left e -> do
+  --     Left e
+  --   Right m -> do
+  --     _ <- updateRankings m
+  --     Right m
+
+getLeague :: Int -> Environment (Either Error FullLeagueResponse)
+getLeague lid = do
+  league <- getFromDatabase $ getLeagueById' lid
+  playersInLeague <- getPlayersInLeague lid
+  matches <- getMatchesInLeague lid
+  case league of
+    Left e -> do
+      return $ Left e
+    (Right l) -> do
+      let playerIds = map playerId playersInLeague
+      let ratings = map rating playersInLeague
+
+      return $ Right (FullLeagueResponse l.leagueId l.leagueName l.ownerId (zip playerIds ratings) matches)
+
+-- getRequest :: LBS.ByteString -> Environment (Either Error RequestBody)
+--errorOnInputOrContinue :: Either Error Int -> () -> Environment (Either Error Player)
+checkValidRequestBody :: Either Error a -> (a -> Environment Response) -> Environment Response
 checkValidRequestBody e comp = do
   case e of
     Left e' -> do
@@ -109,7 +131,7 @@ checkValidRequestBody e comp = do
     Right r -> do
       comp r
 
-checkValidParameter :: Either Error a -> (a -> DeezNuts Response) -> DeezNuts Response
+checkValidParameter :: Either Error a -> (a -> Environment Response) -> Environment Response
 checkValidParameter e comp = do
   case e of
     Left e' -> do
@@ -118,7 +140,7 @@ checkValidParameter e comp = do
       comp r
 
 --TODO rename
-checkValidBodyAndParam :: Either Error a -> Either Error b -> (a -> b -> DeezNuts Response) -> DeezNuts Response
+checkValidBodyAndParam :: Either Error a -> Either Error b -> (a -> b -> Environment Response) -> Environment Response
 checkValidBodyAndParam e1 e2 comp = do
   case (e1, e2) of
     (Left e1', Left e2') -> do
@@ -131,7 +153,7 @@ checkValidBodyAndParam e1 e2 comp = do
       comp r1 r2
 
 
-getRequest :: (FromJSON r) => LBS.ByteString -> DeezNuts (Either Error r)
+getRequest :: (FromJSON r) => LBS.ByteString -> Environment (Either Error r)
 getRequest req = do
   let r = decode req
   case r of
@@ -141,12 +163,12 @@ getRequest req = do
     Just re -> do
       return $ Right re
 
-createError :: Status -> String -> DeezNuts Error
+createError :: Status -> String -> Environment Error
 createError status message = do
   (RequestState (i,step,_,_,_)) <- get
   return (Error status (ErrorResponse (show i) step message))
 
-readsOrError :: Read a => String -> DeezNuts (Either Error a)
+readsOrError :: Read a => String -> Environment (Either Error a)
 readsOrError s = do
   let r = reads s
   case r of
@@ -156,7 +178,7 @@ readsOrError s = do
       e <- createError status400 "Invalid request"
       return $ Left e
 
-getResponse :: (Show a, ToJSON a) => DeezNuts (Either Error a) -> DeezNuts Response
+getResponse :: (Show a, ToJSON a) => Environment (Either Error a) -> Environment Response
 getResponse f = do
   d <- f
   case d of
@@ -165,14 +187,14 @@ getResponse f = do
     Left e -> do
       errorResponse' e
 
-existsInDatabase :: DeezNuts [a] -> DeezNuts Bool
+existsInDatabase :: Environment [a] -> Environment Bool
 existsInDatabase f = do
   p <- f
   case p of
     [x] -> return True
     _ -> return False
 
-getFromDatabase :: DeezNuts [a] -> DeezNuts (Either Error a)
+getFromDatabase :: Environment [a] -> Environment (Either Error a)
 getFromDatabase f = do
   p <- f
   (RequestState (i,step,_,_,_)) <- get
@@ -181,7 +203,7 @@ getFromDatabase f = do
     [] -> return (Left (Error status404 (ErrorResponse (show i) step "Not found")))
     _ -> return (Left (Error status500 (ErrorResponse (show i) step "Something went wrong"))) -- Maybe log some more internaly here
 
-saveToDatabase :: DeezNuts [a] -> DeezNuts (Either Error a)
+saveToDatabase :: Environment [a] -> Environment (Either Error a)
 saveToDatabase f = do
   p <- f
   (RequestState (i,step,_,_,_)) <- get
@@ -189,7 +211,7 @@ saveToDatabase f = do
     [x] -> return (Right x)
     _ -> return (Left (Error status500 (ErrorResponse (show i) step "Something went wrong")))
 
-executeDatabase :: DeezNuts Int64 -> DeezNuts Response
+executeDatabase :: Environment Int64 -> Environment Response
 executeDatabase f = do
   p <- f
   (RequestState (i,step,_,_,_)) <- get
@@ -197,44 +219,46 @@ executeDatabase f = do
     0 -> errorResponse' (Error status500 (ErrorResponse (show i) step "Something went wrong, no rows affected"))
     _ -> acceptedResponse
 
-notFoundResponse :: DeezNuts Response --TODO what wsa not found? add parameter
+notFoundResponse :: Environment Response --TODO what wsa not found? add parameter 
 notFoundResponse = do
   RequestState (_,_,_, _, p) <- get
   er <- errorResponse ("Not found " ++ (show p))
   _ <- logItem ("Returning error response: " ++ (show er))
   return (responseLBS status404 [("Content-type", "application/json")] $ encode er)
 
-invalidRequestBodyResponse :: DeezNuts Response
+invalidRequestBodyResponse :: Environment Response -- TODO Refactor all errorResponses 
 invalidRequestBodyResponse = do
   RequestState (_,_,req,_, _) <- get
   er <- errorResponse ("Invalid request " ++ (show (LBS.toStrict req)))
   _ <- logItem ("Returning error response: " ++ (show er))
   return (responseLBS status400 [("Content-type", "application/json")] $ encode er)
 
-illegalMethodResponse :: DeezNuts Response
+illegalMethodResponse :: Environment Response
 illegalMethodResponse = do
   RequestState (_,_,req, m, p) <- get
   er <- errorResponse ("Illegal method " ++ requestString req m p)
   _ <- logItem ("Returning error response: " ++ show er)
   return (responseLBS status405 [("Content-type", "application/json")] $ encode er)
 
-acceptedResponse :: DeezNuts Response
+acceptedResponse :: Environment Response
 acceptedResponse = do
   RequestState (_,stp,_,_, _) <- get
   _ <- logItem ("Successfully completed " ++ stp)
   return (responseLBS status202 [("Content-type", "application/json")] "")
 
-jsonResponse :: (Show a, ToJSON a) => a -> DeezNuts Response
+jsonResponse :: (Show a, ToJSON a) => a -> Environment Response
 jsonResponse x = do
   _ <- logItem ("Returning json response: " ++ show x)
   return (responseLBS status200 [("Content-type", "application/json")] (encode x))
 
-errorResponse :: String -> DeezNuts ErrorResponse
+
+-- TODO rename these
+errorResponse :: String -> Environment ErrorResponse
 errorResponse msg =  do
   (RequestState (i, stp, _ ,_,_)) <- get
   return $ ErrorResponse (show i) stp msg
 
-errorResponse' :: Error -> DeezNuts Response
+errorResponse' :: Error -> Environment Response
 errorResponse' e = do
   _ <- logItem "Returning error response: "
   return $ responseLBS (e.status) [("Content-type", "application/json")] (encode e.body)

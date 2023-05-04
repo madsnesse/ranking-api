@@ -9,7 +9,7 @@ import Database
 import Control.Monad.Reader (MonadReader (ask), ReaderT, MonadIO)
 import Control.Monad.RWS
 
-updateRankings :: Match -> DeezNuts ()
+updateRankings :: Match -> Environment ()
 updateRankings m = do
     -- p1 <- getPlayerById conn (m.playerOne)
     -- p2 <- getPlayerById conn (m.playerTwo)
