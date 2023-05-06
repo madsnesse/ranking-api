@@ -3,16 +3,27 @@
 {-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Requests (CreatePlayerRequest(..), CreateMatchRequest(..), CreateLeagueRequest(..), UpdateLeagueRequest(..)) where
 
 import GHC.Generics (Generic)
-import Data.Aeson (FromJSON)
+import Data.Aeson (FromJSON, parseJSON, (.:), withObject)
+import EmailUtils
 
 data CreatePlayerRequest = CreatePlayerRequest {
     name :: String,
     email :: String
-} deriving (Generic, FromJSON)
+} deriving (Generic)
+
+instance FromJSON CreatePlayerRequest where
+    parseJSON = withObject "CreatePlayerRequest" $ \v -> do
+        name <- v .: "name"
+        email <- v .: "email"
+        case parseEmail email of
+            Left err -> fail ("invalid email: " ++ email) 
+            Right _ -> return $ CreatePlayerRequest name email
+
 
 data CreateMatchRequest = CreateMatchRequest {
     leagueId :: Int,

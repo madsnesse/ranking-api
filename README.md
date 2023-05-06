@@ -33,19 +33,10 @@ builds the application
 then run 
 
 ```
-stack exec ranking-api-exe
+stack run
 ```
  to run application
 
-```
-stack test
-```
-to test
-
-```
-stack clean
-```
-to clean local compiler output
 ## Postman
 I have created a postman collection in `postman_collection.json` that cna be used to test the api
 ### Adding dependencies:

@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Database where
 import GHC.Int ( Int64 )
+import Database.PostgreSQL.Simple.FromRow ( field, FromRow(..) )
 import Database.PostgreSQL.Simple
     ( Only(Only),
       Connection,
@@ -67,10 +68,11 @@ getLeagueById' lid = do
         conn <- ask
         liftIO $ query conn "SELECT * FROM league WHERE id = ?" (Only lid)
 
-addPLayersInLeague' :: [(Int,Int,Int)] -> Environment Int64
-addPLayersInLeague' ps = do
+addPlayersInLeague' :: [(Int,Int,Int)] -> Environment Int64
+addPlayersInLeague' ps = do
         conn <- ask
-        liftIO $ executeMany conn "INSERT INTO playerleague values (?,?,?)" ps
+        _ <- logItem $ "Adding players to league" ++ show ps
+        liftIO $ executeMany conn "INSERT INTO playerleague values (?,?,?) ON CONFLICT DO UPDATE" ps
 
 updatePlayerInLeague' :: (Int,Int,Int) -> Environment [PlayerLeague]
 updatePlayerInLeague' (pid, lid, rating) = do
@@ -82,6 +84,11 @@ getPlayerInLeague' (p,l) = do
         conn <- ask
         liftIO $ query conn "SELECT * FROM playerleague WHERE player_id = ? AND league_id = ?" (p, l)
 
+getPlayersInLeague' :: Int -> Environment [Int]
+getPlayersInLeague' l = do
+        conn <- ask
+        liftIO $ query conn "SELECT player_id FROM playerleague WHERE league_id = ?" (Only l)
+        
 createMatch' :: CreateMatchRequest -> Environment [Match]
 createMatch' (CreateMatchRequest l p1 p2 s1 s2) = do
         conn <- ask
@@ -120,3 +127,7 @@ saveMatch' ::(Int,Int,Int,Int,Int) -> Environment [Match]
 saveMatch' m = do
         conn <- ask
         liftIO $ query conn "INSERT INTO match (league_id, player_id_one, player_id_two, score_one, score_two) values (?,?,?,?,?) RETURNING *" m
+
+
+instance FromRow Int where
+        fromRow = field
