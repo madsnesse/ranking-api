@@ -655,3 +655,389 @@
 [cb61981d-c89d-4fe7-beff-3a52d171e9a0, getMatchesInLeague]: "GET" ["league","10"] ""Getting matches in league: 10 from db
 [cb61981d-c89d-4fe7-beff-3a52d171e9a0, getMatchesInLeague]: "GET" ["league","10"] ""Returning json response: FullLeagueResponse {leagueId = 10, leagueName = "test league", ownerId = 23, players = [(23,996),(24,1004)], matches = [Match {matchId = 31, leagueId = 10, playerOne = 23, playerTwo = 24, scoreOne = 10, scoreTwo = 4},Match {matchId = 32, leagueId = 10, playerOne = 23, playerTwo = 24, scoreOne = 1, scoreTwo = 10}]}
 
+[57383b47-4586-4eb4-bf55-a428e4de3b55, initial]: "POST" ["player"] "{\n    \"name\":\"Rashawn\",\n    \"email\": \"Fletcher.King69@gmail.com\"\n}"Incoming request
+[57383b47-4586-4eb4-bf55-a428e4de3b55, initial]: "POST" ["player"] "{\n    \"name\":\"Rashawn\",\n    \"email\": \"Fletcher.King69@gmail.com\"\n}"Creating player
+[57383b47-4586-4eb4-bf55-a428e4de3b55, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Rashawn\",\n    \"email\": \"Fletcher.King69@gmail.com\"\n}"Getting player by email: Fletcher.King69@gmail.com from db
+[57383b47-4586-4eb4-bf55-a428e4de3b55, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Rashawn\",\n    \"email\": \"Fletcher.King69@gmail.com\"\n}"Creating player with username: Rashawn and email: Fletcher.King69@gmail.com
+[57383b47-4586-4eb4-bf55-a428e4de3b55, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Rashawn\",\n    \"email\": \"Fletcher.King69@gmail.com\"\n}"Returning json response: Player {playerId = 25, name = "Rashawn", email = "Fletcher.King69@gmail.com"}
+
+[f9ab546c-b9c6-46fd-8443-d3a52b3a0a80, initial]: "POST" ["player"] "{\n    \"name\":\"Rosamond\",\n    \"email\": \"Bobbie74@yahoo.com\"\n}"Incoming request
+[f9ab546c-b9c6-46fd-8443-d3a52b3a0a80, initial]: "POST" ["player"] "{\n    \"name\":\"Rosamond\",\n    \"email\": \"Bobbie74@yahoo.com\"\n}"Creating player
+[f9ab546c-b9c6-46fd-8443-d3a52b3a0a80, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Rosamond\",\n    \"email\": \"Bobbie74@yahoo.com\"\n}"Getting player by email: Bobbie74@yahoo.com from db
+[f9ab546c-b9c6-46fd-8443-d3a52b3a0a80, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Rosamond\",\n    \"email\": \"Bobbie74@yahoo.com\"\n}"Creating player with username: Rosamond and email: Bobbie74@yahoo.com
+[f9ab546c-b9c6-46fd-8443-d3a52b3a0a80, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Rosamond\",\n    \"email\": \"Bobbie74@yahoo.com\"\n}"Returning json response: Player {playerId = 26, name = "Rosamond", email = "Bobbie74@yahoo.com"}
+
+[9ab67ac5-0fe5-4598-b607-2e770a659648, initial]: "GET" ["player","Fletcher.King69@gmail.com"] ""Incoming request
+[9ab67ac5-0fe5-4598-b607-2e770a659648, initial]: "GET" ["player","Fletcher.King69@gmail.com"] ""Retrieving player with email: "Fletcher.King69@gmail.com"
+[9ab67ac5-0fe5-4598-b607-2e770a659648, getPlayer]: "GET" ["player","Fletcher.King69@gmail.com"] ""Fletcher.King69@gmail.com
+[9ab67ac5-0fe5-4598-b607-2e770a659648, retrieveFromDatabase]: "GET" ["player","Fletcher.King69@gmail.com"] ""Getting player by email: Fletcher.King69@gmail.com from db
+[9ab67ac5-0fe5-4598-b607-2e770a659648, retrieveFromDatabase]: "GET" ["player","Fletcher.King69@gmail.com"] ""Returning json response: Player {playerId = 25, name = "Rashawn", email = "Fletcher.King69@gmail.com"}
+
+[832b3319-6ec2-48b6-953c-6899b4df01d3, initial]: "GET" ["player","Bobbie74@yahoo.com"] ""Incoming request
+[832b3319-6ec2-48b6-953c-6899b4df01d3, initial]: "GET" ["player","Bobbie74@yahoo.com"] ""Retrieving player with email: "Bobbie74@yahoo.com"
+[832b3319-6ec2-48b6-953c-6899b4df01d3, getPlayer]: "GET" ["player","Bobbie74@yahoo.com"] ""Bobbie74@yahoo.com
+[832b3319-6ec2-48b6-953c-6899b4df01d3, retrieveFromDatabase]: "GET" ["player","Bobbie74@yahoo.com"] ""Getting player by email: Bobbie74@yahoo.com from db
+[832b3319-6ec2-48b6-953c-6899b4df01d3, retrieveFromDatabase]: "GET" ["player","Bobbie74@yahoo.com"] ""Returning json response: Player {playerId = 26, name = "Rosamond", email = "Bobbie74@yahoo.com"}
+
+[3c9fcafe-81b8-4db1-ba62-ec7bf071e31e, initial]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\":  25\n}"Incoming request
+[3c9fcafe-81b8-4db1-ba62-ec7bf071e31e, initial]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\":  25\n}"Creating league
+[3c9fcafe-81b8-4db1-ba62-ec7bf071e31e, checkValidRequestBody]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\":  25\n}"Creating league with name: test league and owner id: 25
+[3c9fcafe-81b8-4db1-ba62-ec7bf071e31e, checkValidRequestBody]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\":  25\n}"Returning json response: League {leagueId = 11, leagueName = "test league", ownerId = 25}
+
+[9ac3e1e9-9345-48d2-98e2-6db9b7e87d76, initial]: "PUT" ["league","11"] "{\n    \"players\": [25, 26]\n}"Incoming request
+[9ac3e1e9-9345-48d2-98e2-6db9b7e87d76, initial]: "PUT" ["league","11"] "{\n    \"players\": [25, 26]\n}"Updating league with id: "11"
+[9ac3e1e9-9345-48d2-98e2-6db9b7e87d76, decodeRequestBody]: "PUT" ["league","11"] "{\n    \"players\": [25, 26]\n}"Adding players to league[(25,11,1000),(26,11,1000)]
+[9ac3e1e9-9345-48d2-98e2-6db9b7e87d76, decodeRequestBody]: "PUT" ["league","11"] "{\n    \"players\": [25, 26]\n}"Successfully completed decodeRequestBody
+
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, initial]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Incoming request
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, initial]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Creating match
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting league by id: 11from db
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 25 in league: 11 from db
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 26 in league: 11 from db
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Creating match with league id: 11 player one id: 25 player two id: 26 score one: 10 score two: 4
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 25 in league: 11 from db
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 26 in league: 11 from db
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"The probability that p1 wins is: 0.5
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"The probability that p2 wins is: 0.5
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"player one wins 1025 975
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Updating player 25 in league: 11 with rating: 1025 in db
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Updating player 26 in league: 11 with rating: 975 in db
+[30380e51-a1ba-43b4-bfe8-a7b3c553bdd6, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Returning json response: Match {matchId = 33, leagueId = 11, playerOne = 25, playerTwo = 26, scoreOne = 10, scoreTwo = 4}
+
+[fba43ac1-b915-423f-9366-989f95c89535, initial]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Incoming request
+[fba43ac1-b915-423f-9366-989f95c89535, initial]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting league by id: 11from db
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 25 in league: 11 from db
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 26 in league: 11 from db
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match with league id: 11 player one id: 25 player two id: 26 score one: 1 score two: 10
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 25 in league: 11 from db
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 26 in league: 11 from db
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p1 wins is: 0.57146317
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p2 wins is: 0.4285369
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"player two wins 996 1004
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 25 in league: 11 with rating: 996 in db
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 26 in league: 11 with rating: 1004 in db
+[fba43ac1-b915-423f-9366-989f95c89535, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Returning json response: Match {matchId = 34, leagueId = 11, playerOne = 25, playerTwo = 26, scoreOne = 1, scoreTwo = 10}
+
+[161234dc-0f6c-446a-a3be-7f69affba377, initial]: "GET" ["league","11"] ""Incoming request
+[161234dc-0f6c-446a-a3be-7f69affba377, initial]: "GET" ["league","11"] ""Retrieving league with id: "11"
+[161234dc-0f6c-446a-a3be-7f69affba377, retrieveFromDatabase]: "GET" ["league","11"] ""Getting league by id: 11from db
+[161234dc-0f6c-446a-a3be-7f69affba377, getPlayersInLeague]: "GET" ["league","11"] ""Getting players in league: 11 from db
+[161234dc-0f6c-446a-a3be-7f69affba377, getMatchesInLeague]: "GET" ["league","11"] ""Getting matches in league: 11 from db
+[161234dc-0f6c-446a-a3be-7f69affba377, getMatchesInLeague]: "GET" ["league","11"] ""Returning json response: FullLeagueResponse {leagueId = 11, leagueName = "test league", ownerId = 25, players = [(25,996),(26,1004)], matches = [Match {matchId = 33, leagueId = 11, playerOne = 25, playerTwo = 26, scoreOne = 10, scoreTwo = 4},Match {matchId = 34, leagueId = 11, playerOne = 25, playerTwo = 26, scoreOne = 1, scoreTwo = 10}]}
+
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, initial]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Incoming request
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, initial]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting league by id: 11from db
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 25 in league: 11 from db
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 26 in league: 11 from db
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match with league id: 11 player one id: 25 player two id: 26 score one: 1 score two: 10
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 25 in league: 11 from db
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 26 in league: 11 from db
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p1 wins is: 0.4884891
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p2 wins is: 0.5115109
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"player two wins 972 1028
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 25 in league: 11 with rating: 972 in db
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 26 in league: 11 with rating: 1028 in db
+[1dbacd10-b29c-4ec0-a62e-27ae7c4a727e, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Returning json response: Match {matchId = 35, leagueId = 11, playerOne = 25, playerTwo = 26, scoreOne = 1, scoreTwo = 10}
+
+[f5550101-b9ef-43bb-973b-d3e497e29343, initial]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Incoming request
+[f5550101-b9ef-43bb-973b-d3e497e29343, initial]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting league by id: 11from db
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 25 in league: 11 from db
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 26 in league: 11 from db
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match with league id: 11 player one id: 25 player two id: 26 score one: 1 score two: 10
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 25 in league: 11 from db
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 26 in league: 11 from db
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p1 wins is: 0.4201002
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p2 wins is: 0.5798997
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"player two wins 951 1049
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 25 in league: 11 with rating: 951 in db
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 26 in league: 11 with rating: 1049 in db
+[f5550101-b9ef-43bb-973b-d3e497e29343, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 11,\n    \"playerOne\" : 25,\n    \"playerTwo\" : 26,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Returning json response: Match {matchId = 36, leagueId = 11, playerOne = 25, playerTwo = 26, scoreOne = 1, scoreTwo = 10}
+
+[7210d6ec-9c8d-4a3a-a63a-a0a627e6de2d, initial]: "GET" ["league","11"] ""Incoming request
+[7210d6ec-9c8d-4a3a-a63a-a0a627e6de2d, initial]: "GET" ["league","11"] ""Retrieving league with id: "11"
+[7210d6ec-9c8d-4a3a-a63a-a0a627e6de2d, retrieveFromDatabase]: "GET" ["league","11"] ""Getting league by id: 11from db
+[7210d6ec-9c8d-4a3a-a63a-a0a627e6de2d, getPlayersInLeague]: "GET" ["league","11"] ""Getting players in league: 11 from db
+[7210d6ec-9c8d-4a3a-a63a-a0a627e6de2d, getMatchesInLeague]: "GET" ["league","11"] ""Getting matches in league: 11 from db
+[7210d6ec-9c8d-4a3a-a63a-a0a627e6de2d, getMatchesInLeague]: "GET" ["league","11"] ""Returning json response: FullLeagueResponse {leagueId = 11, leagueName = "test league", ownerId = 25, players = [(25,951),(26,1049)], matches = [Match {matchId = 33, leagueId = 11, playerOne = 25, playerTwo = 26, scoreOne = 10, scoreTwo = 4},Match {matchId = 34, leagueId = 11, playerOne = 25, playerTwo = 26, scoreOne = 1, scoreTwo = 10},Match {matchId = 35, leagueId = 11, playerOne = 25, playerTwo = 26, scoreOne = 1, scoreTwo = 10},Match {matchId = 36, leagueId = 11, playerOne = 25, playerTwo = 26, scoreOne = 1, scoreTwo = 10}]}
+
+[034aa82b-6934-4eeb-afd4-896e04ffc53e, initial]: "POST" ["player"] "{\n    \"name\":\"Maudie\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Incoming request
+[034aa82b-6934-4eeb-afd4-896e04ffc53e, initial]: "POST" ["player"] "{\n    \"name\":\"Maudie\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Creating player
+[034aa82b-6934-4eeb-afd4-896e04ffc53e, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Maudie\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Getting player by email: Kaya.Collins@gmail.com from db
+[034aa82b-6934-4eeb-afd4-896e04ffc53e, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Maudie\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Creating player with username: Maudie and email: Kaya.Collins@gmail.com
+[034aa82b-6934-4eeb-afd4-896e04ffc53e, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Maudie\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Returning json response: Player {playerId = 27, name = "Maudie", email = "Kaya.Collins@gmail.com"}
+
+[01a3dde5-3755-4d61-b6a5-bc071cec55c3, initial]: "POST" ["player"] "{\n    \"name\":\"Tyshawn\",\n    \"email\": \"Yesenia29@gmail.com\"\n}"Incoming request
+[01a3dde5-3755-4d61-b6a5-bc071cec55c3, initial]: "POST" ["player"] "{\n    \"name\":\"Tyshawn\",\n    \"email\": \"Yesenia29@gmail.com\"\n}"Creating player
+[01a3dde5-3755-4d61-b6a5-bc071cec55c3, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Tyshawn\",\n    \"email\": \"Yesenia29@gmail.com\"\n}"Getting player by email: Yesenia29@gmail.com from db
+[01a3dde5-3755-4d61-b6a5-bc071cec55c3, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Tyshawn\",\n    \"email\": \"Yesenia29@gmail.com\"\n}"Creating player with username: Tyshawn and email: Yesenia29@gmail.com
+[01a3dde5-3755-4d61-b6a5-bc071cec55c3, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Tyshawn\",\n    \"email\": \"Yesenia29@gmail.com\"\n}"Returning json response: Player {playerId = 28, name = "Tyshawn", email = "Yesenia29@gmail.com"}
+
+[41919039-8038-4839-8330-fb120f72dbe9, initial]: "GET" ["player","Kaya.Collins@gmail.com"] ""Incoming request
+[41919039-8038-4839-8330-fb120f72dbe9, initial]: "GET" ["player","Kaya.Collins@gmail.com"] ""Retrieving player with email: "Kaya.Collins@gmail.com"
+[41919039-8038-4839-8330-fb120f72dbe9, getPlayer]: "GET" ["player","Kaya.Collins@gmail.com"] ""Kaya.Collins@gmail.com
+[41919039-8038-4839-8330-fb120f72dbe9, retrieveFromDatabase]: "GET" ["player","Kaya.Collins@gmail.com"] ""Getting player by email: Kaya.Collins@gmail.com from db
+[41919039-8038-4839-8330-fb120f72dbe9, retrieveFromDatabase]: "GET" ["player","Kaya.Collins@gmail.com"] ""Returning json response: Player {playerId = 27, name = "Maudie", email = "Kaya.Collins@gmail.com"}
+
+[eea32b86-2f02-4f90-bc6d-9df1d0f297f0, initial]: "GET" ["player","Yesenia29@gmail.com"] ""Incoming request
+[eea32b86-2f02-4f90-bc6d-9df1d0f297f0, initial]: "GET" ["player","Yesenia29@gmail.com"] ""Retrieving player with email: "Yesenia29@gmail.com"
+[eea32b86-2f02-4f90-bc6d-9df1d0f297f0, getPlayer]: "GET" ["player","Yesenia29@gmail.com"] ""Yesenia29@gmail.com
+[eea32b86-2f02-4f90-bc6d-9df1d0f297f0, retrieveFromDatabase]: "GET" ["player","Yesenia29@gmail.com"] ""Getting player by email: Yesenia29@gmail.com from db
+[eea32b86-2f02-4f90-bc6d-9df1d0f297f0, retrieveFromDatabase]: "GET" ["player","Yesenia29@gmail.com"] ""Returning json response: Player {playerId = 28, name = "Tyshawn", email = "Yesenia29@gmail.com"}
+
+[58f5ce3d-c9a6-4ca6-9f48-460b422c333f, initial]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\":  27\n}"Incoming request
+[58f5ce3d-c9a6-4ca6-9f48-460b422c333f, initial]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\":  27\n}"Creating league
+[58f5ce3d-c9a6-4ca6-9f48-460b422c333f, checkValidRequestBody]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\":  27\n}"Creating league with name: test league and owner id: 27
+[58f5ce3d-c9a6-4ca6-9f48-460b422c333f, checkValidRequestBody]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\":  27\n}"Returning json response: League {leagueId = 12, leagueName = "test league", ownerId = 27}
+
+[85e2bdc5-0212-407b-bf1d-ade83a65fc63, initial]: "PUT" ["league","12"] "{\n    \"players\": [27, 28]\n}"Incoming request
+[85e2bdc5-0212-407b-bf1d-ade83a65fc63, initial]: "PUT" ["league","12"] "{\n    \"players\": [27, 28]\n}"Updating league with id: "12"
+[85e2bdc5-0212-407b-bf1d-ade83a65fc63, decodeRequestBody]: "PUT" ["league","12"] "{\n    \"players\": [27, 28]\n}"Adding players to league[(27,12,1000),(28,12,1000)]
+[85e2bdc5-0212-407b-bf1d-ade83a65fc63, decodeRequestBody]: "PUT" ["league","12"] "{\n    \"players\": [27, 28]\n}"Successfully completed decodeRequestBody
+
+[5ddc8175-5231-4a2d-bcab-196855b89183, initial]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Incoming request
+[5ddc8175-5231-4a2d-bcab-196855b89183, initial]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Creating match
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting league by id: 12from db
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 27 in league: 12 from db
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 28 in league: 12 from db
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Creating match with league id: 12 player one id: 27 player two id: 28 score one: 10 score two: 4
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 27 in league: 12 from db
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 28 in league: 12 from db
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"The probability that p1 wins is: 0.5
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"The probability that p2 wins is: 0.5
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"player one wins 1025 975
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Updating player 27 in league: 12 with rating: 1025 in db
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Updating player 28 in league: 12 with rating: 975 in db
+[5ddc8175-5231-4a2d-bcab-196855b89183, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Returning json response: Match {matchId = 37, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 10, scoreTwo = 4}
+
+[d29a9b68-12ef-4d25-afdf-777551f15048, initial]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Incoming request
+[d29a9b68-12ef-4d25-afdf-777551f15048, initial]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting league by id: 12from db
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 27 in league: 12 from db
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 28 in league: 12 from db
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match with league id: 12 player one id: 27 player two id: 28 score one: 1 score two: 10
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 27 in league: 12 from db
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 28 in league: 12 from db
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p1 wins is: 0.57146317
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p2 wins is: 0.4285369
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"player two wins 996 1004
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 27 in league: 12 with rating: 996 in db
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 28 in league: 12 with rating: 1004 in db
+[d29a9b68-12ef-4d25-afdf-777551f15048, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Returning json response: Match {matchId = 38, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 1, scoreTwo = 10}
+
+[11c20982-b396-407c-94aa-dd42f011b790, initial]: "GET" ["league","12"] ""Incoming request
+[11c20982-b396-407c-94aa-dd42f011b790, initial]: "GET" ["league","12"] ""Retrieving league with id: "12"
+[11c20982-b396-407c-94aa-dd42f011b790, retrieveFromDatabase]: "GET" ["league","12"] ""Getting league by id: 12from db
+[11c20982-b396-407c-94aa-dd42f011b790, getPlayersInLeague]: "GET" ["league","12"] ""Getting players in league: 12 from db
+[11c20982-b396-407c-94aa-dd42f011b790, getMatchesInLeague]: "GET" ["league","12"] ""Getting matches in league: 12 from db
+[11c20982-b396-407c-94aa-dd42f011b790, getMatchesInLeague]: "GET" ["league","12"] ""Returning json response: FullLeagueResponse {leagueId = 12, leagueName = "test league", ownerId = 27, players = [(27,996),(28,1004)], matches = [Match {matchId = 37, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 10, scoreTwo = 4},Match {matchId = 38, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 1, scoreTwo = 10}]}
+
+[349a7ad8-43fe-4391-9b48-d167aaee923d, initial]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Incoming request
+[349a7ad8-43fe-4391-9b48-d167aaee923d, initial]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting league by id: 12from db
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 27 in league: 12 from db
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 28 in league: 12 from db
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match with league id: 12 player one id: 27 player two id: 28 score one: 1 score two: 10
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 27 in league: 12 from db
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 28 in league: 12 from db
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p1 wins is: 0.4884891
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p2 wins is: 0.5115109
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"player two wins 972 1028
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 27 in league: 12 with rating: 972 in db
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 28 in league: 12 with rating: 1028 in db
+[349a7ad8-43fe-4391-9b48-d167aaee923d, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Returning json response: Match {matchId = 39, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 1, scoreTwo = 10}
+
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, initial]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Incoming request
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, initial]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting league by id: 12from db
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 27 in league: 12 from db
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 28 in league: 12 from db
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match with league id: 12 player one id: 27 player two id: 28 score one: 1 score two: 10
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 27 in league: 12 from db
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 28 in league: 12 from db
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p1 wins is: 0.4201002
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p2 wins is: 0.5798997
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"player two wins 951 1049
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 27 in league: 12 with rating: 951 in db
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 28 in league: 12 with rating: 1049 in db
+[dcdce1c4-01a7-4389-9cdf-08e7eff545ea, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Returning json response: Match {matchId = 40, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 1, scoreTwo = 10}
+
+[84201061-e584-4529-bc4f-658e3ed046c2, initial]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Incoming request
+[84201061-e584-4529-bc4f-658e3ed046c2, initial]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting league by id: 12from db
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 27 in league: 12 from db
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 28 in league: 12 from db
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Creating match with league id: 12 player one id: 27 player two id: 28 score one: 1 score two: 10
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 27 in league: 12 from db
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Getting player 28 in league: 12 from db
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p1 wins is: 0.36259162
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"The probability that p2 wins is: 0.6374084
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"player two wins 933 1067
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 27 in league: 12 with rating: 933 in db
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Updating player 28 in league: 12 with rating: 1067 in db
+[84201061-e584-4529-bc4f-658e3ed046c2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 12,\n    \"playerOne\" : 27,\n    \"playerTwo\" : 28,\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}"Returning json response: Match {matchId = 41, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 1, scoreTwo = 10}
+
+[05844322-4adf-44eb-adc3-bc68d079dd9a, initial]: "GET" ["league","12"] ""Incoming request
+[05844322-4adf-44eb-adc3-bc68d079dd9a, initial]: "GET" ["league","12"] ""Retrieving league with id: "12"
+[05844322-4adf-44eb-adc3-bc68d079dd9a, retrieveFromDatabase]: "GET" ["league","12"] ""Getting league by id: 12from db
+[05844322-4adf-44eb-adc3-bc68d079dd9a, getPlayersInLeague]: "GET" ["league","12"] ""Getting players in league: 12 from db
+[05844322-4adf-44eb-adc3-bc68d079dd9a, getMatchesInLeague]: "GET" ["league","12"] ""Getting matches in league: 12 from db
+[05844322-4adf-44eb-adc3-bc68d079dd9a, getMatchesInLeague]: "GET" ["league","12"] ""Returning json response: FullLeagueResponse {leagueId = 12, leagueName = "test league", ownerId = 27, players = [(27,933),(28,1067)], matches = [Match {matchId = 37, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 10, scoreTwo = 4},Match {matchId = 38, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 1, scoreTwo = 10},Match {matchId = 39, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 1, scoreTwo = 10},Match {matchId = 40, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 1, scoreTwo = 10},Match {matchId = 41, leagueId = 12, playerOne = 27, playerTwo = 28, scoreOne = 1, scoreTwo = 10}]}
+
+[ddc99630-0538-48ea-93d1-4c2e14e4ad8c, initial]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Incoming request
+[ddc99630-0538-48ea-93d1-4c2e14e4ad8c, initial]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Creating player
+[ddc99630-0538-48ea-93d1-4c2e14e4ad8c, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Getting player by email: Milan.Berge@hotmail.com from db
+[ddc99630-0538-48ea-93d1-4c2e14e4ad8c, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Creating player with username: Oliver and email: Milan.Berge@hotmail.com
+[ddc99630-0538-48ea-93d1-4c2e14e4ad8c, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Returning json response: Player {playerId = 1, name = "Oliver", email = "Milan.Berge@hotmail.com"}
+
+[6a25ed77-f8c9-4940-864b-b909dd7da471, initial]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Incoming request
+[6a25ed77-f8c9-4940-864b-b909dd7da471, initial]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Creating player
+[6a25ed77-f8c9-4940-864b-b909dd7da471, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Getting player by email: Kaya.Collins@gmail.com from db
+[6a25ed77-f8c9-4940-864b-b909dd7da471, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Creating player with username: Steve and email: Kaya.Collins@gmail.com
+[6a25ed77-f8c9-4940-864b-b909dd7da471, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Returning json response: Player {playerId = 2, name = "Steve", email = "Kaya.Collins@gmail.com"}
+
+[8896d50b-1222-4c14-8a4d-f345b5423b49, initial]: "GET" ["player","Milan.Berge@hotmail.com"] ""Incoming request
+[8896d50b-1222-4c14-8a4d-f345b5423b49, initial]: "GET" ["player","Milan.Berge@hotmail.com"] ""Retrieving player with email: "Milan.Berge@hotmail.com"
+[8896d50b-1222-4c14-8a4d-f345b5423b49, getPlayer]: "GET" ["player","Milan.Berge@hotmail.com"] ""Milan.Berge@hotmail.com
+[8896d50b-1222-4c14-8a4d-f345b5423b49, retrieveFromDatabase]: "GET" ["player","Milan.Berge@hotmail.com"] ""Getting player by email: Milan.Berge@hotmail.com from db
+[8896d50b-1222-4c14-8a4d-f345b5423b49, retrieveFromDatabase]: "GET" ["player","Milan.Berge@hotmail.com"] ""Returning json response: Player {playerId = 1, name = "Oliver", email = "Milan.Berge@hotmail.com"}
+
+[99dc9920-13a6-48e9-9b6f-7244e03cba16, initial]: "GET" ["player","Kaya.Collins@gmail.com"] ""Incoming request
+[99dc9920-13a6-48e9-9b6f-7244e03cba16, initial]: "GET" ["player","Kaya.Collins@gmail.com"] ""Retrieving player with email: "Kaya.Collins@gmail.com"
+[99dc9920-13a6-48e9-9b6f-7244e03cba16, getPlayer]: "GET" ["player","Kaya.Collins@gmail.com"] ""Kaya.Collins@gmail.com
+[99dc9920-13a6-48e9-9b6f-7244e03cba16, retrieveFromDatabase]: "GET" ["player","Kaya.Collins@gmail.com"] ""Getting player by email: Kaya.Collins@gmail.com from db
+[99dc9920-13a6-48e9-9b6f-7244e03cba16, retrieveFromDatabase]: "GET" ["player","Kaya.Collins@gmail.com"] ""Returning json response: Player {playerId = 2, name = "Steve", email = "Kaya.Collins@gmail.com"}
+
+[2b7cc221-c4c1-4e1a-9934-e40cde86cabc, initial]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Incoming request
+[2b7cc221-c4c1-4e1a-9934-e40cde86cabc, initial]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Creating league
+[2b7cc221-c4c1-4e1a-9934-e40cde86cabc, checkValidRequestBody]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Creating league with name: test league and owner id: 1
+[2b7cc221-c4c1-4e1a-9934-e40cde86cabc, checkValidRequestBody]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Returning json response: League {leagueId = 1, leagueName = "test league", ownerId = 1}
+
+[6830daff-f85d-46bb-a49e-4229700d5ea2, initial]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Incoming request
+[6830daff-f85d-46bb-a49e-4229700d5ea2, initial]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Creating match
+[6830daff-f85d-46bb-a49e-4229700d5ea2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting league by id: 1from db
+[6830daff-f85d-46bb-a49e-4229700d5ea2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 1 in league: 1 from db
+[6830daff-f85d-46bb-a49e-4229700d5ea2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 2 in league: 1 from db
+[6830daff-f85d-46bb-a49e-4229700d5ea2, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Returning error response: 
+
+[bfad9c5e-8d8a-4053-a261-41ebcb43566a, initial]: "GET" ["league","1"] ""Incoming request
+[bfad9c5e-8d8a-4053-a261-41ebcb43566a, initial]: "GET" ["league","1"] ""Retrieving league with id: "1"
+[bfad9c5e-8d8a-4053-a261-41ebcb43566a, retrieveFromDatabase]: "GET" ["league","1"] ""Getting league by id: 1from db
+[bfad9c5e-8d8a-4053-a261-41ebcb43566a, getPlayersInLeague]: "GET" ["league","1"] ""Getting players in league: 1 from db
+[bfad9c5e-8d8a-4053-a261-41ebcb43566a, getMatchesInLeague]: "GET" ["league","1"] ""Getting matches in league: 1 from db
+[bfad9c5e-8d8a-4053-a261-41ebcb43566a, getMatchesInLeague]: "GET" ["league","1"] ""Returning json response: FullLeagueResponse {leagueId = 1, leagueName = "test league", ownerId = 1, players = [], matches = []}
+
+[d6490a78-2206-4273-b099-b918c4498c8d, initial]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Incoming request
+[d6490a78-2206-4273-b099-b918c4498c8d, initial]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Creating player
+[d6490a78-2206-4273-b099-b918c4498c8d, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Getting player by email: Milan.Berge@hotmail.com from db
+[d6490a78-2206-4273-b099-b918c4498c8d, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Creating player with username: Oliver and email: Milan.Berge@hotmail.com
+[d6490a78-2206-4273-b099-b918c4498c8d, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Returning json response: Player {playerId = 1, name = "Oliver", email = "Milan.Berge@hotmail.com"}
+
+[1ad34abe-14c6-4500-aca6-6d8f3743196f, initial]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Incoming request
+[1ad34abe-14c6-4500-aca6-6d8f3743196f, initial]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Creating player
+[1ad34abe-14c6-4500-aca6-6d8f3743196f, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Getting player by email: Kaya.Collins@gmail.com from db
+[1ad34abe-14c6-4500-aca6-6d8f3743196f, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Creating player with username: Steve and email: Kaya.Collins@gmail.com
+[1ad34abe-14c6-4500-aca6-6d8f3743196f, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Returning json response: Player {playerId = 2, name = "Steve", email = "Kaya.Collins@gmail.com"}
+
+[915650ad-52af-4140-9504-3d9d8cd8bc5b, initial]: "GET" ["player","Milan.Berge@hotmail.com"] ""Incoming request
+[915650ad-52af-4140-9504-3d9d8cd8bc5b, initial]: "GET" ["player","Milan.Berge@hotmail.com"] ""Retrieving player with email: "Milan.Berge@hotmail.com"
+[915650ad-52af-4140-9504-3d9d8cd8bc5b, getPlayer]: "GET" ["player","Milan.Berge@hotmail.com"] ""Milan.Berge@hotmail.com
+[915650ad-52af-4140-9504-3d9d8cd8bc5b, retrieveFromDatabase]: "GET" ["player","Milan.Berge@hotmail.com"] ""Getting player by email: Milan.Berge@hotmail.com from db
+[915650ad-52af-4140-9504-3d9d8cd8bc5b, retrieveFromDatabase]: "GET" ["player","Milan.Berge@hotmail.com"] ""Returning json response: Player {playerId = 1, name = "Oliver", email = "Milan.Berge@hotmail.com"}
+
+[a039de7f-8121-4f08-8fa7-98500b8083d1, initial]: "GET" ["player","Kaya.Collins@gmail.com"] ""Incoming request
+[a039de7f-8121-4f08-8fa7-98500b8083d1, initial]: "GET" ["player","Kaya.Collins@gmail.com"] ""Retrieving player with email: "Kaya.Collins@gmail.com"
+[a039de7f-8121-4f08-8fa7-98500b8083d1, getPlayer]: "GET" ["player","Kaya.Collins@gmail.com"] ""Kaya.Collins@gmail.com
+[a039de7f-8121-4f08-8fa7-98500b8083d1, retrieveFromDatabase]: "GET" ["player","Kaya.Collins@gmail.com"] ""Getting player by email: Kaya.Collins@gmail.com from db
+[a039de7f-8121-4f08-8fa7-98500b8083d1, retrieveFromDatabase]: "GET" ["player","Kaya.Collins@gmail.com"] ""Returning json response: Player {playerId = 2, name = "Steve", email = "Kaya.Collins@gmail.com"}
+
+[b3323c83-bb5f-42d0-8734-7a598a2bce20, initial]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Incoming request
+[b3323c83-bb5f-42d0-8734-7a598a2bce20, initial]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Creating league
+[b3323c83-bb5f-42d0-8734-7a598a2bce20, checkValidRequestBody]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Creating league with name: test league and owner id: 1
+[b3323c83-bb5f-42d0-8734-7a598a2bce20, checkValidRequestBody]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Returning json response: League {leagueId = 1, leagueName = "test league", ownerId = 1}
+
+[ca9154eb-1075-41b2-ab5b-a1b78a6918fb, initial]: "PUT" ["league","1"] "{\n    \"players\": [1, 2]\n}"Incoming request
+[ca9154eb-1075-41b2-ab5b-a1b78a6918fb, initial]: "PUT" ["league","1"] "{\n    \"players\": [1, 2]\n}"Updating league with id: "1"
+[ca9154eb-1075-41b2-ab5b-a1b78a6918fb, decodeRequestBody]: "PUT" ["league","1"] "{\n    \"players\": [1, 2]\n}"Adding players to league[(1,1,1000),(2,1,1000)]
+[ca9154eb-1075-41b2-ab5b-a1b78a6918fb, decodeRequestBody]: "PUT" ["league","1"] "{\n    \"players\": [1, 2]\n}"Successfully completed decodeRequestBody
+
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, initial]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Incoming request
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, initial]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Creating match
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting league by id: 1from db
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 1 in league: 1 from db
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 2 in league: 1 from db
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Creating match with league id: 1 player one id: 1 player two id: 2 score one: 10 score two: 4
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 1 in league: 1 from db
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 2 in league: 1 from db
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"The probability that p1 wins is: 0.5
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"The probability that p2 wins is: 0.5
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"player one wins 1025 975
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Updating player 1 in league: 1 with rating: 1025 in db
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Updating player 2 in league: 1 with rating: 975 in db
+[0ec78153-f711-4113-8c16-d3dc1f2330d3, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Returning json response: Match {matchId = 1, leagueId = 1, playerOne = 1, playerTwo = 2, scoreOne = 10, scoreTwo = 4}
+
+[03bf828f-fe99-41bc-bfd1-e195520c1639, initial]: "GET" ["league","1"] ""Incoming request
+[03bf828f-fe99-41bc-bfd1-e195520c1639, initial]: "GET" ["league","1"] ""Retrieving league with id: "1"
+[03bf828f-fe99-41bc-bfd1-e195520c1639, retrieveFromDatabase]: "GET" ["league","1"] ""Getting league by id: 1from db
+[03bf828f-fe99-41bc-bfd1-e195520c1639, getPlayersInLeague]: "GET" ["league","1"] ""Getting players in league: 1 from db
+[03bf828f-fe99-41bc-bfd1-e195520c1639, getMatchesInLeague]: "GET" ["league","1"] ""Getting matches in league: 1 from db
+[03bf828f-fe99-41bc-bfd1-e195520c1639, getMatchesInLeague]: "GET" ["league","1"] ""Returning json response: FullLeagueResponse {leagueId = 1, leagueName = "test league", ownerId = 1, players = [(1,1025),(2,975)], matches = [Match {matchId = 1, leagueId = 1, playerOne = 1, playerTwo = 2, scoreOne = 10, scoreTwo = 4}]}
+
+[69db671b-4302-4d42-b1d9-51df78021a2b, initial]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Incoming request
+[69db671b-4302-4d42-b1d9-51df78021a2b, initial]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Creating player
+[69db671b-4302-4d42-b1d9-51df78021a2b, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Getting player by email: Milan.Berge@hotmail.com from db
+[69db671b-4302-4d42-b1d9-51df78021a2b, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Creating player with username: Oliver and email: Milan.Berge@hotmail.com
+[69db671b-4302-4d42-b1d9-51df78021a2b, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Oliver\",\n    \"email\": \"Milan.Berge@hotmail.com\"\n}"Returning json response: Player {playerId = 1, name = "Oliver", email = "Milan.Berge@hotmail.com"}
+
+[f1791d50-0079-4e9b-9fb7-0d8be2df9a02, initial]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Incoming request
+[f1791d50-0079-4e9b-9fb7-0d8be2df9a02, initial]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Creating player
+[f1791d50-0079-4e9b-9fb7-0d8be2df9a02, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Getting player by email: Kaya.Collins@gmail.com from db
+[f1791d50-0079-4e9b-9fb7-0d8be2df9a02, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Creating player with username: Steve and email: Kaya.Collins@gmail.com
+[f1791d50-0079-4e9b-9fb7-0d8be2df9a02, checkIfExistsInDB]: "POST" ["player"] "{\n    \"name\":\"Steve\",\n    \"email\": \"Kaya.Collins@gmail.com\"\n}"Returning json response: Player {playerId = 2, name = "Steve", email = "Kaya.Collins@gmail.com"}
+
+[8c4d054d-186f-4540-80e0-0b9c490c7f62, initial]: "GET" ["player","Milan.Berge@hotmail.com"] ""Incoming request
+[8c4d054d-186f-4540-80e0-0b9c490c7f62, initial]: "GET" ["player","Milan.Berge@hotmail.com"] ""Retrieving player with email: "Milan.Berge@hotmail.com"
+[8c4d054d-186f-4540-80e0-0b9c490c7f62, getPlayer]: "GET" ["player","Milan.Berge@hotmail.com"] ""Milan.Berge@hotmail.com
+[8c4d054d-186f-4540-80e0-0b9c490c7f62, retrieveFromDatabase]: "GET" ["player","Milan.Berge@hotmail.com"] ""Getting player by email: Milan.Berge@hotmail.com from db
+[8c4d054d-186f-4540-80e0-0b9c490c7f62, retrieveFromDatabase]: "GET" ["player","Milan.Berge@hotmail.com"] ""Returning json response: Player {playerId = 1, name = "Oliver", email = "Milan.Berge@hotmail.com"}
+
+[c4e52f61-2805-4ea3-b433-3fa335244bc8, initial]: "GET" ["player","Kaya.Collins@gmail.com"] ""Incoming request
+[c4e52f61-2805-4ea3-b433-3fa335244bc8, initial]: "GET" ["player","Kaya.Collins@gmail.com"] ""Retrieving player with email: "Kaya.Collins@gmail.com"
+[c4e52f61-2805-4ea3-b433-3fa335244bc8, getPlayer]: "GET" ["player","Kaya.Collins@gmail.com"] ""Kaya.Collins@gmail.com
+[c4e52f61-2805-4ea3-b433-3fa335244bc8, retrieveFromDatabase]: "GET" ["player","Kaya.Collins@gmail.com"] ""Getting player by email: Kaya.Collins@gmail.com from db
+[c4e52f61-2805-4ea3-b433-3fa335244bc8, retrieveFromDatabase]: "GET" ["player","Kaya.Collins@gmail.com"] ""Returning json response: Player {playerId = 2, name = "Steve", email = "Kaya.Collins@gmail.com"}
+
+[68ee1700-2ed8-449e-89e9-33a53b4bd314, initial]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Incoming request
+[68ee1700-2ed8-449e-89e9-33a53b4bd314, initial]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Creating league
+[68ee1700-2ed8-449e-89e9-33a53b4bd314, checkValidRequestBody]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Creating league with name: test league and owner id: 1
+[68ee1700-2ed8-449e-89e9-33a53b4bd314, checkValidRequestBody]: "POST" ["league"] "{\n    \"leagueName\": \"test league\",\n    \"ownerId\": 1\n}"Returning json response: League {leagueId = 1, leagueName = "test league", ownerId = 1}
+
+[4a7eca31-a02a-4928-89b3-da4dc53e039d, initial]: "PUT" ["league","1"] "{\n    \"players\": [1, 2]\n}"Incoming request
+[4a7eca31-a02a-4928-89b3-da4dc53e039d, initial]: "PUT" ["league","1"] "{\n    \"players\": [1, 2]\n}"Updating league with id: "1"
+[4a7eca31-a02a-4928-89b3-da4dc53e039d, decodeRequestBody]: "PUT" ["league","1"] "{\n    \"players\": [1, 2]\n}"Adding players to league[(1,1,1000),(2,1,1000)]
+[4a7eca31-a02a-4928-89b3-da4dc53e039d, decodeRequestBody]: "PUT" ["league","1"] "{\n    \"players\": [1, 2]\n}"Successfully completed decodeRequestBody
+
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, initial]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Incoming request
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, initial]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Creating match
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting league by id: 1from db
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 1 in league: 1 from db
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 2 in league: 1 from db
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Creating match with league id: 1 player one id: 1 player two id: 2 score one: 10 score two: 4
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 1 in league: 1 from db
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Getting player 2 in league: 1 from db
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"The probability that p1 wins is: 0.5
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"The probability that p2 wins is: 0.5
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"player one wins 1025 975
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Updating player 1 in league: 1 with rating: 1025 in db
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Updating player 2 in league: 1 with rating: 975 in db
+[de127b56-ce6b-4e01-b261-a1cfe56c1431, checkIfExistsInDB]: "POST" ["match"] "{\n    \"leagueId\" : 1,\n    \"playerOne\" : 1,\n    \"playerTwo\" : 2,\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}"Returning json response: Match {matchId = 1, leagueId = 1, playerOne = 1, playerTwo = 2, scoreOne = 10, scoreTwo = 4}
+
+[523bd72f-ab75-4f33-9d39-822a412ccda0, initial]: "GET" ["league","1"] ""Incoming request
+[523bd72f-ab75-4f33-9d39-822a412ccda0, initial]: "GET" ["league","1"] ""Retrieving league with id: "1"
+[523bd72f-ab75-4f33-9d39-822a412ccda0, retrieveFromDatabase]: "GET" ["league","1"] ""Getting league by id: 1from db
+[523bd72f-ab75-4f33-9d39-822a412ccda0, getPlayersInLeague]: "GET" ["league","1"] ""Getting players in league: 1 from db
+[523bd72f-ab75-4f33-9d39-822a412ccda0, getMatchesInLeague]: "GET" ["league","1"] ""Getting matches in league: 1 from db
+[523bd72f-ab75-4f33-9d39-822a412ccda0, getMatchesInLeague]: "GET" ["league","1"] ""Returning json response: FullLeagueResponse {leagueId = 1, leagueName = "test league", ownerId = 1, players = [(1,1025),(2,975)], matches = [Match {matchId = 1, leagueId = 1, playerOne = 1, playerTwo = 2, scoreOne = 10, scoreTwo = 4}]}
+

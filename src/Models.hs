@@ -31,7 +31,7 @@ data League = League { leagueId:: Int,  leagueName :: String, ownerId :: Int }
   deriving (Generic, FromRow, Show, ToJSON)
 
 data PlayerLeague = PlayerLeague { playerId :: Int, leagueId :: Int, rating :: Int }
-  deriving (Generic, FromRow, Show, ToJSON)
+  deriving (Generic, FromRow, Show)
 
 instance ToRow League where
   toRow l = [toField (l.leagueId), toField (l.leagueName), toField (l.ownerId)]

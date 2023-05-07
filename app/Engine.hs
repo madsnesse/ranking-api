@@ -5,9 +5,9 @@ module Engine (updateRankings) where
 import Models
 import Database
 
+-- Calculate ranking based on match and update database
 updateRankings :: Match -> Environment ()
 updateRankings m = do
-    --TODO fix this
     pil <- getPlayerInLeague (m.playerOne, m.leagueId)
     let r1 = rating (head pil)
 
