@@ -1,0 +1,316 @@
+{
+	"info": {
+		"_postman_id": "21538eda-19ff-4fde-bed5-d87a93d72b1d",
+		"name": "Ranking api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create player 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.globals.set(\"playerIdOne\", jsonData.playerId);",
+							"",
+							"pm.globals.set(\"emailOne\", jsonData.email);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomFirstName}}\",\n    \"email\": \"{{$randomEmail}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/player",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create player 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.globals.set(\"playerIdTwo\", jsonData.playerId);",
+							"",
+							"pm.globals.set(\"emailTwo\", jsonData.email);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomFirstName}}\",\n    \"email\": \"{{$randomEmail}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/player",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get player 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/player/{{emailOne}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"{{emailOne}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get player 2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/player/{{emailTwo}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"{{emailTwo}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create league, p1 is owner",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.globals.set(\"leagueId\", jsonData.leagueId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"leagueName\": \"test league\",\n    \"ownerId\":  {{playerIdOne}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/league",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"league"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add players to league",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"players\": [{{playerIdOne}}, {{playerIdTwo}}]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/league/{{leagueId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"league",
+						"{{leagueId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create match, p1 wins",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.globals.set(\"leagueId\", jsonData.leagueId);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"leagueId\" : {{leagueId}},\n    \"playerOne\" : {{playerIdOne}},\n    \"playerTwo\" : {{playerIdTwo}},\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/match",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"match"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create match, p2 wins",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.globals.set(\"leagueId\", jsonData.leagueId);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"leagueId\" : {{leagueId}},\n    \"playerOne\" : {{playerIdOne}},\n    \"playerTwo\" : {{playerIdTwo}},\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/match",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"match"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get league",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/league/{{leagueId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"league",
+						"{{leagueId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

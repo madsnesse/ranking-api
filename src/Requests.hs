@@ -2,27 +2,27 @@
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE OverloadedLabels #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Requests (CreatePlayerRequest(..), CreateMatchRequest(..), CreateLeagueRequest(..), UpdateLeagueRequest(..)) where
 
+import EmailUtils (parseEmail)
 import GHC.Generics (Generic)
 import Data.Aeson (FromJSON, parseJSON, (.:), withObject)
-import EmailUtils
 
 data CreatePlayerRequest = CreatePlayerRequest {
     name :: String,
     email :: String
 } deriving (Generic)
 
+-- parse JSON to request, gives error if email is incorrectly formatted according to parser from EmailUtils
 instance FromJSON CreatePlayerRequest where
     parseJSON = withObject "CreatePlayerRequest" $ \v -> do
-        name <- v .: "name"
-        email <- v .: "email"
-        case parseEmail email of
-            Left err -> fail ("invalid email: " ++ email) 
-            Right _ -> return $ CreatePlayerRequest name email
+        nme <- v .: "name"
+        eml <- v .: "email"
+        case parseEmail eml of
+            Left _ -> fail ("invalid email: " ++ eml) 
+            Right _ -> return $ CreatePlayerRequest nme eml
 
 
 data CreateMatchRequest = CreateMatchRequest {
@@ -42,10 +42,3 @@ data CreateLeagueRequest = CreateLeagueRequest {
 data UpdateLeagueRequest = UpdateLeagueRequest {
     players:: [Int]
 } deriving (Generic, FromJSON)
-
-data RequestInput = IntInput Int | 
-                    StringInput String | 
-                    CreatePlayerInput CreatePlayerRequest | 
-                    CreateMatchInput CreateMatchRequest | 
-                    CreateLeagueInput CreateLeagueRequest | 
-                    UpdateLeagueInput UpdateLeagueRequest
