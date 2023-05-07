@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "1ca984a6-28af-4e1b-8c9f-647e024d80c6",
+		"_postman_id": "21538eda-19ff-4fde-bed5-d87a93d72b1d",
 		"name": "Ranking api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "create new player",
+			"name": "Create player 1",
 			"event": [
 				{
 					"listen": "test",
@@ -15,9 +15,9 @@
 							"",
 							"var jsonData = pm.response.json();",
 							"",
-							"pm.globals.set(\"playerId\", jsonData.playerId);",
+							"pm.globals.set(\"playerIdOne\", jsonData.playerId);",
 							"",
-							"pm.globals.set(\"email\", jsonData.email);"
+							"pm.globals.set(\"emailOne\", jsonData.email);"
 						],
 						"type": "text/javascript"
 					}
@@ -28,7 +28,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"{{$randomFirstName}}\",\n    \"email\":\"{{$randomEmail}}\"\n}",
+					"raw": "{\n    \"name\":\"{{$randomFirstName}}\",\n    \"email\": \"{{$randomEmail}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -49,51 +49,189 @@
 			"response": []
 		},
 		{
-			"name": "get player",
+			"name": "Create player 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.globals.set(\"playerIdTwo\", jsonData.playerId);",
+							"",
+							"pm.globals.set(\"emailTwo\", jsonData.email);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomFirstName}}\",\n    \"email\": \"{{$randomEmail}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/player",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get player 1",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/player/{{email}}",
+					"raw": "localhost:8080/player/{{emailOne}}",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"player",
-						"{{email}}"
+						"{{emailOne}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "get match",
+			"name": "Get player 2",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/match/{{matchId}}",
+					"raw": "localhost:8080/player/{{emailTwo}}",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"match",
-						"{{matchId}}"
+						"player",
+						"{{emailTwo}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "create match",
+			"name": "create league, p1 is owner",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.globals.set(\"leagueId\", jsonData.leagueId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"leagueId\" : 1,\n    \"player_one\" : 1,\n    \"player_two\" : 2,\n    \"score_one\" : 10,\n    \"score_two\" : 4\n}",
+					"raw": "{\n    \"leagueName\": \"test league\",\n    \"ownerId\":  {{playerIdOne}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/league",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"league"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add players to league",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"players\": [{{playerIdOne}}, {{playerIdTwo}}]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/league/{{leagueId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"league",
+						"{{leagueId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create match, p1 wins",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.globals.set(\"leagueId\", jsonData.leagueId);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"leagueId\" : {{leagueId}},\n    \"playerOne\" : {{playerIdOne}},\n    \"playerTwo\" : {{playerIdTwo}},\n    \"scoreOne\" : 10,\n    \"scoreTwo\" : 4\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -114,7 +252,7 @@
 			"response": []
 		},
 		{
-			"name": "create league",
+			"name": "create match, p2 wins",
 			"event": [
 				{
 					"listen": "test",
@@ -123,7 +261,8 @@
 							"",
 							"var jsonData = pm.response.json();",
 							"",
-							"pm.globals.set(\"leagueId\", jsonData.leagueId);"
+							"pm.globals.set(\"leagueId\", jsonData.leagueId);",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -134,7 +273,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"leagueName'\":\"test league\",\n    \"ownerId'\":  {{playerId}}\n}",
+					"raw": "{\n    \"leagueId\" : {{leagueId}},\n    \"playerOne\" : {{playerIdOne}},\n    \"playerTwo\" : {{playerIdTwo}},\n    \"scoreOne\" : 1,\n    \"scoreTwo\" : 10\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -142,13 +281,13 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/league",
+					"raw": "localhost:8080/match",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"league"
+						"match"
 					]
 				}
 			},
