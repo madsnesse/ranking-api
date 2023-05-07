@@ -17,6 +17,7 @@ import Data.Text (Text, unpack)
 import qualified Data.ByteString.Lazy as LBS
 import Data.UUID (UUID)
 import Database.PostgreSQL.Simple (Connection)
+import Network.HTTP.Types (Status)
 
 data Player = Player { playerId:: Int, name :: String, email :: String}
   deriving (Generic, Show, ToJSON, FromJSON)
@@ -60,3 +61,15 @@ logItem s = do
   liftIO $ putStrLn str
   liftIO $ appendFile "logs/app.log" $ str ++ "\n"
   tell [s]
+
+
+data Error = Error {
+  status :: Status,
+  body :: ErrorResponse
+} 
+
+data ErrorResponse = ErrorResponse {
+    id :: String,
+    step :: String,
+    message :: String
+} deriving (Generic, Show, ToJSON)

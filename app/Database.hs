@@ -72,7 +72,7 @@ addPlayersInLeague' :: [(Int,Int,Int)] -> Environment Int64
 addPlayersInLeague' ps = do
         conn <- ask
         _ <- logItem $ "Adding players to league" ++ show ps
-        liftIO $ executeMany conn "INSERT INTO playerleague values (?,?,?) ON CONFLICT DO UPDATE" ps
+        liftIO $ executeMany conn "INSERT INTO playerleague values (?,?,?) ON CONFLICT DO NOTHING" ps
 
 updatePlayerInLeague' :: (Int,Int,Int) -> Environment [PlayerLeague]
 updatePlayerInLeague' (pid, lid, rating) = do
@@ -98,9 +98,11 @@ createMatch' (CreateMatchRequest l p1 p2 s1 s2) = do
 getPlayerByEmail' :: String -> Environment [Player]
 getPlayerByEmail' email = do
         conn <- ask
-        _ <- logItem $ "Getting player by email: " ++ email ++ "from db"
+        _ <- logItem email
+        _ <- logItem $ "Getting player by email: " ++ email ++ " from db"
         liftIO $ query conn "SELECT * FROM player WHERE email = ?"
                 (Only email)
+
 
 getMatchesInLeague :: Int -> Environment [Match]
 getMatchesInLeague lid = do

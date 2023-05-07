@@ -7,24 +7,21 @@
 module App (app) where
 
 import Control.Monad.RWS
-import Data.Aeson (FromJSON, ToJSON, eitherDecode, encode)
-import Data.Text (Text, unpack)
+import Data.Aeson (FromJSON, ToJSON, eitherDecode)
 import Data.UUID.V4 (nextRandom)
+import Data.Text (unpack)
 import Database
 import Database.PostgreSQL.Simple
-import Models ( Environment, setStep, RequestState(RequestState), logItem, Match(..), League(..), PlayerLeague(..) )
-
+import Models
 import GHC.Int ( Int64 )
-import Network.HTTP.Types (Status, status200, status202, status400, status404, status405, status500)
-import Network.Wai (Application, Request(pathInfo, requestMethod), Response, strictRequestBody, responseLBS)
-import Network.HTTP.Types.Method (Method)
+import Network.Wai (Application, Request(pathInfo, requestMethod), Response, strictRequestBody)
+import Network.HTTP.Types (Status, status400, status404)
 import Requests
 import Responses
 import qualified Data.ByteString.Lazy as LBS
 import Engine(updateRankings)
 import EmailUtils (parseEmail)
 
--- type AppRWST = RWST ConnectionHolder Logger () IO
 app :: Connection -> Application
 app conn req respond = do
   uuid <- nextRandom
@@ -32,9 +29,6 @@ app conn req respond = do
   let path = pathInfo req
   rb <- strictRequestBody req
   (result, _, logs) <- runRWST handleRequest conn (RequestState (uuid, "initial", rb, method, path))
-
-  putStrLn $ "Logs: " ++ show logs
-
   respond result
 
 handleRequest :: Environment Response
@@ -52,7 +46,7 @@ handleRequest = do
       _ <- logItem "Creating player"
       modify (setStep "createPlayer")
       r <- getRequest req
-      checkValidRequestBody r (getResponse . saveToDatabase . createPlayer')
+      checkValidRequestBody r (getResponse . createPlayer)
 
     ("GET", ["league", lid]) -> do
       _ <- logItem ("Retrieving league with id: " ++ show lid)
@@ -92,6 +86,15 @@ updateLeague' lid r = do
   let ei = executeDatabase $ addPlayersInLeague' playersLeague
   ei
 
+createPlayer :: CreatePlayerRequest -> Environment (Either Error Player)
+createPlayer r = do
+  emailTaken <- existsInDatabase $ getPlayerByEmail' (r.email)
+  if emailTaken then do
+    e <- createError status400 "Email already taken"
+    return (Left $ e)
+  else do
+    saveToDatabase $ createPlayer' r
+
 newMatch' :: CreateMatchRequest -> Environment (Either Error Match)
 newMatch' r = do
   let lid = r.leagueId
@@ -120,15 +123,15 @@ getLeague :: Int -> Environment (Either Error FullLeagueResponse)
 getLeague lid = do
   league <- getFromDatabase $ getLeagueById' lid
   playersInLeague <- getPlayersInLeague lid
-  matches <- getMatchesInLeague lid
+  mtchs <- getMatchesInLeague lid
   case league of
     Left e -> do
       return $ Left e
     (Right l) -> do
-      let playerIds = map playerId playersInLeague
-      let ratings = map rating playersInLeague
+      let playerIds = map (\pl -> pl.playerId) playersInLeague
+      let ratings = map (\pl -> pl.rating) playersInLeague
 
-      return $ Right (FullLeagueResponse l.leagueId l.leagueName l.ownerId (zip playerIds ratings) matches)
+      return $ Right (FullLeagueResponse l.leagueId l.leagueName l.ownerId (zip playerIds ratings) mtchs)
 
 -- getRequest :: LBS.ByteString -> Environment (Either Error RequestBody)
 --errorOnInputOrContinue :: Either Error Int -> () -> Environment (Either Error Player)
@@ -164,15 +167,15 @@ getRequest req = do
   let r = eitherDecode req
   case r of
     Left e -> do
-      er <- invalidRequestBody
+      er <- invalidRequestBody e
       return $ Left er
     Right re -> do
       return $ Right re
 
 createError :: Status -> String -> Environment Error
-createError status message = do   
-  (RequestState (i,step,_,_,_)) <- get
-  return (Error status (ErrorResponse (show i) step message))
+createError sts msg = do   
+  (RequestState (i,stp,_,_,_)) <- get
+  return (Error sts (ErrorResponse (show i) stp msg))
 
 readsOrError :: Read a => String -> Environment (Either Error a)
 readsOrError s = do
@@ -184,16 +187,16 @@ readsOrError s = do
       e <- invalidRequestParameter
       return $ Left e
 
---TODO do some parsing
 emailOrError :: String -> Environment (Either Error String)
 emailOrError s = do
+  _ <- logItem s
   let em = parseEmail s
   case em of
-    Left e -> do
+    Left _ -> do
       e <- createError status400 ("Invalid email: " ++ s)
       return $ Left e
-    Right email -> do
-      return $ Right (show email)
+    Right eml -> do
+      return $ Right (unpack eml)
 
 
 getResponse :: (Show a, ToJSON a) => Environment (Either Error a) -> Environment Response
@@ -201,7 +204,7 @@ getResponse f = do
   d <- f
   case d of
     Right r -> do
-      jsonResponse r
+      successResponse r
     Left e -> do
       responseWithError e
 
@@ -209,10 +212,10 @@ existsInDatabase :: Environment [a] -> Environment Bool
 existsInDatabase f = do
   p <- f
   case p of
-    [_] -> return True
-    _ -> return False
-
-getFromDatabase :: Environment [a] -> Environment (Either Error a)
+    [] -> return False
+    _ -> return True
+    
+getFromDatabase :: (Show a) => Environment [a] -> Environment (Either Error a)
 getFromDatabase f = do
   p <- f
   case p of
@@ -220,8 +223,9 @@ getFromDatabase f = do
     [] -> do
       e <- notFound
       return $ Left e
-    _ -> do
-      e <- internalServerError  
+    q -> do 
+      _ <- logItem "Multiple rows returned from database" 
+      e <- internalServerError
       return $ Left e
 
       
@@ -237,65 +241,8 @@ saveToDatabase f = do
 executeDatabase :: Environment Int64 -> Environment Response
 executeDatabase f = do
   p <- f
-  (RequestState (i,stp,_,_,_)) <- get
   case p of
     0 -> do
-      r <- responseWithError =<< internalServerError 
-      return r
-    _ -> acceptedResponse
-
-notFound :: Environment Error
-notFound = do
-  RequestState (_,_,_,_,p) <- get
-  er <- errorResponse $ "Not found: " ++ (show p) 
-  return $ Error status404 er
-
-internalServerError :: Environment Error
-internalServerError = do
-  RequestState rs <- get
-  er <- errorResponse $ "Something went wrong: " ++ (show rs) 
-  return $ Error status500 er
-
-invalidRequestBody :: Environment Error
-invalidRequestBody = do 
-  RequestState (_,_,rb,_,_) <- get
-  er <- errorResponse $ "Invalid request body: " ++ show (LBS.toStrict rb)
-  return $ Error status400 er
-
-invalidRequestParameter :: Environment Error
-invalidRequestParameter = do
-  RequestState (_,_,_,_,p) <- get
-  er <- errorResponse $ "Invalid request parameter: " ++ (show p)
-  return $ Error status400 er
-
-illegalMethod :: Environment Error
-illegalMethod = do
-  RequestState (_,_,_,m,p) <- get
-  er <- errorResponse $ "Illegal method: " ++ (show m) ++ (show p)
-  return $ Error status405 er
-
-acceptedResponse :: Environment Response
-acceptedResponse = do
-  RequestState (_,stp,_,_, _) <- get
-  _ <- logItem ("Successfully completed " ++ stp)
-  return (responseLBS status202 [("Content-type", "application/json")] "")
-
-jsonResponse :: (Show a, ToJSON a) => a -> Environment Response
-jsonResponse x = do
-  _ <- logItem ("Returning json response: " ++ show x)
-  return (responseLBS status200 [("Content-type", "application/json")] (encode x))
-
-errorResponse :: String -> Environment ErrorResponse
-errorResponse msg =  do
-  (RequestState (i, stp, _ ,_,_)) <- get
-  return $ ErrorResponse (show i) stp msg
-
-responseWithError :: Error -> Environment Response
-responseWithError e = do
-  _ <- logItem "Returning error response: "
-  return $ responseLBS (e.status) [("Content-type", "application/json")] (encode e.body)
-
-data Error = Error {
-  status :: Status,
-  body :: ErrorResponse
-} 
+      e <- createError status400 "No rows updated, this could mean that the player(s) are already in the database"
+      responseWithError e
+    i -> acceptedResponse $ "Added " ++ show i ++ " player(s)"
