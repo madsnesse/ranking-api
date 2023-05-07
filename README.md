@@ -27,6 +27,3 @@ add it under dependencies in package.yml, then run
 ```
 stack build
 ```
-
-## Entity relations (preliminary)
-<img src="ranking_api.png">
