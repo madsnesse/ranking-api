@@ -58,9 +58,7 @@ logItem :: String -> Environment ()
 logItem s = do
   rs <- get
   let str = show rs ++ s
-  liftIO $ putStrLn str
-  liftIO $ appendFile "logs/app.log" $ str ++ "\n"
-  tell [s]
+  tell [str ++ "\n"]
 
 
 data Error = Error {

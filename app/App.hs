@@ -29,6 +29,8 @@ app conn req respond = do
   let path = pathInfo req
   rb <- strictRequestBody req
   (result, _, logs) <- runRWST handleRequest conn (RequestState (uuid, "initial", rb, method, path))
+
+  liftIO $ appendFile "logs/app.log" $ concat logs ++ "\n"
   respond result
 
 handleRequest :: Environment Response
@@ -40,13 +42,13 @@ handleRequest = do
       _ <- logItem ("Retrieving player with email: " ++ show eml)
       modify (setStep "getPlayer")
       eml' <- emailOrError $ unpack eml
-      checkValidParameter eml' (getResponse . getFromDatabase . getPlayerByEmail')
+      checkValidParameter eml' (getResponse . getFromDatabase . getPlayerByEmail)
 
     ("POST", ["player"]) -> do
       _ <- logItem "Creating player"
       modify (setStep "createPlayer")
       r <- getRequest req
-      checkValidRequestBody r (getResponse . createPlayer)
+      checkValidRequestBody r (getResponse . newPlayer)
 
     ("GET", ["league", lid]) -> do
       _ <- logItem ("Retrieving league with id: " ++ show lid)
@@ -58,54 +60,53 @@ handleRequest = do
       _ <- logItem "Creating league"
       modify (setStep "createLeague")
       r <- getRequest req
-      checkValidRequestBody r (getResponse . saveToDatabase . createLeague')
+      checkValidRequestBody r (getResponse . saveToDatabase . createLeague)
 
     ("PUT", ["league", lid]) -> do -- TODO refactor
       _ <- logItem ("Updating league with id: " ++ show lid)
       modify (setStep "updateLeague")
       lid' <- readsOrError $ unpack lid
       r <- getRequest req
-      checkValidBodyAndParam lid' r updateLeague'
+      checkValidBodyAndParam lid' r updateLeague
 
     ("POST", ["match"]) -> do
       _ <- logItem "Creating match"
       modify (setStep "createMatch")
       r <- getRequest req
-      checkValidRequestBody r (getResponse . newMatch')
+      checkValidRequestBody r (getResponse . newMatch)
     _ -> illegalMethod >>= responseWithError 
     
 
 
 -- Check if players in league already
-updateLeague' :: Int -> UpdateLeagueRequest -> Environment Response
-updateLeague' lid r = do
-  -- playersInLeague <- getFromDatabase $ getPlayersInLeague' lid
-  
-  -- let filtered = filter (\p -> fst p `elem` playersInLeague) r.players 
+updateLeague :: Int -> UpdateLeagueRequest -> Environment Response
+updateLeague lid r = do
   let playersLeague = zip3 r.players (repeat lid) (repeat 1000) ::[(Int,Int,Int)]
-  let ei = executeDatabase $ addPlayersInLeague' playersLeague
+  let ei = executeDatabase $ addPlayersInLeague playersLeague
   ei
 
-createPlayer :: CreatePlayerRequest -> Environment (Either Error Player)
-createPlayer r = do
-  emailTaken <- existsInDatabase $ getPlayerByEmail' (r.email)
+newPlayer :: CreatePlayerRequest -> Environment (Either Error Player)
+newPlayer r = do
+  emailTaken <- existsInDatabase $ getPlayerByEmail (r.email)
   if emailTaken then do
     e <- createError status400 "Email already taken"
     return (Left $ e)
   else do
-    saveToDatabase $ createPlayer' r
+    saveToDatabase $ createPlayer r
 
-newMatch' :: CreateMatchRequest -> Environment (Either Error Match)
-newMatch' r = do
+newMatch :: CreateMatchRequest -> Environment (Either Error Match)
+newMatch r = do
   let lid = r.leagueId
-  lexists <- existsInDatabase $ getLeagueById' lid
+  modify (setStep "checkLeagueExists")
+  lexists <- existsInDatabase $ getLeagueById lid
   if lexists then do
     let p1 = r.playerOne
     let p2 = r.playerTwo
-    p1exists <- existsInDatabase $ getPlayerById' p1
-    p2exists <- existsInDatabase $ getPlayerById' p2
+    modify (setStep "checkPlayersExists")
+    p1exists <- existsInDatabase $ getPlayerById p1
+    p2exists <- existsInDatabase $ getPlayerById p2
     if p1exists && p2exists then do
-      m <- saveToDatabase $ createMatch' r
+      m <- saveToDatabase $ createMatch r
       case m of 
         Left e -> do
           return $ Left e
@@ -121,8 +122,10 @@ newMatch' r = do
 
 getLeague :: Int -> Environment (Either Error FullLeagueResponse)
 getLeague lid = do
-  league <- getFromDatabase $ getLeagueById' lid
+  league <- getFromDatabase $ getLeagueById lid
+  modify (setStep "getPlayersInLeague")
   playersInLeague <- getPlayersInLeague lid
+  modify (setStep "getMatchesInLeague")
   mtchs <- getMatchesInLeague lid
   case league of
     Left e -> do
@@ -137,6 +140,7 @@ getLeague lid = do
 --errorOnInputOrContinue :: Either Error Int -> () -> Environment (Either Error Player)
 checkValidRequestBody :: Either Error a -> (a -> Environment Response) -> Environment Response
 checkValidRequestBody e comp = do
+  modify (setStep "checkValidRequestBody")
   case e of
     Left e' -> do
       responseWithError e' 
@@ -145,6 +149,7 @@ checkValidRequestBody e comp = do
 
 checkValidParameter :: Either Error a -> (a -> Environment Response) -> Environment Response
 checkValidParameter e comp = do
+  modify (setStep "checkValidRequestParameter")
   case e of
     Left e' -> do
       responseWithError e'
@@ -164,6 +169,7 @@ checkValidBodyAndParam e1 e2 comp = do
 
 getRequest :: (FromJSON r) => LBS.ByteString -> Environment (Either Error r)
 getRequest req = do
+  modify (setStep "decodeRequestBody")
   let r = eitherDecode req
   case r of
     Left e -> do
@@ -173,13 +179,14 @@ getRequest req = do
       return $ Right re
 
 createError :: Status -> String -> Environment Error
-createError sts msg = do   
+createError sts msg = do
   (RequestState (i,stp,_,_,_)) <- get
   return (Error sts (ErrorResponse (show i) stp msg))
 
 readsOrError :: Read a => String -> Environment (Either Error a)
 readsOrError s = do
   let r = reads s
+  modify (setStep "readRequestParameter")
   case r of
     [(a, _)] -> do
       return $ Right a
@@ -190,6 +197,7 @@ readsOrError s = do
 emailOrError :: String -> Environment (Either Error String)
 emailOrError s = do
   _ <- logItem s
+  modify (setStep "validateEmail")
   let em = parseEmail s
   case em of
     Left _ -> do
@@ -210,20 +218,22 @@ getResponse f = do
 
 existsInDatabase :: Environment [a] -> Environment Bool
 existsInDatabase f = do
+  modify (setStep "checkIfExistsInDB")
   p <- f
   case p of
     [] -> return False
     _ -> return True
     
-getFromDatabase :: (Show a) => Environment [a] -> Environment (Either Error a)
+getFromDatabase :: Environment [a] -> Environment (Either Error a)
 getFromDatabase f = do
+  modify (setStep "retrieveFromDatabase")
   p <- f
   case p of
     [x] -> return (Right x)
     [] -> do
       e <- notFound
       return $ Left e
-    q -> do 
+    _ -> do 
       _ <- logItem "Multiple rows returned from database" 
       e <- internalServerError
       return $ Left e
