@@ -1,6 +1,5 @@
 {-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE OverloadedLabels #-}
 
 module Engine (updateRankings) where
 import Models
@@ -46,7 +45,7 @@ calculateProbability p1 p2 =
 
 -- NOT implemented: function for accounting for result of match, not just rating
 calculateFactor :: Float -> (Int,Int) -> Float
-calculateFactor p res = p * 1.0
+calculateFactor p _ = p * 1.0
 
 ratingConstant :: Float 
 ratingConstant = 50

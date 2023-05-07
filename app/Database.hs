@@ -1,14 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Database where
 import GHC.Int ( Int64 )
-import Database.PostgreSQL.Simple.FromRow ( field, FromRow(..) )
 import Database.PostgreSQL.Simple
     ( Only(Only),
       Connection,
       connect,
       defaultConnectInfo,
       executeMany,
-      execute,
       execute_,
       ConnectInfo(connectPassword),
       query )
@@ -51,21 +49,27 @@ getPlayerById i = do
         liftIO $ query conn "SELECT * FROM player WHERE id = ?"
                 (Only i)
 
+-- queries that are insert operations would normally be an execute operation that
+-- returns number of rows affected, but I wanted the id generation to be handled 
+-- by db so RETURNING * makes it a query returning a list of all the rows (1)
 createPlayer :: CreatePlayerRequest -> Environment [Player]
-createPlayer (CreatePlayerRequest username email) = do
+createPlayer (CreatePlayerRequest username eml) = do
         conn <- ask
+        _ <- logItem $ "Creating player with username: " ++ username ++ " and email: " ++ eml
         liftIO $ query conn "INSERT INTO player (username, email) VALUES (?, ?) RETURNING *"
-                (username, email)
+                (username, eml)
 
 createLeague :: CreateLeagueRequest -> Environment [League]
-createLeague (CreateLeagueRequest leagueName ownerId) = do
+createLeague (CreateLeagueRequest nme oid) = do
         conn <- ask
+        _ <- logItem $ "Creating league with name: " ++ nme ++ " and owner id: " ++ show oid
         liftIO $ query conn "INSERT INTO league (league_name, owner_id) VALUES (?, ?) RETURNING *"
-                (leagueName, ownerId)
+                (nme, oid)
 
 getLeagueById :: Int -> Environment [League]
 getLeagueById lid = do
         conn <- ask
+        _ <- logItem $ "Getting league by id: " ++ show lid ++ "from db"
         liftIO $ query conn "SELECT * FROM league WHERE id = ?" (Only lid)
 
 addPlayersInLeague :: [(Int,Int,Int)] -> Environment Int64
@@ -75,9 +79,10 @@ addPlayersInLeague ps = do
         liftIO $ executeMany conn "INSERT INTO playerleague values (?,?,?) ON CONFLICT DO NOTHING" ps
 
 updatePlayerInLeague :: (Int,Int,Int) -> Environment [PlayerLeague]
-updatePlayerInLeague (pid, lid, rating) = do
+updatePlayerInLeague (pid, lid, rate) = do
         conn <- ask
-        liftIO $ query conn "UPDATE playerleague SET rating = ? WHERE league_id = ? AND player_id = ? RETURNING *" (rating, lid, pid)
+        _ <- logItem $ "Updating player " ++ show pid ++" in league: " ++ show lid ++ " with rating: " ++ show rate ++ " in db"
+        liftIO $ query conn "UPDATE playerleague SET rating = ? WHERE league_id = ? AND player_id = ? RETURNING *" (rate, lid, pid)
 
 getPlayerInLeague :: (Int,Int) -> Environment [PlayerLeague]
 getPlayerInLeague (p,l) = do
@@ -88,15 +93,16 @@ getPlayerInLeague (p,l) = do
 createMatch :: CreateMatchRequest -> Environment [Match]
 createMatch (CreateMatchRequest l p1 p2 s1 s2) = do
         conn <- ask
+        _ <- logItem $ "Creating match with league id: " ++ show l ++ " player one id: " ++ show p1 ++ " player two id: " ++ show p2 ++ " score one: " ++ show s1 ++ " score two: " ++ show s2
         liftIO $ query conn "INSERT INTO match (league_id, player_id_one, player_id_two, score_one, score_two) VALUES (?, ?, ?, ?, ?) RETURNING *"
                 (l, p1, p2, s1, s2)
 
 getPlayerByEmail :: String -> Environment [Player]
-getPlayerByEmail email = do
+getPlayerByEmail eml = do
         conn <- ask
-        _ <- logItem $ "Getting player by email: " ++ email ++ " from db"
+        _ <- logItem $ "Getting player by email: " ++ eml ++ " from db"
         liftIO $ query conn "SELECT * FROM player WHERE email = ?"
-                (Only email)
+                (Only eml)
 
 
 getMatchesInLeague :: Int -> Environment [Match]
@@ -112,8 +118,3 @@ getPlayersInLeague lid = do
         _ <- logItem $ "Getting players in league: " ++ show lid ++ " from db"
         liftIO $ query conn "SELECT * FROM playerleague WHERE league_id = ?"
                 (Only lid)
-
-saveMatch ::(Int,Int,Int,Int,Int) -> Environment [Match]
-saveMatch m = do
-        conn <- ask
-        liftIO $ query conn "INSERT INTO match (league_id, player_id_one, player_id_two, score_one, score_two) values (?,?,?,?,?) RETURNING *" m

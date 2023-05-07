@@ -2,7 +2,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE OverloadedRecordDot #-}
-{-# LANGUAGE OverloadedLabels #-}
 
 module App (app) where
 
@@ -78,13 +77,14 @@ handleRequest = do
     
 
 
--- Check if players in league already
+-- In its own function for clarity
 updateLeague :: Int -> UpdateLeagueRequest -> Environment Response
 updateLeague lid r = do
   let playersLeague = zip3 r.players (repeat lid) (repeat 1000) ::[(Int,Int,Int)]
   let ei = executeDatabase $ addPlayersInLeague playersLeague
   ei
 
+-- Check that email is available and create a new player if it is
 newPlayer :: CreatePlayerRequest -> Environment (Either Error Player)
 newPlayer r = do
   emailTaken <- existsInDatabase $ getPlayerByEmail (r.email)
@@ -94,6 +94,7 @@ newPlayer r = do
   else do
     saveToDatabase $ createPlayer r
 
+-- Check that league, and both players exist and update ranking and save match if it does
 newMatch :: CreateMatchRequest -> Environment (Either Error Match)
 newMatch r = do
   let lid = r.leagueId
@@ -103,8 +104,8 @@ newMatch r = do
     let p1 = r.playerOne
     let p2 = r.playerTwo
     modify (setStep "checkPlayersExists")
-    p1exists <- existsInDatabase $ getPlayerById p1
-    p2exists <- existsInDatabase $ getPlayerById p2
+    p1exists <- existsInDatabase $ getPlayerInLeague (p1, lid)
+    p2exists <- existsInDatabase $ getPlayerInLeague (p2, lid)
     if p1exists && p2exists then do
       m <- saveToDatabase $ createMatch r
       case m of 
@@ -114,12 +115,13 @@ newMatch r = do
           _ <- updateRankings m'
           return $ Right m'
     else do
-      e <- createError status404 "Player does not exist"
-      return (Left $ e)
+      e <- createError status404 "Player does not exist in league"
+      return $ Left $ e
   else do
     e <- createError status404 "League does not exist"
-    return (Left $ e)
+    return $ Left $ e
 
+-- Get a league with all its players and matches
 getLeague :: Int -> Environment (Either Error FullLeagueResponse)
 getLeague lid = do
   league <- getFromDatabase $ getLeagueById lid
@@ -167,6 +169,7 @@ checkValidBodyAndParam e1 e2 comp = do
     (Right r1, Right r2) -> do
       comp r1 r2
 
+-- decode request, return error if decode fails
 getRequest :: (FromJSON r) => LBS.ByteString -> Environment (Either Error r)
 getRequest req = do
   modify (setStep "decodeRequestBody")
@@ -183,6 +186,7 @@ createError sts msg = do
   (RequestState (i,stp,_,_,_)) <- get
   return (Error sts (ErrorResponse (show i) stp msg))
 
+-- reads string to Read, use it to read string to Int
 readsOrError :: Read a => String -> Environment (Either Error a)
 readsOrError s = do
   let r = reads s
@@ -206,7 +210,7 @@ emailOrError s = do
     Right eml -> do
       return $ Right (unpack eml)
 
-
+-- get response from either an error or an instance of Show and ToJSON
 getResponse :: (Show a, ToJSON a) => Environment (Either Error a) -> Environment Response
 getResponse f = do
   d <- f
@@ -216,6 +220,7 @@ getResponse f = do
     Left e -> do
       responseWithError e
 
+-- takes a function that calls the database and returns True if there is a result
 existsInDatabase :: Environment [a] -> Environment Bool
 existsInDatabase f = do
   modify (setStep "checkIfExistsInDB")
@@ -224,6 +229,7 @@ existsInDatabase f = do
     [] -> return False
     _ -> return True
     
+-- takes a function that calls the database and returns the result if there is one
 getFromDatabase :: Environment [a] -> Environment (Either Error a)
 getFromDatabase f = do
   modify (setStep "retrieveFromDatabase")
@@ -238,16 +244,18 @@ getFromDatabase f = do
       e <- internalServerError
       return $ Left e
 
-      
+-- takes a function that calls the database with a query operation and returns the result if there is one
 saveToDatabase :: Environment [a] -> Environment (Either Error a)
 saveToDatabase f = do
   p <- f
   case p of
     [x] -> return $ Right x
     _ -> do
+      _ <- logItem "Failed saving to database"
       e <- internalServerError
       return $ Left e
 
+-- takes a function that calls the database with an execute operations and checks if any rows were affected
 executeDatabase :: Environment Int64 -> Environment Response
 executeDatabase f = do
   p <- f
